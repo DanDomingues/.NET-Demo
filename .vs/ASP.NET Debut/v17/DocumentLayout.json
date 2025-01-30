@@ -1,0 +1,140 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\dev\\csharp\\aspnet\\.NET Demo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\edit.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\delete.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\create.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AED8EEF-20B4-4215-8003-0CB41C9264CF}|ASP.NET Debut.csproj|c:\\dev\\csharp\\aspnet\\.net demo\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AED8EEF-20B4-4215-8003-0CB41C9264CF}|ASP.NET Debut.csproj|solutionrelative:controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E98ACD5A-D31D-44B3-8FAC-32AF7B607F1D}|..\\DemoWithRazor\\DemoWithRazor.csproj|c:\\dev\\csharp\\aspnet\\demowithrazor\\pages\\categories\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Create.cshtml",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Create.cshtml",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Create.cshtml",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T21:00:00.032Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T21:00:22.589Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T21:00:37.866Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Edit.cshtml.cs",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml.cs",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml.cs",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml.cs",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Edit.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T22:10:29.324Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Delete.cshtml.cs",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml.cs",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml.cs",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml.cs",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Delete.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T22:10:17.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Create.cshtml.cs",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Create.cshtml.cs",
+              "RelativeDocumentMoniker": "..\\DemoWithRazor\\Pages\\Categories\\Create.cshtml.cs",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\DemoWithRazor\\Pages\\Categories\\Create.cshtml.cs",
+              "RelativeToolTip": "..\\DemoWithRazor\\Pages\\Categories\\Create.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T22:10:00.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CategoryController.cs",
+              "DocumentMoniker": "C:\\dev\\csharp\\aspnet\\.NET Demo\\Controllers\\CategoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CategoryController.cs",
+              "ToolTip": "C:\\dev\\csharp\\aspnet\\.NET Demo\\Controllers\\CategoryController.cs",
+              "RelativeToolTip": "Controllers\\CategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T22:09:53.113Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
