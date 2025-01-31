@@ -1,4 +1,4 @@
-using ASP.NET_Debut.Controllers.Data;
+using Demo.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

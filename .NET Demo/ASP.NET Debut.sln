@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET Demo", "ASP.NET Demo.csproj", "{5AED8EEF-20B4-4215-8003-0CB41C9264CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.DataAccess", "..\Demo.DataAccess\Demo.DataAccess.csproj", "{B8EAD715-3CE6-4351-9A0B-9510286B5A28}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A4AA485-DB53-452C-A902-8F188DE5D1CA} = {0A4AA485-DB53-452C-A902-8F188DE5D1CA}
+		{812031C9-960C-4513-B190-88E2B98BD048} = {812031C9-960C-4513-B190-88E2B98BD048}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Models", "..\Demo.Models\Demo.Models.csproj", "{812031C9-960C-4513-B190-88E2B98BD048}"
 EndProject

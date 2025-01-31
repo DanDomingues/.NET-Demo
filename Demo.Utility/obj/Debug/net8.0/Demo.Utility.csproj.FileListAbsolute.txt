@@ -1,0 +1,15 @@
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\bin\Debug\net8.0\Demo.Utility.deps.json
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\bin\Debug\net8.0\Demo.Utility.runtimeconfig.json
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\bin\Debug\net8.0\Demo.Utility.dll
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\bin\Debug\net8.0\Demo.Utility.pdb
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.csproj.AssemblyReference.cache
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.GeneratedMSBuildEditorConfig.editorconfig
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.AssemblyInfoInputs.cache
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.AssemblyInfo.cs
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.csproj.CoreCompileInputs.cache
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.sourcelink.json
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.dll
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\refint\Demo.Utility.dll
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.pdb
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\Demo.Utility.genruntimeconfig.cache
+C:\dev\csharp\aspnet\.NET Demo\Demo.Utility\obj\Debug\net8.0\ref\Demo.Utility.dll

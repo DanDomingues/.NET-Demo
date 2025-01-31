@@ -1,7 +1,7 @@
-﻿using ASP.NET_Debut.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Demo.Models;
 
-namespace ASP.NET_Debut.Controllers.Data
+namespace Demo.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {

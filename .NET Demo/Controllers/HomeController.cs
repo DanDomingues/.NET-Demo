@@ -1,4 +1,4 @@
-﻿using ASP.NET_Debut.Models;
+﻿using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

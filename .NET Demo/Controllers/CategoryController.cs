@@ -1,5 +1,5 @@
-﻿using ASP.NET_Debut.Controllers.Data;
-using ASP.NET_Debut.Models;
+﻿using Demo.DataAccess.Data;
+using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

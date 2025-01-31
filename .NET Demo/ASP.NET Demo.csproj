@@ -16,4 +16,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.DataAccess\Demo.DataAccess.csproj" />
+    <ProjectReference Include="..\Demo.Models\Demo.Models.csproj" />
+    <ProjectReference Include="..\Demo.Utility\Demo.Utility.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-namespace ASP.NET_Debut.Models
+namespace Demo.Models
 {
     public class ErrorViewModel
     {
