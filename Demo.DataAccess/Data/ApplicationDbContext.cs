@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Demo.Models;
+﻿using Demo.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Category> Categories { get; set; }
 
@@ -11,13 +12,31 @@ namespace Demo.DataAccess.Data
         {
             
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Fiction", DisplayOrder = 2 },
                 new Category { Id = 3, Name = "Drama", DisplayOrder = 3 }
+            );
+
+            modelBuilder.Entity<Product>().HasData(
+            new Product 
+                { 
+                    Id = 2,
+                    Title = "Fortune of Time",
+                    Author = "Billy Spark",
+                    ISBN = "SWD999901",
+                    Description = "Lorem ipsum",
+                    Price = 90,
+                    Price50 = 85,
+                    Price100 = 80,
+                    TotallyNotAnID = 666,
+                    CategoryId = 3,
+                    ImageUrl = "",
+                }
             );
         }
     }
