@@ -22,6 +22,8 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+//builder.Services.AddIdentity<ApplicationUser, IdentityUser>();
+
 //Must be added after AddIdentity
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -33,6 +35,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 //Handles custom DI
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
