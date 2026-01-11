@@ -79,6 +79,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
             repo.Remove(company);
             unitOfWork.Save();
             AddOperationFeedback("deleted");
