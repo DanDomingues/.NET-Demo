@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess.Data;
 using Demo.DataAccess.Repository.IRepository;
+using Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : ModelBase
     {
         protected readonly ApplicationDbContext db;
         protected DbSet<T> dbSet;
@@ -26,6 +27,23 @@ namespace Demo.DataAccess.Repository
             dbSet.Add(entity);
         }
 
+        public void Update(T entity)
+        {
+            dbSet.Update(entity);
+        }
+
+        public void AddOrUpdate(T entity)
+        {
+            if(entity.Id == 0)
+            {
+                Add(entity);
+            }
+            else
+            {
+                Update(entity);
+            }
+        }
+
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
@@ -38,17 +56,19 @@ namespace Demo.DataAccess.Repository
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
-            return GetAllWithProperties(dbSet, includeProperties).Where(filter).FirstOrDefault();
+            return GetAllWithProperties(dbSet, includeProperties)
+                .Where(filter)
+                .FirstOrDefault();
+        }
+
+        public T GetById(int? id, string? includeProperties = null)
+        {
+            return GetFirstOrDefault(e => e.Id == id, includeProperties);
         }
 
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             return GetAllWithProperties(dbSet, includeProperties).ToList();
-        }
-
-        public void Update(T entity)
-        {
-            dbSet.Update(entity);
         }
 
         private IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)

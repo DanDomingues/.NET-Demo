@@ -15,30 +15,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         protected override string DefaultFeedbackName => "Category";
 
-        public override IActionResult Create(Category obj)
+        public override IActionResult Create(Category model)
         {
             if(!ModelState.IsValid)
             {
                 return View();
             }
 
-            if (!string.IsNullOrEmpty(obj?.Name))
+            if(CheckForDuplicates(model))
             {
-                var duplicate = Repo.GetFirstOrDefault(
-                    c => string.Equals(c.Name.ToLower(), obj.Name.ToLower()));
-
-                if (duplicate != null)
-                {
-                    ModelState.AddModelError(
-                        "Name", 
-                        $"A category with the name '{obj.Name}' was already added.");
-                    ModelState.AddModelError(
-                        "", 
-                        $"A category with the name '{obj.Name}' was already added");
-                }
+                return View();
             }
 
-            return base.Create(obj);
+            return base.Create(model);
         }
     }
 }

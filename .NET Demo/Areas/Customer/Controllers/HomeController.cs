@@ -25,7 +25,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            var obj = unitOfWork.ProductRepository.GetFirstOrDefault(p => p.Id == id, includeProperties: "Category");
+            var obj = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category");
             return View(obj);
         }
 

@@ -11,5 +11,6 @@ namespace Demo.Models
     {
         [Key]
         public int Id { get; set; }
+        public abstract string Name { get; }
     }
 }
