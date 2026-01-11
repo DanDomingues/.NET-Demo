@@ -25,6 +25,12 @@ namespace Demo.DataAccess.Data
                 new Category { Id = 3, Name = "Drama", DisplayOrder = 3 }
             );
 
+            modelBuilder.Entity<Company>().HasData(
+                new Company { Id = 1, Name = "D Amaze-on" },
+                new Company { Id = 2, Name = "Ye old bookshop" },
+                new Company { Id = 3, Name = "Tito books" }
+            );
+
             modelBuilder.Entity<Product>().HasData(
             new Product 
                 { 
