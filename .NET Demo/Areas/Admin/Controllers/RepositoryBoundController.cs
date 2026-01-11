@@ -56,7 +56,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TModel obj)
+        public virtual IActionResult Create(TModel obj)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +69,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(TModel obj)
         {
+            if(!Find(obj.Id, out TModel output))
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
                 return UpdateRepo(obj, Repo.Update, feedback: "updated");

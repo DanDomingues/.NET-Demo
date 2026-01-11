@@ -9,117 +9,36 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]
-    public class CategoryController : Controller
+    public class CategoryController(IUnitOfWork unitOfWork) : RepositoryBoundController<Category, ICategoryRepository>(unitOfWork)
     {
-        IUnitOfWork unitOfWork;
-        ICategoryRepository CategoryRepo => unitOfWork.CategoryRepository;
+        protected override ICategoryRepository Repo => unitOfWork.CategoryRepository;
 
-        public CategoryController(IUnitOfWork unitOfWork)
-        {
-            this.unitOfWork = unitOfWork;
-        }
+        protected override string DefaultFeedbackName => "Category";
 
-        private void AddOperationFeedback(string name, string objName = "Category")
+        public override IActionResult Create(Category obj)
         {
-            TempData["success"] = $"{objName} {name} successfully";
-        }
-
-        private bool FindCategory(int? id, out Category category)
-        {
-            if (id == null || id == 0)
+            if(!ModelState.IsValid)
             {
-                category = new Category();
-                return false;
+                return View();
             }
 
-            category = CategoryRepo.GetFirstOrDefault(u => u.Id == id) ?? new Category();
-
-            if (category == null)
+            if (!string.IsNullOrEmpty(obj?.Name))
             {
-                return false;
+                var duplicate = Repo.GetFirstOrDefault(
+                    c => string.Equals(c.Name.ToLower(), obj.Name.ToLower()));
+
+                if (duplicate != null)
+                {
+                    ModelState.AddModelError(
+                        "Name", 
+                        $"A category with the name '{obj.Name}' was already added.");
+                    ModelState.AddModelError(
+                        "", 
+                        $"A category with the name '{obj.Name}' was already added");
+                }
             }
 
-            return true;
-        }
-
-        public IActionResult Index()
-        {
-            var objList = CategoryRepo.GetAll();
-            return View(objList);
-            //In order for @model to access the data on the cshtml,
-            //the data sent as model must be inside the View method parameters
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(Category category)
-        {
-            if (!string.IsNullOrEmpty(category.Name) &&
-                CategoryRepo.GetFirstOrDefault(c => c.Name.ToLower() == category.Name.ToLower()) != null)
-            {
-                ModelState.AddModelError("Name", $"A category with the name '{category.Name}' was already added.");
-                ModelState.AddModelError("", $"A category with the name '{category.Name}' was already added");
-            }
-
-            if (ModelState.IsValid)
-            {
-                CategoryRepo.Add(category);
-                unitOfWork.Save();
-                AddOperationFeedback("created");
-                return RedirectToAction("Index");
-            }
-
-            return View();
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (!FindCategory(id, out var category))
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                CategoryRepo.Update(category);
-                unitOfWork.Save();
-                AddOperationFeedback("edited");
-                return RedirectToAction("Index");
-            }
-
-            return View();
-        }
-
-        public IActionResult Delete(int? id)
-        {
-            if (!FindCategory(id, out var category))
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            if (!FindCategory(id, out var category))
-            {
-                return NotFound();
-            }
-
-            CategoryRepo.Remove(category);
-            unitOfWork.Save();
-            AddOperationFeedback("deleted");
-            return RedirectToAction("Index");
+            return base.Create(obj);
         }
     }
 }
