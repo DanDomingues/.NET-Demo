@@ -174,6 +174,13 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.Role = Input.Role;
+
+                if(user.Role == SD.ROLE_USER_COMPANY)
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
+
                 var result = await userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -205,13 +212,13 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 
