@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class Product
+    public class Product : ModelBase
     {
-        [Key] public int Id { get; set; }
         [Required] public string ISBN { get; set; }
         [Required] public string Author { get; set; }
         public string Description { get; set; }

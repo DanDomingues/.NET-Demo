@@ -12,7 +12,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected abstract TRepo Repo { get; }
         protected abstract string DefaultFeedbackName { get; }
 
-        private void AddOperationFeedback(
+        protected void AddOperationFeedback(
             string name,
             string? objName = null)
         {
@@ -38,7 +38,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return true;
         }
 
-        public IActionResult Index()
+        public virtual IActionResult Index()
         {
             return View(Repo.GetAll());
         }

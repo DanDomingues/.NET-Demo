@@ -1,21 +1,19 @@
 ﻿using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
+using Demo.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
-    //TODO: Rework controllers in a base class
-
-
     [Area("Admin")]
-    public class ProductController : Controller
+    [Authorize(Roles = SD.ROLE_USER_ADMIN)]
+    public class ProductController(IUnitOfWork unitOfWork) : RepositoryBoundController<Product, IProductRepository>(unitOfWork)
     {
-        private IUnitOfWork unitOfWork;
         private IWebHostEnvironment webHostEnvironment;
-        private IProductRepository productRepo;
         
         private IEnumerable<SelectListItem> CategoryList
         {
@@ -26,38 +24,13 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             });
         }
 
-        public ProductController(IUnitOfWork unitOfWork)
+        protected override IProductRepository Repo => unitOfWork.ProductRepository;
+
+        protected override string DefaultFeedbackName => "Product";
+
+        public override IActionResult Index()
         {
-            this.unitOfWork = unitOfWork;
-            productRepo = unitOfWork.ProductRepository;
-        }
-
-        private void AddOperationFeedback(string name, string objName = "Product")
-        {
-            TempData["success"] = $"{objName} {name} successfully";
-        }
-
-        private bool FindProduct(int? id, out Product product)
-        {
-            if (id == null || id == 0)
-            {
-                product = new Product();
-                return false;
-            }
-
-            product = productRepo.GetFirstOrDefault(u => u.Id == id) ?? new Product();
-
-            if (product == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public IActionResult Index()
-        {
-            var objList = productRepo.GetAll(includeProperties: "Category");
+            var objList = Repo.GetAll(includeProperties: "Category");
             return View(objList);
             //In order for @model to access the data on the cshtml,
             //the data sent as model must be inside the View method parameters
@@ -80,12 +53,13 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
+        //TODO: Move upsert to the class above if needed
         [HttpPost]
         public IActionResult Upsert(ProductVM vm, IFormFile? file)
         {
             if (
                 !string.IsNullOrEmpty(vm.Product.Title) &&
-                productRepo.GetFirstOrDefault(c => c.Title.ToLower() == vm.Product.Title.ToLower()) != null)
+                Repo.GetFirstOrDefault(c => c.Title.ToLower() == vm.Product.Title.ToLower()) != null)
             {
                 ModelState.AddModelError("Name", $"A product with the name '{vm.Product.Title}' was already added.");
                 ModelState.AddModelError("", $"A product with the name '{vm.Product.Title}' was already added");
@@ -116,11 +90,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
                 if(vm.Product.Id == 0)
                 {
-                    productRepo.Add(vm.Product);
+                    Repo.Add(vm.Product);
                 }
                 else
                 {
-                    productRepo.Update(vm.Product);
+                    Repo.Update(vm.Product);
                 }
                 unitOfWork.Save();
                 AddOperationFeedback("created");
