@@ -12,12 +12,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         IUnitOfWork unitOfWork;
-        ICategoryRepository categoryRepo;
+        ICategoryRepository CategoryRepo => unitOfWork.CategoryRepository;
 
         public CategoryController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            categoryRepo = unitOfWork.CategoryRepository;
         }
 
         private void AddOperationFeedback(string name, string objName = "Category")
@@ -33,7 +32,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return false;
             }
 
-            category = categoryRepo.GetFirstOrDefault(u => u.Id == id) ?? new Category();
+            category = CategoryRepo.GetFirstOrDefault(u => u.Id == id) ?? new Category();
 
             if (category == null)
             {
@@ -45,7 +44,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var objList = categoryRepo.GetAll();
+            var objList = CategoryRepo.GetAll();
             return View(objList);
             //In order for @model to access the data on the cshtml,
             //the data sent as model must be inside the View method parameters
@@ -59,9 +58,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if (
-                !string.IsNullOrEmpty(category.Name) &&
-                categoryRepo.GetFirstOrDefault(c => c.Name.ToLower() == category.Name.ToLower()) != null)
+            if (!string.IsNullOrEmpty(category.Name) &&
+                CategoryRepo.GetFirstOrDefault(c => c.Name.ToLower() == category.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("Name", $"A category with the name '{category.Name}' was already added.");
                 ModelState.AddModelError("", $"A category with the name '{category.Name}' was already added");
@@ -69,7 +67,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                categoryRepo.Add(category);
+                CategoryRepo.Add(category);
                 unitOfWork.Save();
                 AddOperationFeedback("created");
                 return RedirectToAction("Index");
@@ -92,7 +90,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                categoryRepo.Update(category);
+                CategoryRepo.Update(category);
                 unitOfWork.Save();
                 AddOperationFeedback("edited");
                 return RedirectToAction("Index");
@@ -118,7 +116,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            categoryRepo.Remove(category);
+            CategoryRepo.Remove(category);
             unitOfWork.Save();
             AddOperationFeedback("deleted");
             return RedirectToAction("Index");

@@ -8,21 +8,16 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork
     {
-        private ApplicationDbContext db;
-        private CategoryRepository category;
-        private ProductRepository product;
+        private readonly ApplicationDbContext db = db;
+        private readonly CategoryRepository category = new(db);
+        private readonly ProductRepository product = new(db);
+        private readonly CompanyRepository company = new(db);
+
         ICategoryRepository IUnitOfWork.CategoryRepository => category;
         IProductRepository IUnitOfWork.ProductRepository => product;
-
-        public UnitOfWork(ApplicationDbContext db)
-        {
-            this.db = db;
-            category = new CategoryRepository(db);
-            product = new ProductRepository(db);
-        }
-
+        ICompanyRepository IUnitOfWork.CompanyRepository => company;
 
         public void Save()
         {

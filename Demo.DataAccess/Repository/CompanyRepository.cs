@@ -4,13 +4,12 @@ using Demo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class ProductRepository(ApplicationDbContext db) : Repository<Product>(db), IProductRepository
+    public class CompanyRepository(ApplicationDbContext dp) : Repository<Company>(dp), ICompanyRepository
     {
     }
 }
