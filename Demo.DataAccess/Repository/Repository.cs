@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class Repository<T>(DbSet<T> dbSet) : IRepository<T> where T : ModelBase
+    public class Repository<T>(DbSet<T> dbSet) : IRepository<T> where T : class, IModelBase
     {
         public void Add(T entity)
         {
@@ -52,10 +52,6 @@ namespace Demo.DataAccess.Repository
                 .FirstOrDefault();
         }
 
-        public T GetById(int? id, string? includeProperties = null)
-        {
-            return GetFirstOrDefault(e => e.Id == id, includeProperties);
-        }
 
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
@@ -73,5 +69,11 @@ namespace Demo.DataAccess.Repository
             }
             return query;
         }
+
+        public T GetById(int? id, string? includeProperties = null)
+        {
+            return GetFirstOrDefault(e => e.Id == id, includeProperties);
+        }
+
     }
 }

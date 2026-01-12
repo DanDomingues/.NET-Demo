@@ -63,17 +63,17 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             string feedbackName = "entry",
             bool addModelError = true)
         {
-            var duplicate = Repo.GetFirstOrDefault(c => string.Equals(c.Name.ToLower(), model.Name.ToLower()));
+            var duplicate = Repo.GetFirstOrDefault(c => string.Equals(c.GetName().ToLower(), model.GetName().ToLower()));
             if (duplicate != null)
             {
                 if(addModelError)
                 {
                     ModelState.AddModelError(
                         "Name",
-                        $"A {feedbackName} with the name '{model.Name}' was already added.");
+                        $"A {feedbackName} with the name '{model.GetName()}' was already added.");
                     ModelState.AddModelError(
                         "",
-                        $"A {feedbackName} with the name '{model.Name}' was already added");
+                        $"A {feedbackName} with the name '{model.GetName()}' was already added");
                 }
                 return false;
             }
