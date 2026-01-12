@@ -11,13 +11,15 @@ namespace Demo.DataAccess.Repository
     public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork
     {
         private readonly ApplicationDbContext db = db;
-        private readonly CategoryRepository category = new(db);
-        private readonly ProductRepository product = new(db);
-        private readonly CompanyRepository company = new(db);
+        private readonly CategoryRepository category = new(db.Categories);
+        private readonly ProductRepository product = new(db.Products);
+        private readonly CompanyRepository company = new(db.Companies);
+        private readonly ShoppingCartRepository shoppingCart = new(db.ShoppingCarts);
 
         ICategoryRepository IUnitOfWork.CategoryRepository => category;
         IProductRepository IUnitOfWork.ProductRepository => product;
         ICompanyRepository IUnitOfWork.CompanyRepository => company;
+        IShoppingCartRepository IUnitOfWork.ShoppingCartRepository => shoppingCart;
 
         public void Save()
         {

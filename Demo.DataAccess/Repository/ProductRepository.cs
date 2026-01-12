@@ -1,6 +1,7 @@
 ﻿using Demo.DataAccess.Data;
 using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class ProductRepository(ApplicationDbContext db) : Repository<Product>(db), IProductRepository
+    public class ProductRepository(DbSet<Product> set) : Repository<Product>(set), IProductRepository
     {
     }
 }

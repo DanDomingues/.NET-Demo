@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class CompanyRepository(DbSet<Company> set) : Repository<Company>(set), ICompanyRepository
+    public class ShoppingCartRepository(DbSet<ShoppingCart> set) : Repository<ShoppingCart>(set), IShoppingCartRepository
     {
     }
 }

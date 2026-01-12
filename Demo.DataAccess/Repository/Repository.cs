@@ -11,17 +11,8 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository
 {
-    public class Repository<T> : IRepository<T> where T : ModelBase
+    public class Repository<T>(DbSet<T> dbSet) : IRepository<T> where T : ModelBase
     {
-        protected readonly ApplicationDbContext db;
-        protected DbSet<T> dbSet;
-
-        public Repository(ApplicationDbContext db)
-        {
-            this.db = db;
-            dbSet = db.Set<T>();
-        }
-
         public void Add(T entity)
         {
             dbSet.Add(entity);
