@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IModelBase
     {
         [Required]
         public string Name { get; set; }
@@ -24,5 +24,6 @@ namespace Demo.Models
         [ValidateNever]
         public Company Company { get; set; }
 
+        int IModelBase.Id => int.Parse(Id);
     }
 }

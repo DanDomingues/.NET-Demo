@@ -38,10 +38,10 @@ namespace Demo.Models
         public Category Category { get; set; }
         
         public string ImageUrl {  get; set; }
-        public override string Name 
-        { 
-            get => Title; 
-            set => Title = value; 
+
+        public override string GetName()
+        {
+            return Title ?? "";
         }
     }
 }
