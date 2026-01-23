@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
+
+    //Describes a shopping cart's item, not the cart itself
+
     public class ShoppingCart : ModelBase
     {
         [Range(1, 1000, ErrorMessage = "Please enter a value between 1 and 1000")]
@@ -21,5 +24,15 @@ namespace Demo.Models
 
         [ForeignKey("ApplicationUserId"), ValidateNever()]
         public ApplicationUser ApplicationUser { get; set; }
+    
+        public double TotalCost
+        {
+            get
+            {
+                if (Count >= 100) return Product.Price100 * Count;
+                else if(Count >= 50) return Product.Price50 * Count;
+                else return Product.Price * Count;
+            }
+        }
     }
 }

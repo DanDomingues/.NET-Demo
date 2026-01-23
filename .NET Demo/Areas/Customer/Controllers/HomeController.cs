@@ -42,13 +42,19 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(c => c.ApplicationUserId == userId && c.Id == cart.Id);
             if (existing != null)
             {
+                //Fair note here: By changing a property in an object extracted through framework core, we're changing the original object as well, not just a value copy
+                //Therefore, there is no need to update (it would, if we had built a different object from the ground up)
+                //To avoid this behavior, we can either do a copy of the existing cart that was retrieved or use .AsNoTracking in the Get method
+
                 existing.Count += cart.Count;
-                unitOfWork.ShoppingCarts.Update(existing);
+                //unitOfWork.ShoppingCarts.Update(existing);
             }
             else
             {
                 unitOfWork.ShoppingCarts.Add(cart);
             }
+
+            //TODO: Add data feedback through TempData
 
             unitOfWork.Save();
             return RedirectToAction(nameof(Index));
