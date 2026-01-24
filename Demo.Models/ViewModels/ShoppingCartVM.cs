@@ -9,10 +9,6 @@ namespace Demo.Models.ViewModels
     public class ShoppingCartVM
     {
         public IEnumerable<ShoppingCartItem> ProductList { get; set; }
-
-        public double OrderTotal
-        {
-            get => ProductList.Select(p => p.TotalCost).Sum();
-        }
+        public OrderHeader OrderHeader { get; set; }
     }
 }
