@@ -11,7 +11,8 @@ namespace Demo.DataAccess.Repository.IRepository
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null);
         T GetById(int? id, string? includeProperties = null);
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        IEnumerable<T> GetAll(string? includeProperties = null) => GetAll(e => true, includeProperties);
         void Add(T entity);
         void Update(T entity);
         void AddOrUpdate(T entity);

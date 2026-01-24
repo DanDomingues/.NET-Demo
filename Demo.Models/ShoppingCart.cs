@@ -25,6 +25,12 @@ namespace Demo.Models
         [ForeignKey("ApplicationUserId"), ValidateNever()]
         public ApplicationUser ApplicationUser { get; set; }
     
+        //TODO
+        //Less of a to-do, and maybe more of a consideration
+        //If there's an expectation for a model to have no actions whatsoever, and only hold data, this should be moved to a controller
+        //Likewise, if the dynamic calculation introduces more overhead than adding a whole, unmapped new field would, we should move
+        //to have this calculated on update and set to a field
+
         public double TotalCost
         {
             get
