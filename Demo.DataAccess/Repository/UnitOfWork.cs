@@ -14,13 +14,13 @@ namespace Demo.DataAccess.Repository
         private readonly CategoryRepository category = new(db.Categories);
         private readonly ProductRepository product = new(db.Products);
         private readonly CompanyRepository company = new(db.Companies);
-        private readonly ShoppingCartRepository shoppingCart = new(db.ShoppingCarts);
+        private readonly ShoppingCartItemRepository shoppingCart = new(db.ShoppingCartItems);
         private readonly ApplicationUserRepository applicationUser = new(db.ApplicationUsers);
 
         ICategoryRepository IUnitOfWork.CategoryRepository => category;
         IProductRepository IUnitOfWork.ProductRepository => product;
         ICompanyRepository IUnitOfWork.CompanyRepository => company;
-        IShoppingCartRepository IUnitOfWork.ShoppingCarts => shoppingCart;
+        IShoppingCartItemRepository IUnitOfWork.ShoppingCarts => shoppingCart;
         IApplicationUserRepository IUnitOfWork.ApplicationUserRepository => applicationUser;
 
         public void Save()

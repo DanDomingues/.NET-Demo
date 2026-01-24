@@ -7,10 +7,10 @@ using System.Security.Claims;
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
     [Area("Customer")]
-    public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCart, IShoppingCartRepository>(unitOfWork)
+    public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork)
     {
         protected override string DefaultFeedbackName => "Shopping Cart";
-        protected override IShoppingCartRepository Repo => unitOfWork.ShoppingCarts;
+        protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
 
         public override IActionResult Index()
         {

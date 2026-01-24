@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Repository.IRepository
 {
-    public interface IShoppingCartRepository : IRepository<ShoppingCart>
+    public interface IShoppingCartItemRepository : IRepository<ShoppingCartItem>
     {
     }
 }

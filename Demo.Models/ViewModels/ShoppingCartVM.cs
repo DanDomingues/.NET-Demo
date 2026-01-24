@@ -8,7 +8,7 @@ namespace Demo.Models.ViewModels
 {
     public class ShoppingCartVM
     {
-        public IEnumerable<ShoppingCart> ProductList { get; set; }
+        public IEnumerable<ShoppingCartItem> ProductList { get; set; }
 
         public double OrderTotal
         {

@@ -28,12 +28,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult Details(int id)
         {
             var product = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category");
-            var cart = new ShoppingCart { Product = product, ProductId = product.Id, Count = 1 };
+            var cart = new ShoppingCartItem { Product = product, ProductId = product.Id, Count = 1 };
             return View(cart);
         }
 
         [HttpPost, Authorize]
-        public IActionResult Details(ShoppingCart cart)
+        public IActionResult Details(ShoppingCartItem cart)
         {
             var claims = User.Identity as ClaimsIdentity;
             var userId = claims.FindFirst(ClaimTypes.NameIdentifier).Value;

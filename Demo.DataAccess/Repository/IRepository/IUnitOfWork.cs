@@ -11,7 +11,7 @@ namespace Demo.DataAccess.Repository.IRepository
         ICategoryRepository CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
         ICompanyRepository CompanyRepository { get; }
-        IShoppingCartRepository ShoppingCarts { get; }
+        IShoppingCartItemRepository ShoppingCarts { get; }
         IApplicationUserRepository ApplicationUserRepository { get; }
         void Save();
     }
