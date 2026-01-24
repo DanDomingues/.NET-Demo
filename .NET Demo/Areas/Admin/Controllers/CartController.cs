@@ -23,6 +23,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
         public IActionResult Add(int id)
         {
             Repo.GetById(id).Count++;
