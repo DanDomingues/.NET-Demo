@@ -22,5 +22,33 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             };
             return View(vm);
         }
+
+        public IActionResult Add(int id)
+        {
+            Repo.GetById(id).Count++;
+            unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Reduce(int id)
+        {
+            var obj = Repo.GetById(id);
+
+            if (obj.Count <= 1)
+            {
+                return Remove(id);
+            }
+
+            obj.Count--;
+            unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Remove(int id)
+        {
+            Repo.Remove(Repo.GetById(id));
+            unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
