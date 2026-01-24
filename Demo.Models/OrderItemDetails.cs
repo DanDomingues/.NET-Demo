@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class OrderItemDetails
+    public class OrderItemDetails : ModelBase
     {
         public int Count { get; set; }
         public double Price { get; set; }

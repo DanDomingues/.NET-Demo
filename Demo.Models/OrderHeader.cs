@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class OrderHeader
+    public class OrderHeader : ModelBase
     {
         public DateTime OrderDate { get; set; }
         public DateTime ShippingDate { get; set; }
