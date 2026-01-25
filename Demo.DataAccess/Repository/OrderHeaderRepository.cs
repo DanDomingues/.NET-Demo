@@ -31,6 +31,15 @@ namespace Demo.DataAccess.Repository
             IfIdValid(action, id);
         }
 
+        protected void IfArgsValid(Action<OrderHeader> action, int id, params string[] args)
+        {
+            if (args?.Any(a => string.IsNullOrEmpty(a)) != false)
+            {
+                return;
+            }
+            action?.Invoke(GetById(id));
+        }
+
         public void UpdateOrderStatus(int id, string status)
         {
             IfIdAndArgsValid(
@@ -51,13 +60,25 @@ namespace Demo.DataAccess.Repository
         {
             IfIdAndArgsValid(
                 obj => 
-                { 
-                    obj.SessionId = sessionId; 
+                {
+                    IfArgsValid(
+                        obj => { obj.SessionId = sessionId; obj.PaymentDate = DateTime.Now; },
+                        id,
+                        sessionId);
+
+                    IfArgsValid(
+                        obj => obj.PaymentIntentId = paymentIntentId,
+                        id,
+                        sessionId);
+                },
+                id);
+
+            IfIdAndArgsValid(
+                obj =>
+                {
                     obj.PaymentIntentId = paymentIntentId;
-                    obj.PaymentDate = DateTime.Now;
                 },
                 id,
-                sessionId,
                 paymentIntentId);
         }
     }
