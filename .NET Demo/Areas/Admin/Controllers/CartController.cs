@@ -3,6 +3,8 @@ using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
@@ -69,25 +71,66 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
 
             unitOfWork.OrderHeaderRepository.Add(vm.OrderHeader);
+
             foreach (var item in vm.ProductList)
             {
                 unitOfWork.OrderItemDetailsRepository.Add(new()
                 {
                     ProductId = item.ProductId,
+                    OrderHeaderId = vm.OrderHeader.Id,
                     Count = item.Count,
                     Price = item.TotalCost,
-                    OrderHeaderId = vm.OrderHeader.Id,
                 });   
             }
 
             if(!isCompanyUser)
             {
-                throw new NotImplementedException();
+                return PromptStripePayment(vm);
             }
 
             unitOfWork.Save();
 
             return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
+        }
+
+        private IActionResult PromptStripePayment(ShoppingCartVM vm)
+        {
+            var options = BuildStripeSessionOptions(vm);
+            var service = new SessionService();
+            var session = service.Create(options);
+            
+            Response.Headers.Add("Location", session.Url);
+
+            unitOfWork.OrderHeaderRepository.UpdatePaymentID(vm.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            unitOfWork.Save();
+            
+            return new StatusCodeResult(303);
+        }
+
+        private SessionCreateOptions BuildStripeSessionOptions(ShoppingCartVM vm, string domain = "https://localhost:?/")
+        {
+            return new SessionCreateOptions
+            {
+                SuccessUrl = $"{domain}customer/cart/OrderConfirmation?id={vm.OrderHeader.Id}",
+                CancelUrl = $"{domain}customer/cart/index",
+                LineItems = [.. vm.ProductList.Select(item =>
+                    {
+                        return new SessionLineItemOptions
+                        {
+                            PriceData = new SessionLineItemPriceDataOptions
+                            {
+                                UnitAmount = (long)(item.TotalCost * 100),
+                                Currency = "usd",
+                                ProductData = new SessionLineItemPriceDataProductDataOptions
+                                {
+                                    Name = item.Product.Title,
+                                }
+                            },
+                            Quantity = item.Count,
+                        };
+                    })],
+                Mode = "payment",
+            };
         }
 
         public IActionResult OrderConfirmation(int id)
