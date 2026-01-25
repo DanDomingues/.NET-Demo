@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Demo.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Demo.Utility;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.UseRouting();
 app.UseAuthentication();
