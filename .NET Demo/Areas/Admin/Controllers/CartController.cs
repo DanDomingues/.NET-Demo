@@ -1,6 +1,7 @@
 ﻿using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
+using Demo.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -27,7 +28,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
             var header = new OrderHeader
             {
-                ApplicationUser = appUser,
                 ApplicationUserId = userId,
                 OrderTotal = orderItems.Select(e => e.TotalCost).Sum(),
 
@@ -55,6 +55,44 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult Summary()
         {
             return View(BuildViewModel());
+        }
+
+        [HttpPost, ActionName("Summary")]
+        public IActionResult SummaryPost(ShoppingCartVM vm)
+        {
+            //Order total needs to be recalculated as the products may have been changed in the view
+            vm.OrderHeader.OrderTotal = vm.ProductList.Select(item => item.TotalCost).Sum();
+
+            //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
+            var isCompanyUser = vm.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() > 0;
+            vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
+            vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
+
+            unitOfWork.OrderHeaderRepository.Add(vm.OrderHeader);
+            foreach (var item in vm.ProductList)
+            {
+                unitOfWork.OrderItemDetailsRepository.Add(new()
+                {
+                    ProductId = item.ProductId,
+                    Count = item.Count,
+                    Price = item.TotalCost,
+                    OrderHeaderId = vm.OrderHeader.Id,
+                });   
+            }
+
+            if(!isCompanyUser)
+            {
+                throw new NotImplementedException();
+            }
+
+            unitOfWork.Save();
+
+            return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
+        }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
         }
 
         public IActionResult Add(int id)
