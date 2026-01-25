@@ -29,6 +29,7 @@ namespace Demo.Models
         [Required] public string PostalCode { get; set; }
         [Required] public string Name { get; set; }
 
+        public string? SessionId { get; set; }
         public string? PaymentIntentId { get; set; }
         public string ApplicationUserId { get; set; }
 
