@@ -40,9 +40,9 @@ namespace Demo.DataAccess.Repository
             dbSet.Remove(entity);
         }
 
-        public void RemoveRange(T entity)
+        public void RemoveRange(T[] entities)
         {
-            dbSet.RemoveRange(entity);
+            dbSet.RemoveRange(entities);
         }
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)
@@ -56,6 +56,12 @@ namespace Demo.DataAccess.Repository
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             return GetAllWithProperties(dbSet, includeProperties).ToList();
+        }
+
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        {
+            filter ??= _ => true;
+            return [.. GetAllWithProperties(dbSet, includeProperties).Where(filter)];
         }
 
         private IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)
@@ -74,6 +80,5 @@ namespace Demo.DataAccess.Repository
         {
             return GetFirstOrDefault(e => e.Id == id, includeProperties);
         }
-
     }
 }

@@ -11,12 +11,11 @@ namespace Demo.DataAccess.Repository.IRepository
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null);
         T GetById(int? id, string? includeProperties = null);
-        IEnumerable<T> GetAll(Expression<Func<T, bool>> filter, string? includeProperties = null);
-        IEnumerable<T> GetAll(string? includeProperties = null) => GetAll(e => true, includeProperties);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         void Add(T entity);
         void Update(T entity);
         void AddOrUpdate(T entity);
         void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entity);
+        void RemoveRange(T[] entities);
     }
 }
