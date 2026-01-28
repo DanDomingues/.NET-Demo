@@ -56,30 +56,20 @@ namespace Demo.DataAccess.Repository
                 status);
         }
 
-        public void UpdatePaymentID(int id, string sessionId, string paymentIntentId)
+        public void UpdateSessionID(int objId, string id)
         {
             IfIdAndArgsValid(
-                obj => 
-                {
-                    IfArgsValid(
-                        obj => { obj.SessionId = sessionId; obj.PaymentDate = DateTime.Now; },
-                        id,
-                        sessionId);
-
-                    IfArgsValid(
-                        obj => obj.PaymentIntentId = paymentIntentId,
-                        id,
-                        sessionId);
-                },
+                obj => obj.SessionId = id,
+                objId,
                 id);
+        }
 
+        public void UpdatePaymentID(int objId, string id)
+        {
             IfIdAndArgsValid(
-                obj =>
-                {
-                    obj.PaymentIntentId = paymentIntentId;
-                },
-                id,
-                paymentIntentId);
+                obj => obj.PaymentIntentId = id,
+                objId,
+                id);
         }
     }
 }

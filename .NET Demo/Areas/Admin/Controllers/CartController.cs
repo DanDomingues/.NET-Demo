@@ -101,7 +101,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             
             Response.Headers.Add("Location", session.Url);
 
-            unitOfWork.OrderHeaderRepository.UpdatePaymentID(vm.OrderHeader.Id, session.Id, session.PaymentIntentId);
+            //We update the session id so that it can be found on confirmation validation
+            //As the payment is still to be made, there's no value or need to update it yet
+            unitOfWork.OrderHeaderRepository.UpdateSessionID(vm.OrderHeader.Id, session.Id);
             unitOfWork.Save();
             
             return new StatusCodeResult(303);
@@ -135,6 +137,29 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
+            var paymentSuccessful = true;
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, includeProperties: "ApplicationUser");
+
+            if(orderHeader.OrderStatus != SD.PAYMENT_STATUS_DELAYED)
+            {
+                paymentSuccessful = false;
+                var service = new SessionService();
+                var session = service.Get(orderHeader.SessionId);
+                if(session?.PaymentStatus?.ToLower() == "paid")
+                {
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
+                    unitOfWork.OrderHeaderRepository.UpdateOrderStatus(id, SD.ORDER_STATUS_APPROVED);
+                    unitOfWork.Save();
+                }
+            }
+
+            if(paymentSuccessful)
+            {
+                var cart = Repo.GetAll(e => e.ApplicationUserId == orderHeader.ApplicationUserId);
+                Repo.RemoveRange([.. cart]);
+            }
+
             return View(id);
         }
 

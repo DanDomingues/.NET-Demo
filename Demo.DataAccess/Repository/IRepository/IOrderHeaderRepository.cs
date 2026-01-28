@@ -11,6 +11,7 @@ namespace Demo.DataAccess.Repository.IRepository
     {
         void UpdateOrderStatus(int id, string status);
         void UpdatePaymentStatus(int id, string status);
-        void UpdatePaymentID(int id, string sessionId, string intentId);
+        void UpdateSessionID(int id, string sessionId);
+        void UpdatePaymentID(int id, string intentId);
     }
 }

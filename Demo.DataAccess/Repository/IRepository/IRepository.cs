@@ -17,6 +17,6 @@ namespace Demo.DataAccess.Repository.IRepository
         void Update(T entity);
         void AddOrUpdate(T entity);
         void Remove(T entity);
-        void RemoveRange(T entity);
+        void RemoveRange(IEnumerable<T> entity);
     }
 }
