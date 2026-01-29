@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class Product : ModelBase
+    public class Product : NamedModel
     {
         [Required] public string ISBN { get; set; }
         [Required] public string Author { get; set; }
@@ -38,10 +38,5 @@ namespace Demo.Models
         public Category Category { get; set; }
         
         public string ImageUrl {  get; set; }
-
-        public override string GetName()
-        {
-            return Title ?? "";
-        }
     }
 }

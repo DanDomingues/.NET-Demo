@@ -15,14 +15,10 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         protected override string DefaultFeedbackName => "Category";
 
+        [HttpPost]
         public override IActionResult Create(Category model)
         {
-            if(!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            if(CheckForDuplicates(model))
+            if(CheckForDuplicates(model, Repo))
             {
                 return View();
             }

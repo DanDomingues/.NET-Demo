@@ -55,7 +55,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(ProductVM vm, IFormFile? file)
         {
-            if(CheckForDuplicates(vm.Product))
+            if(CheckForDuplicates(vm.Product, Repo))
             {
                 return View();
             }

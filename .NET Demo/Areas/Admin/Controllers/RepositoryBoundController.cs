@@ -23,7 +23,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             TempData["success"] = $"{objName} {name} successfully";
         }
 
-        private bool Find(int? id, out TModel output)
+        private bool Find(int? id, out TModel output, bool track = false)
         {
             if (id == null || id == 0)
             {
@@ -31,7 +31,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return false;
             }
 
-            output = Repo.GetById(id) ?? new();
+            output = Repo.GetById(id, track: track) ?? new();
 
             if (output == null)
             {
@@ -43,7 +43,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         public virtual IActionResult Index()
         {
-            return View(Repo.GetAll());
+            //Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
+            return View(Repo.GetAll().ToList());
         }
 
         protected IActionResult UpdateRepo(
@@ -58,27 +59,34 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return RedirectToAction(redirection);
         }
 
-        protected bool CheckForDuplicates(
-            TModel model, 
+        protected bool CheckForDuplicates<T>(
+            T model,
+            IRepository<T> repo,
             string feedbackName = "entry",
             bool addModelError = true)
+            where T : ModelBase, INamedModel
         {
-            var duplicate = Repo.GetFirstOrDefault(c => string.Equals(c.GetName().ToLower(), model.GetName().ToLower()));
+            var duplicate = repo.GetFirstOrDefault(c => string.Equals(c.Name.ToLower(), model.Name.ToLower()));
             if (duplicate != null)
             {
                 if(addModelError)
                 {
                     ModelState.AddModelError(
                         "Name",
-                        $"A {feedbackName} with the name '{model.GetName()}' was already added.");
+                        $"A {feedbackName} with the name '{model.Name}' was already added.");
                     ModelState.AddModelError(
                         "",
-                        $"A {feedbackName} with the name '{model.GetName()}' was already added");
+                        $"A {feedbackName} with the name '{model.Name}' was already added");
                 }
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        public IActionResult Create()
+        {
+            return View(new TModel());
         }
 
         [HttpPost]
@@ -92,31 +100,51 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Edit(TModel obj)
+        public IActionResult Edit(int? id)
         {
-            if(!Find(obj.Id, out TModel output))
+            if (!Find(id, out TModel model))
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(TModel model)
+        {
+            if(!Find(model.Id, out TModel _))
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                return UpdateRepo(obj, Repo.Update, feedback: "updated");
+                return UpdateRepo(model, Repo.Update, feedback: "updated");
             }
 
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
+        public IActionResult Delete(int? id)
         {
-            if (!Find(id, out var obj))
+            if (!Find(id, out TModel model))
             {
                 return NotFound();
             }
 
-            return UpdateRepo(obj, Repo.Remove, feedback: "deleted");
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(TModel model)
+        {
+            if (!Find(model.Id, out var foundModel))
+            {
+                return NotFound();
+            }
+
+            return UpdateRepo(foundModel, Repo.Remove, feedback: "deleted");
         }
 
         public virtual IActionResult Upsert(int? id)
@@ -132,11 +160,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(TModel model)
         {
-            if (CheckForDuplicates(model))
-            {
-                return View();
-            }
-
             if (ModelState.IsValid)
             {
                 UpdateRepo(model, Repo.AddOrUpdate, feedback: "created");

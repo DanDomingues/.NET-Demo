@@ -11,12 +11,21 @@ namespace Demo.Models
     {
         [Key]
         public int Id { get; set; }
-        public virtual string GetName() => "";
+    }
+
+    public abstract class NamedModel : ModelBase, INamedModel
+    {
+        public string? Name { get; set; }
     }
 
     public interface IModelBase
     {
         public int Id { get; }
-        public string GetName() => "";
     }
+
+    public interface INamedModel : IModelBase
+    {
+        public string? Name { get; set; }
+    }
+
 }

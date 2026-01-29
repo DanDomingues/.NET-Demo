@@ -45,23 +45,26 @@ namespace Demo.DataAccess.Repository
             dbSet.RemoveRange(entities);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, bool track = false, string? includeProperties = null)
         {
-            return GetAllWithProperties(dbSet, includeProperties)
-                .Where(filter)
-                .FirstOrDefault();
-        }
+            var query = GetAllWithProperties(dbSet, includeProperties);
+            if(!track)
+            {
+                query = query.AsNoTracking();
+            }
 
-
-        public IEnumerable<T> GetAll(string? includeProperties = null)
-        {
-            return GetAllWithProperties(dbSet, includeProperties).ToList();
-        }
-
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
-        {
             filter ??= _ => true;
-            return [.. GetAllWithProperties(dbSet, includeProperties).Where(filter)];
+            return [.. query.Where(filter)];
+        }
+
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = false, string? includeProperties = null)
+        {
+            return GetAll(filter, track, includeProperties).FirstOrDefault();
+        }
+
+        public T GetById(int? id, bool tracked = false, string? includeProperties = null)
+        {
+            return GetFirstOrDefault(e => e.Id == id, tracked, includeProperties);
         }
 
         private IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)
@@ -73,12 +76,8 @@ namespace Demo.DataAccess.Repository
                     query = query.Include(property);
                 }
             }
-            return query;
-        }
 
-        public T GetById(int? id, string? includeProperties = null)
-        {
-            return GetFirstOrDefault(e => e.Id == id, includeProperties);
+            return query;
         }
     }
 }
