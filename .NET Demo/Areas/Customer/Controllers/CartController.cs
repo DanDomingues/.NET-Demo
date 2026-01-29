@@ -1,4 +1,5 @@
-﻿using Demo.DataAccess.Repository.IRepository;
+﻿using ASP.NET_Debut.Areas.Admin.Controllers;
+using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
@@ -7,7 +8,7 @@ using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
 
-namespace ASP.NET_Debut.Areas.Admin.Controllers
+namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork)

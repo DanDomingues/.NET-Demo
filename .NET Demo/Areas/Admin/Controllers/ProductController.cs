@@ -29,11 +29,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected override string DefaultFeedbackName => "Product";
         protected override string? IncludedApiProperties => "Category";
 
-        public override IActionResult Index()
-        {
-            return GetAll();
-        }
-
         public override IActionResult Upsert(int? id)
         {
             var vm = new ProductVM
@@ -52,7 +47,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         }
 
         //TODO: Move upsert to the class above if needed
-        [HttpPost]
+        /*
+        */
+        [HttpPost, ActionName("UpsertVM")]
         public IActionResult Upsert(ProductVM vm, IFormFile? file)
         {
             if(CheckForDuplicates(vm.Product, Repo))
