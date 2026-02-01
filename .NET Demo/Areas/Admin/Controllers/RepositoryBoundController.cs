@@ -13,7 +13,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected IUnitOfWork unitOfWork = unitOfWork;
         protected abstract TRepo Repo { get; }
         protected abstract string DefaultFeedbackName { get; }
-        protected virtual string? IncludedApiProperties => null;
+        protected virtual string? DefaultIncludeProperties => null;
 
         protected void AddOperationFeedback(
             string name,
@@ -41,12 +41,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return true;
         }
 
-        public virtual IActionResult Index()
-        {
-            //Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
-            return View(Repo.GetAll().ToList());
-        }
-
         protected IActionResult UpdateRepo(
             TModel obj, 
             Action<TModel> action,
@@ -63,10 +57,17 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             T model,
             IRepository<T> repo,
             string feedbackName = "entry",
-            bool addModelError = true)
-            where T : ModelBase, INamedModel
+            bool addModelError = true,
+            bool ignoreNonZeroIds = false)
+            where T : class, INamedModel
         {
+            if(model.Id != 0 && ignoreNonZeroIds)
+            {
+                return false;
+            }
+
             var duplicate = repo.GetFirstOrDefault(c => string.Equals(c.Name.ToLower(), model.Name.ToLower()));
+
             if (duplicate != null)
             {
                 if(addModelError)
@@ -82,6 +83,12 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             return false;
+        }
+
+        public virtual IActionResult Index()
+        {
+            //Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
+            return View(Repo.GetAll(includeProperties: DefaultIncludeProperties).ToList());
         }
 
         public IActionResult Create()
@@ -160,19 +167,27 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(TModel model)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid && ValidateForUpsert(model))
             {
-                UpdateRepo(model, Repo.AddOrUpdate, feedback: "created");
+                UpdateRepo(model, Repo.AddOrUpdate, feedback: model.Id == 0 ? "created" : "updated");
             }
+            return RedirectToAction(nameof(Index));
+        }
 
-            return View();
+        protected virtual bool ValidateForUpsert(TModel model)
+        {
+            if(model is INamedModel namedModel && CheckForDuplicates(namedModel, Repo as IRepository<INamedModel>, ignoreNonZeroIds: true))
+            {
+                return false;
+            }
+            return true;
         }
 
         #region APICalls
         [HttpGet]
         public virtual IActionResult GetAll()
         {
-            var list = Repo.GetAll(includeProperties: IncludedApiProperties);
+            var list = Repo.GetAll(includeProperties: DefaultIncludeProperties);
             return Json(new { data = list });
         }
 

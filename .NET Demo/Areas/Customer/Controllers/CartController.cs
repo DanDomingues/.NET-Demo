@@ -110,7 +110,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return new StatusCodeResult(303);
         }
 
-        private SessionCreateOptions BuildStripeSessionOptions(ShoppingCartVM vm, string domain = "https://localhost:?/")
+        private SessionCreateOptions BuildStripeSessionOptions(ShoppingCartVM vm, string domain = "https://localhost:7106/")
         {
             return new SessionCreateOptions
             {

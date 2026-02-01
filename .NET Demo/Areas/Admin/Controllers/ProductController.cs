@@ -15,6 +15,10 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
     {
         private readonly IWebHostEnvironment webHostEnvironment = webHostEnvironment;
         
+        protected override IProductRepository Repo => unitOfWork.ProductRepository;
+        protected override string DefaultFeedbackName => "Product";
+        protected override string? DefaultIncludeProperties => "Category";
+
         private IEnumerable<SelectListItem> CategoryList
         {
             get => unitOfWork.CategoryRepository.GetAll().Select(c => new SelectListItem
@@ -23,11 +27,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 Value = c.Id.ToString(),
             });
         }
-
-        protected override IProductRepository Repo => unitOfWork.ProductRepository;
-
-        protected override string DefaultFeedbackName => "Product";
-        protected override string? IncludedApiProperties => "Category";
 
         public override IActionResult Upsert(int? id)
         {
@@ -46,15 +45,22 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
-        //TODO: Move upsert to the class above if needed
-        /*
-        */
-        [HttpPost, ActionName("UpsertVM")]
-        public IActionResult Upsert(ProductVM vm, IFormFile? file)
+        public IActionResult UpsertVM(int? id)
         {
-            if(CheckForDuplicates(vm.Product, Repo))
+            return Upsert(id);
+        }
+
+        [HttpPost]
+        public IActionResult UpsertVM(ProductVM vm, IFormFile? file)
+        {
+            vm.Product.Name ??= vm.Product.Title;
+
+            //To be removed once ImageUrl works well enough
+            vm.Product.ImageUrl ??= string.Empty;
+
+            if (!ModelState.IsValid && ValidateForUpsert(vm.Product))
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
 
             if (!ModelState.IsValid)
@@ -67,9 +73,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 UpsertProductImage(vm.Product, file);
             }
 
-            var view = Upsert(vm.Product);
-            vm.CategoryList = CategoryList;
-            return view;
+            return Upsert(vm.Product);
         }
 
         private void UpsertProductImage(Product product, IFormFile file)
