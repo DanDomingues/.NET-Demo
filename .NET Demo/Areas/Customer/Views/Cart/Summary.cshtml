@@ -1,6 +1,17 @@
 ﻿@model ShoppingCartVM
 
 <form method="post">
+
+	<input hidden asp-for="ProductList" />
+	<input hidden asp-for="OrderHeader.ApplicationUserId" />
+	<input hidden asp-for="OrderHeader.OrderTotal" />
+	@*
+	<input hidden asp-for="" />
+	<input hidden asp-for="OrderHeader.ApplicationUserId" />
+	<input hidden asp-for="OrderHeader.ApplicationUserId" />
+	*@
+
+
 	<br />
 	<div class="container">
 		<div class="card shadow border-0">

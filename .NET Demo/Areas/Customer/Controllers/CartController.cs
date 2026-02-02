@@ -63,15 +63,28 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, ActionName("Summary")]
         public IActionResult SummaryPost(ShoppingCartVM vm)
         {
+            //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
+            //Luckly, all the editable properties are strings that come filled in the vm
+            vm.ProductList = Repo.GetAll(e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, includeProperties: "Product");
+
+            //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
+            //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
+            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
+
             //Order total needs to be recalculated as the products may have been changed in the view
             vm.OrderHeader.OrderTotal = vm.ProductList.Select(item => item.TotalCost).Sum();
 
             //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
-            var isCompanyUser = vm.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() > 0;
+            var isCompanyUser = appUser.CompanyId.GetValueOrDefault() > 0;
             vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
             vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
 
             unitOfWork.OrderHeaderRepository.Add(vm.OrderHeader);
+
+            if(!isCompanyUser)
+            {
+                return PromptStripePayment(vm);
+            }
 
             foreach (var item in vm.ProductList)
             {
@@ -82,11 +95,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                     Count = item.Count,
                     Price = item.TotalCost,
                 });   
-            }
-
-            if(!isCompanyUser)
-            {
-                return PromptStripePayment(vm);
             }
 
             unitOfWork.Save();
@@ -122,7 +130,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                         {
                             PriceData = new SessionLineItemPriceDataOptions
                             {
-                                UnitAmount = (long)(item.TotalCost * 100),
+                                //TODO: Add a method for getting the quantity appropriate price without factoring in the item's quantity
+                                UnitAmount = (long)((item.TotalCost / item.Count) * 100),
                                 Currency = "usd",
                                 ProductData = new SessionLineItemPriceDataProductDataOptions
                                 {
