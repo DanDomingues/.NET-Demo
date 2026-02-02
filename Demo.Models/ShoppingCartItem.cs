@@ -35,6 +35,11 @@ namespace Demo.Models
         {
             get
             {
+                if(Product == null)
+                {
+                    return 0;
+                }
+
                 if (Count >= 100) return Product.Price100 * Count;
                 else if(Count >= 50) return Product.Price50 * Count;
                 else return Product.Price * Count;

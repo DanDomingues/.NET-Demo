@@ -28,6 +28,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             });
         }
 
+        protected override bool ValidateForUpsert(Product model)
+        {
+            return base.ValidateForUpsert(model) && !CheckForDuplicatesByName(model);
+        }
+
         public override IActionResult Upsert(int? id)
         {
             var vm = new ProductVM
@@ -58,14 +63,14 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             //To be removed once ImageUrl works well enough
             vm.Product.ImageUrl ??= string.Empty;
 
-            if (!ModelState.IsValid && ValidateForUpsert(vm.Product))
+            if (!ModelState.IsValid || !ValidateForUpsert(vm.Product))
             {
-                return RedirectToAction(nameof(Index));
+                return View(vm);
             }
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(vm);
             }
         
             if (file != null)

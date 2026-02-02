@@ -1,8 +1,10 @@
-﻿using Demo.DataAccess.Repository.IRepository;
+﻿using Demo.DataAccess.Repository;
+using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
@@ -53,36 +55,59 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return RedirectToAction(redirection);
         }
 
-        protected bool CheckForDuplicates<T>(
-            T model,
-            IRepository<T> repo,
+        protected bool CheckForDuplicates(
+            TModel model,
+            Expression<Func<TModel, bool>> expression,
+            Func<TModel, string> getPropertyAsString,
+            string propertyName,
             string feedbackName = "entry",
             bool addModelError = true,
-            bool ignoreNonZeroIds = false)
-            where T : class, INamedModel
+            bool ignoreNonZeroIds = true)
         {
             if(model.Id != 0 && ignoreNonZeroIds)
             {
                 return false;
             }
 
-            var duplicate = repo.GetFirstOrDefault(c => string.Equals(c.Name.ToLower(), model.Name.ToLower()));
+            var duplicate = Repo.GetFirstOrDefault(expression);
 
             if (duplicate != null)
             {
                 if(addModelError)
                 {
+                    var prop = getPropertyAsString(model);
                     ModelState.AddModelError(
                         "Name",
-                        $"A {feedbackName} with the name '{model.Name}' was already added.");
+                        $"A {feedbackName} with the {propertyName} '{prop}' was already added.");
                     ModelState.AddModelError(
                         "",
-                        $"A {feedbackName} with the name '{model.Name}' was already added");
+                        $"A {feedbackName} with the {propertyName} '{prop}' was already added");
                 }
                 return true;
             }
 
             return false;
+        }
+
+        protected bool CheckForDuplicatesByName<T>(
+            T model,
+            string feedbackName = "entry",
+            bool addModelError = true,
+            bool ignoreNonZeroIds = true) where T : TModel, INamedModel
+        {
+            return CheckForDuplicates(
+                model,
+                e => (e as INamedModel).Name == model.Name,
+                m => (m as INamedModel).Name,
+                "Name",
+                feedbackName: feedbackName,
+                addModelError: addModelError,
+                ignoreNonZeroIds: ignoreNonZeroIds);
+        }
+
+        protected virtual bool ValidateForUpsert(TModel model)
+        {
+            return true;
         }
 
         public virtual IActionResult Index()
@@ -172,15 +197,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 UpdateRepo(model, Repo.AddOrUpdate, feedback: model.Id == 0 ? "created" : "updated");
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        protected virtual bool ValidateForUpsert(TModel model)
-        {
-            if(model is INamedModel namedModel && CheckForDuplicates(namedModel, Repo as IRepository<INamedModel>, ignoreNonZeroIds: true))
-            {
-                return false;
-            }
-            return true;
         }
 
         #region APICalls

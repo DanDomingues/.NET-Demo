@@ -27,7 +27,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            var product = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category");
+            var product = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category", track: false);
             var cart = new ShoppingCartItem { Product = product, ProductId = product.Id, Count = 1 };
             return View(cart);
         }
@@ -35,11 +35,13 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, Authorize]
         public IActionResult Details(ShoppingCartItem cart)
         {
+            //TODO: Update to method used in cart controller
             var claims = User.Identity as ClaimsIdentity;
             var userId = claims.FindFirst(ClaimTypes.NameIdentifier).Value;
             cart.ApplicationUserId = userId;
 
-            var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(c => c.ApplicationUserId == userId && c.Id == cart.Id);
+            var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(c => c.ApplicationUserId == userId && c.Id == cart.Id, track: false);
+
             if (existing != null)
             {
                 //Fair note here: By changing a property in an object extracted through framework core, we're changing the original object as well, not just a value copy
@@ -47,10 +49,14 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 //To avoid this behavior, we can either do a copy of the existing cart that was retrieved or use .AsNoTracking in the Get method
 
                 existing.Count += cart.Count;
-                //unitOfWork.ShoppingCarts.Update(existing);
+                unitOfWork.ShoppingCarts.Update(existing);
             }
             else
             {
+                //TODO: Review why this is happening
+                //Somewhere, the Id for the cart is being bound to (apparently) be the same as the ProductId
+                //As we're adding a new entry, the id needs to be 0 so the entity system can assign it
+                cart.Id = 0;
                 unitOfWork.ShoppingCarts.Add(cart);
             }
 

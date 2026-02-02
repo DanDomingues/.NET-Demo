@@ -18,7 +18,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpPost]
         public override IActionResult Create(Category model)
         {
-            if(CheckForDuplicates(model, Repo))
+            if(CheckForDuplicatesByName(model))
             {
                 return View();
             }
