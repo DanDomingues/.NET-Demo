@@ -28,7 +28,6 @@
 							<div class="col-12 col-lg-6 pt-md-3">
 								<h5 class="text-uppercase text-secondary"><strong>@item.Product.Title</strong></h5>
 								<p><small>@Html.Raw(item.Product.Description)</small></p>
-								@*TODO: Test this without the Raw as well*@
 							</div>
 							<div class="col-12 col-lg-5 text-center row">
 								<div class="col-3 text-md-right pt-2 pt-md-4">
@@ -47,12 +46,10 @@
 								<a asp-action="reduce" asp-route-id="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
 									<i class="bi bi-dash-square"></i>
 								</a>
+								<a asp-action="remove" asp-route-id="@item.Id" class="btn brn-danger bg-gradient py-2">
+									<i class="bi bi-trash-fill"></i>
+								</a>
 							</div>
-						</div>
-						<div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-							<a asp-action="remove" asp-route-id="@item.Id" href="#" class="btn brn-danger bg-gradient py-2">
-								<i class="bi bi-trash-fill"></i>
-							</a>
 						</div>
 					}
 				</div>
