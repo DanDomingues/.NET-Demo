@@ -1,4 +1,20 @@
-﻿@model List<OrderVM>
+﻿@{
+	var status = Context.Request.Query["status"].ToString();
+	var defaultClass = "text-primary";
+	var classes = new Dictionary<string, string>
+	{
+		{ "inprocess", defaultClass },
+		{ "paymentpending", defaultClass },
+		{ "completed", defaultClass },
+		{ "approved", defaultClass },
+		{ "all", defaultClass },
+	};
+
+	if(status != null)
+	{
+		classes[status] = $"active {classes[status]}";
+	}
+}
 
 <div class="card shadow border-0 my-4">
 	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
@@ -9,6 +25,26 @@
 		</div>
 	</div>
 	<div class="card-body p-4">
+		<div class="d-flex justify-content-between pb-5 pt-2">
+			<span></span>
+			<ul class="list-group list-group-horizontal-sm">
+				<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+					<li class="list-group-item @classes["inprocess"]">In Process</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="paymentpending">
+				<li class="list-group-item @classes["paymentpending"]">Payment Pending</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+				<li class="list-group-item @classes["completed"]">Completed</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+				<li class="list-group-item @classes["approved"]">Approved</li>
+				</a>
+				<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+				<li class="list-group-item @classes["all"]">All</li>
+				</a>
+			</ul>
+		</div>
 		<table id="tblData" class="table table-bordered table-striped" style="width:100%">
 			<thead>
 				<tr>
