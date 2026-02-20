@@ -14,7 +14,7 @@ $(document).ready(function () {
 
 function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/order/getall=' + status },
+        "ajax": { url: '/admin/order/getall?status=' + status },
         "columns":[
             { data: 'id' },
             { data: 'name' },

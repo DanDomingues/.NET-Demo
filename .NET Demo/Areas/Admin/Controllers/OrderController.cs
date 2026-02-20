@@ -1,6 +1,7 @@
 ﻿using Demo.DataAccess.Repository;
 using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
+using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,43 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         protected override string? DefaultIncludeProperties => "ApplicationUser";
 
-        public override IActionResult Index()
+        public IActionResult Details(int? orderId)
         {
-            return base.Index();
+            var header = Repo.GetById(orderId, includeProperties: DefaultIncludeProperties);
+            var orderItems = unitOfWork.OrderItemDetailsRepository.GetAll(
+                details => details.OrderHeaderId == header.Id, 
+                track: false, 
+                includeProperties: "Product");
+            var vm = new OrderVM { Header = header, Details = orderItems };
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult GetAll(string status)
+        {
+            var all = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties);
+            Func<OrderHeader, bool> filter;
+            switch(status)
+            {
+                case "paymentpending":
+                    filter = header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING;
+                    break;
+                case "inprocess":
+                    filter = header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING;
+                    break;
+                case "completed":
+                    filter = header => header.OrderStatus == SD.PAYMENT_STATUS_APPROVED;
+                    break;
+                case "approved":
+                    filter = header => header.OrderStatus == SD.ORDER_STATUS_APPROVED;
+                    break;
+                default:
+                    filter = header => true;
+                    break;
+
+            }
+
+            return Json(data: all.Where(filter));
         }
     }
 }
