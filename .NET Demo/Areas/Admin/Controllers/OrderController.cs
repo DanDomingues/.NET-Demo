@@ -109,6 +109,23 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             
             return RedirectToAction(nameof(Details), new { orderId = header.Id });
         }
+        
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult RequestPayment(OrderVM vm)
+        {
+            vm.Header = Repo.GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
+            vm.Details = unitOfWork.OrderItemDetailsRepository.GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            return StripeUtility.PromptStripePayment(unitOfWork, Response, new()
+            {
+               items = vm.Details,
+               area = "Admin",
+               page = "order",
+               sucessAction = "PaymentConfirmation",
+               failAction = "Details",
+               sucessUsesId = true,
+               failUsesId = true 
+            });
+        }
 
         [HttpGet]
         public IActionResult GetAll(string status)

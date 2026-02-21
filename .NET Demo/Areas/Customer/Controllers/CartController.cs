@@ -76,7 +76,16 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             if(!isCompanyUser)
             {
-                return PromptStripePayment(vm);
+                return StripeUtility.PromptStripePayment(unitOfWork, Response, new StripeProcessDto
+                {
+                    items = vm.ProductList,
+                    headerId = vm.OrderHeader.Id,
+                    area = "Admin",
+                    page = "cart",
+                    sucessAction = "OrderConfirmation",
+                    failAction = "Index",
+                    sucessUsesId = true,
+                });
             }
 
             foreach (var item in vm.ProductList)
@@ -93,49 +102,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             unitOfWork.Save();
 
             return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
-        }
-
-        private IActionResult PromptStripePayment(ShoppingCartVM vm)
-        {
-            var options = BuildStripeSessionOptions(vm);
-            var service = new SessionService();
-            var session = service.Create(options);
-            
-            Response.Headers.Add("Location", session.Url);
-
-            //We update the session id so that it can be found on confirmation validation
-            //As the payment is still to be made, there's no value or need to update it yet
-            unitOfWork.OrderHeaderRepository.UpdateSessionID(vm.OrderHeader.Id, session.Id);
-            unitOfWork.Save();
-            
-            return new StatusCodeResult(303);
-        }
-
-        private SessionCreateOptions BuildStripeSessionOptions(ShoppingCartVM vm, string domain = "https://localhost:7106/")
-        {
-            return new SessionCreateOptions
-            {
-                SuccessUrl = $"{domain}customer/cart/OrderConfirmation?id={vm.OrderHeader.Id}",
-                CancelUrl = $"{domain}customer/cart/index",
-                LineItems = [.. vm.ProductList.Select(item =>
-                    {
-                        return new SessionLineItemOptions
-                        {
-                            PriceData = new SessionLineItemPriceDataOptions
-                            {
-                                //TODO: Add a method for getting the quantity appropriate price without factoring in the item's quantity
-                                UnitAmount = (long)((item.TotalCost / item.Count) * 100),
-                                Currency = "usd",
-                                ProductData = new SessionLineItemPriceDataProductDataOptions
-                                {
-                                    Name = item.Product.Title,
-                                }
-                            },
-                            Quantity = item.Count,
-                        };
-                    })],
-                Mode = "payment",
-            };
         }
 
         public IActionResult OrderConfirmation(int id)

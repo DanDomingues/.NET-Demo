@@ -16,4 +16,8 @@
     </PackageReference>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Utility\Demo.Utility.csproj" />
+  </ItemGroup>
 </Project>
