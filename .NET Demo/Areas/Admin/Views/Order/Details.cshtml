@@ -109,7 +109,7 @@
 							}
 						}
 
-						@if(!Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
+						@if(!Model.Header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
 						{
 							<button asp-action="CancelOrder" class="btn btn-success form-control my-1">Cancel Order</button>
 						}

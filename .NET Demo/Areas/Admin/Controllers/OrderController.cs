@@ -5,6 +5,7 @@ using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
@@ -82,6 +83,31 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 feedback: "Order Shipped",
                 redirection: "Order set to Ship",
                 redirectionArgs: new { orderId = header.Id });
+        }
+
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult CancelOrder(OrderVM vm)
+        {
+            var header = Repo.GetById(vm.Header.Id);
+
+            if(header.PaymentStatus.Equals(SD.PAYMENT_STATUS_APPROVED))
+            {
+                var service = new RefundService();
+                service.Create(new RefundCreateOptions
+                {
+                    Reason = RefundReasons.RequestedByCustomer,
+                    PaymentIntent = header.PaymentIntentId,
+                });
+                Repo.UpdateOrderStatus(header.Id, SD.ORDER_STATUS_CANCELLED);
+                Repo.UpdatePaymentStatus(header.Id, SD.PAYMENT_STATUS_REFUNDED);
+            }
+            else
+            {
+                Repo.UpdateOrderStatus(header.Id, SD.ORDER_STATUS_CANCELLED);
+                Repo.UpdatePaymentStatus(header.Id, SD.PAYMENT_STATUS_REJECTED);
+            }
+            
+            return RedirectToAction(nameof(Details), new { orderId = header.Id });
         }
 
         [HttpGet]
