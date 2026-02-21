@@ -130,6 +130,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             {
                 var cart = Repo.GetAll(e => e.ApplicationUserId == orderHeader.ApplicationUserId);
                 Repo.RemoveRange([.. cart]);
+                HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
             }
 
             return View(id);

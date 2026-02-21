@@ -16,7 +16,7 @@ namespace Demo.ViewComponents
             }
             else
             {
-                HttpContext.Session.Clear();
+                HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
                 return View(0);
             }
         }
