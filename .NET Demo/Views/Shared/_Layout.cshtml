@@ -50,8 +50,7 @@
                         }
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart text-white flex-fill"></i> &nbsp;
-                                        (@contextAccessor?.HttpContext?.Session.GetInt32(SD.CART_SESSION) ?? 0)
+                                        @await Component.InvokeAsync("Cart")
                                     </a>    
                                 </li>
                     </ul>

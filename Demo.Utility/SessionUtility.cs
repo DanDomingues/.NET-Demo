@@ -9,21 +9,21 @@ namespace Demo.Utility
 {
     public static class SessionUtility
     {
-        public static void RefreshCartItemsCount(HttpContext context, IUnitOfWork unitOfWork, string userId)
+        public static int RefreshCartItemsCount(HttpContext context, IUnitOfWork unitOfWork, string userId)
         {
-            context.Session.SetInt32(
-                SD.CART_SESSION, 
-                unitOfWork.ShoppingCarts.GetAll(item => item.ApplicationUserId.Equals(userId)).Count());
+            var count = unitOfWork.ShoppingCarts.GetAll(item => item.ApplicationUserId.Equals(userId)).Count();
+            context.Session.SetInt32(SD.CART_SESSION, count);
+            return count;
         }
 
-        public static void RefreshCartItemsCount(this Controller controller, IUnitOfWork unitOfWork)
+        public static int RefreshCartItemsCount(this Controller controller, IUnitOfWork unitOfWork)
         {
-            RefreshCartItemsCount(controller.HttpContext, unitOfWork, controller.User.GetUserId());
+            return RefreshCartItemsCount(controller.HttpContext, unitOfWork, controller.User.GetUserId());
         }
 
-        public static void RefreshCartItemsCount<T>(this T controller) where T : Controller, IUnitOfWorkProvider
+        public static int RefreshCartItemsCount<T>(this T controller) where T : Controller, IUnitOfWorkProvider
         {
-            controller.RefreshCartItemsCount(controller.UnitOfWork);
+            return controller.RefreshCartItemsCount(controller.UnitOfWork);
         }
     }
 
