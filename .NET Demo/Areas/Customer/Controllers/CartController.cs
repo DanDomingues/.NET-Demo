@@ -114,6 +114,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 paymentSuccessful = false;
                 var service = new SessionService();
                 var session = service.Get(orderHeader.SessionId);
+                
                 if(session?.PaymentStatus?.ToLower() == "paid")
                 {
                     unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
