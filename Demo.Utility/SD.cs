@@ -16,7 +16,7 @@ namespace Demo.Utility
         public const string ORDER_STATUS_PENDING = "Pending";
         public const string ORDER_STATUS_APPROVED = "Approved";
         public const string ORDER_STATUS_PROCESSING = "Processing";
-        public const string ORDER_STATUS_SHIPPING = "Shipping";
+        public const string ORDER_STATUS_SHIPPED = "Shipped";
         public const string ORDER_STATUS_CANCELLED = "Cancelled";
         public const string ORDER_STATUS_REFUNDED = "Refunded";
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
-    [Area("Admin"), Authorize(Roles = SD.ROLE_USER_ADMIN)]
+    [Authorize]
     public class OrderController(IUnitOfWork unitOfWork) : RepositoryBoundController<OrderHeader, IOrderHeaderRepository>(unitOfWork)
     {
         protected override IOrderHeaderRepository Repo => unitOfWork.OrderHeaderRepository;
@@ -28,6 +28,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
         {
             var orderHeader = Repo.GetFirstOrDefault(order => order.ApplicationUserId.Equals(vm.Header.ApplicationUserId), track: false);
@@ -42,15 +43,45 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             orderHeader.TrackingNumber = vm.Header.TrackingNumber ?? orderHeader.TrackingNumber;
             orderHeader.Carrier = vm.Header.Carrier ?? orderHeader.Carrier;
                 
-            UpdateRepo(
+            return UpdateRepo(
                 orderHeader, 
                 unitOfWork.OrderHeaderRepository.Update, 
                 feedback: "Order Updated Sucessfully", 
                 redirection: "Details", 
                 redirectionArgs: new { orderId = orderHeader.Id });
+        }
 
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult StartProcess(OrderVM vm)
+        {
+            Repo.UpdateOrderStatus(vm.Header.Id, SD.ORDER_STATUS_PROCESSING);
+            AddOperationFeedback("Order Details Changed Sucessfully");
             unitOfWork.Save();         
+
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult ShipOrder(OrderVM vm)
+        {
+            var header = Repo.GetById(vm.Header.Id);
+
+            header.TrackingNumber = vm.Header.TrackingNumber;
+            header.Carrier = vm.Header.Carrier;
+            header.OrderStatus = SD.ORDER_STATUS_SHIPPED;
+            header.ShippingDate = DateTime.Now;
+
+            if(header.OrderStatus.Equals(SD.PAYMENT_STATUS_DELAYED))
+            {
+                header.PaymentDate = DateTime.Now.AddDays(30);
+            }
+
+            return UpdateRepo(
+                header,
+                Repo.Update,
+                feedback: "Order Shipped",
+                redirection: "Order set to Ship",
+                redirectionArgs: new { orderId = header.Id });
         }
 
         [HttpGet]

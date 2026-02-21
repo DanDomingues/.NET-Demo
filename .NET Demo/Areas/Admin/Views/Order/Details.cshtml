@@ -31,6 +31,7 @@
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.State"))
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PostalCode"))
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.ApplicationUser.Email"))
+						@*TODO: Add id to carrier and tracking number fields, so the validation can work*@
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.Carrier"))
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.TrackingNumber"))
 						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.OrderDate"))
@@ -64,7 +65,8 @@
 						</h4>
 						<label class="btn btn-outline-primary form-control my-2">Order Status - @Model.Header?.OrderStatus</label>
 						<ul>
-							@foreach(var item in Model.Details) {
+							@foreach(var item in Model.Details) 
+							{
 								<li class="list-group-item bg-primary">
 									<div class="row-container">
 										<div class="col-8">
@@ -91,19 +93,58 @@
 						</ul>
 					</div>
 					<div>
-						@if(Model.Header?.PaymentStatus == SD.PAYMENT_STATUS_PENDING)
+						@if(Model.Header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
 						{
-							<input type="submit" asp-action="RequestPayment" class="btn btn-success form-control my-1" value="Pay Now"/>
+							<button asp-action="RequestPayment" class="btn btn-success form-control my-1">Pay Now</button>
 						}
 						@if(User.HasAdminRights())
 						{
-							<input type="submit" asp-action="StartProcess" class="btn btn-success form-control my-1" value="Start Processing"/>
-							<input type="submit" asp-action="ShipOrder" class="btn btn-success form-control my-1" value="Ship Order"/>
+							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
+							{
+								<button asp-action="StartProcess" class="btn btn-success form-control my-1">Start Processing</button>
+							}
+							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
+							{
+								<button asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-success form-control my-1">Ship Order</button>
+							}
 						}
-						<input type="submit" asp-action="CancelOrder" class="btn btn-success form-control my-1" value="Cancel Order"/>
+
+						@if(!Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
+						{
+							<button asp-action="CancelOrder" class="btn btn-success form-control my-1">Cancel Order</button>
+						}
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		function validateInput()
+		{
+			if(document.getElementById("trackingNumber").value == "")
+			{
+				Swal.fire({
+					icon: 'error',
+					title: 'error',
+					text = 'Tracking number invalid'
+				});
+				return false;
+			}
+			if(document.getElementById("carrier").value == "")
+			{
+				Swal.fire({
+					icon: 'error',
+					title: 'error',
+					text = 'Carrier invalid'
+				});
+				return false;
+			}
+			return true;
+		}
+	</script>
+}
