@@ -11,10 +11,12 @@ using System.Security.Claims;
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork)
+    public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork), IUnitOfWorkProvider
     {
         protected override string DefaultFeedbackName => "Shopping Cart";
         protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
+
+        IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
 
         private ShoppingCartVM BuildViewModel()
         {
@@ -158,6 +160,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             Repo.Remove(Repo.GetById(id));
             unitOfWork.Save();
+            this.RefreshCartItemsCount();
             return RedirectToAction(nameof(Index));
         }
     }

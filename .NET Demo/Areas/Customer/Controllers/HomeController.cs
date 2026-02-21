@@ -1,27 +1,25 @@
 ﻿using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
+using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IUnitOfWork unitOfWork;
-
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
-        {
-            this.unitOfWork = unitOfWork;
-            _logger = logger;
-        }
+        private readonly IUnitOfWork unitOfWork = unitOfWork;
+        public IUnitOfWork UnitOfWork => unitOfWork;
 
         public IActionResult Index()
         {
             var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category");
+            //Inits the session value to be used in the layout view
+            //TODO: Test removing this and observe efffects
+            this.RefreshCartItemsCount();
+
             return View(list);
         }
 
@@ -35,17 +33,17 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, Authorize]
         public IActionResult Details(ShoppingCartItem cart)
         {
-            //TODO: Update to method used in cart controller
-            var claims = User.Identity as ClaimsIdentity;
-            var userId = claims.FindFirst(ClaimTypes.NameIdentifier).Value;
-            cart.ApplicationUserId = userId;
+            var userId = User.GetUserId();
 
-            var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(c => c.ApplicationUserId == userId && c.ProductId == cart.ProductId, track: false);
+            var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(
+                c => c.ApplicationUserId == userId && c.ProductId == cart.ProductId, 
+                track: false);
 
             if (existing != null)
             {
                 existing.Count += cart.Count;
                 unitOfWork.ShoppingCarts.Update(existing);
+                unitOfWork.Save();
             }
             else
             {
@@ -54,11 +52,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 //As we're adding a new entry, the id needs to be 0 so the entity system can assign it
                 cart.Id = 0;
                 unitOfWork.ShoppingCarts.Add(cart);
+                unitOfWork.Save();
+
+                //Updates the session value, to be used in the view
+                this.RefreshCartItemsCount();
             }
-
-            //TODO: Add data feedback through TempData
-
-            unitOfWork.Save();
+         
             return RedirectToAction(nameof(Index));
         }
 
