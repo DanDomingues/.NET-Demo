@@ -56,27 +56,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
-            var all = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties);
-            Func<OrderHeader, bool> filter;
-            switch(status)
-            {
-                case "paymentpending":
-                    filter = header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING;
-                    break;
-                case "inprocess":
-                    filter = header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING;
-                    break;
-                case "completed":
-                    filter = header => header.OrderStatus == SD.PAYMENT_STATUS_APPROVED;
-                    break;
-                case "approved":
-                    filter = header => header.OrderStatus == SD.ORDER_STATUS_APPROVED;
-                    break;
-                default:
-                    filter = header => true;
-                    break;
+            var userId = User.GetUserId();
+            var all = User.HasAdminRights() ?
+                Repo.GetAll(includeProperties: DefaultIncludeProperties,track: false) :
+                Repo.GetAll(header => header.ApplicationUserId == userId, includeProperties: DefaultIncludeProperties, track: false);
 
-            }
+            Func<OrderHeader, bool> filter = status switch
+            {
+                "paymentpending" => header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING,
+                "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
+                "completed" => header => header.OrderStatus == SD.PAYMENT_STATUS_APPROVED,
+                "approved" => header => header.OrderStatus == SD.ORDER_STATUS_APPROVED,
+                _ => header => true,
+            };
 
             return Json(data: all.Where(filter));
         }

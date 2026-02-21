@@ -13,5 +13,11 @@ namespace Demo.Utility
         {
             return user.IsInRoles(SD.ROLE_USER_ADMIN, SD.ROLE_USER_EMPLOYEE);
         }
+
+        public static string GetUserId(this ClaimsPrincipal user)
+        {
+            var claimsIdentity = user.Identity as ClaimsIdentity;
+            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
     }
 }

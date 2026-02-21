@@ -16,16 +16,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         protected override string DefaultFeedbackName => "Shopping Cart";
         protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
 
-        //Possibly move this up a layer or two
-        protected string GetUserId()
-        {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-        }
-
         private ShoppingCartVM BuildViewModel()
         {
-            var userId = GetUserId();
+            var userId = User.GetUserId();
             var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == userId);
             var orderItems = Repo.GetAll(e => e.ApplicationUser.Id == userId, includeProperties: "Product");
 
