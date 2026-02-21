@@ -1,4 +1,7 @@
-﻿<form method="post">
+﻿@using Demo.Utility
+@model OrderVM
+
+<form method="post">
 	<br />
 	<div class="container">
 		<div class="card">
@@ -8,7 +11,7 @@
 						<i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
 					</div>
 					<div class="col-12 col-md-4 offset-md-2 text-right">
-						<a class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
+						<a asp-action="Index" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
 					</div>
 				</div>
 			</div>
@@ -20,11 +23,62 @@
 								<span class="text-primary">Pick-up Details</span>
 							</h4>
 						</div>
-						<div class="row my-1">
-							<div class="col-3">Name</div>
-							<div class="col-9">
-								<input type="text" class="form-control"/>
-							</div>
+						
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.Name"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.StreetAddress", label: "Address"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.City"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.State"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PostalCode"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.ApplicationUser.Email"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.Carrier"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.TrackingNumber"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.OrderDate"))
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.ShippingDate"))
+
+						@if(User.IsInRole(SD.ROLE_USER_ADMIN) || User.IsInRole(SD.ROLE_USER_EMPLOYEE))
+						{
+							@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PaymentDueDate"))
+							@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PaymentIntentId"))
+						}
+
+						@if(Model.Header?.SessionId == null)
+						{
+							@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.SessionId"))
+						}
+						else
+						{
+							@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PaymentDate"))
+						}
+
+						@await Html.PartialAsync("_FormField", new FormFieldModel("Model.Header.PaymentStatus"))
+						
+						<div>
+							<ul>
+								<li class="list-group-item bg-primary">
+									<div class="row-container">
+										<div class="col-4">
+											<h5 class="text-sucess">Title</h5>
+										</div>
+										<div class="col-4 text-end">
+											<h5 class="text-success">Count * Price</h5>
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item bg-primary">
+									<div class="row-container">
+										<div class="col-6">
+											<h5 class="text-white">TOTAL</h5>
+										</div>
+										<div class="col-6 text-end">
+											<h5 class="text-white">$$$$$</h5>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<input type="submit" class="btn btn-success form-control my-1" value="Pay Now"/>
+							<input type="submit" class="btn btn-success form-control my-1" value="Start Processing"/>
+							<input type="submit" class="btn btn-success form-control my-1" value="Ship Order"/>
+							<input type="submit" class="btn btn-success form-control my-1" value="Cancel Order"/>
 						</div>
 					</div>
 				</div>
