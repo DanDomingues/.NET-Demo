@@ -28,6 +28,31 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
+        public IActionResult UpdateDetails(OrderVM vm)
+        {
+            var orderHeader = Repo.GetFirstOrDefault(order => order.ApplicationUserId.Equals(vm.Header.ApplicationUserId), track: false);
+
+            // Map fields from vm.Header to orderHeader
+            orderHeader.Name = vm.Header.Name;
+            orderHeader.PhoneNumber = vm.Header.PhoneNumber;
+            orderHeader.StreetAddress = vm.Header.StreetAddress;
+            orderHeader.City = vm.Header.City;
+            orderHeader.State = vm.Header.State;
+            orderHeader.PostalCode = vm.Header.PostalCode;           
+            orderHeader.TrackingNumber = vm.Header.TrackingNumber ?? orderHeader.TrackingNumber;
+            orderHeader.Carrier = vm.Header.Carrier ?? orderHeader.Carrier;
+                
+            UpdateRepo(
+                orderHeader, 
+                unitOfWork.OrderHeaderRepository.Update, 
+                feedback: "Order Updated Sucessfully", 
+                redirection: "Details", 
+                redirectionArgs: new { orderId = orderHeader.Id });
+
+            unitOfWork.Save();         
+            return RedirectToAction(nameof(Index));
+        }
+
         [HttpGet]
         public IActionResult GetAll(string status)
         {

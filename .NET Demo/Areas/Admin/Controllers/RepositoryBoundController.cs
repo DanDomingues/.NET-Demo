@@ -47,12 +47,13 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             TModel obj, 
             Action<TModel> action,
             string feedback = "success",
-            string redirection = "Index")
+            string redirection = "Index",
+            object? redirectionArgs = null)
         {
             action(obj);
             unitOfWork.Save();
             AddOperationFeedback(feedback);
-            return RedirectToAction(redirection);
+            return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 
         protected bool CheckForDuplicates(

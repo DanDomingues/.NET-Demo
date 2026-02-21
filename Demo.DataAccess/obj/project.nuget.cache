@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Orw/1Uff2hc=",
+  "dgSpecHash": "2uMiPNb+h2E=",
   "success": true,
-  "projectFilePath": "c:\\dev\\csharp\\aspnet\\.NET Demo\\Demo.DataAccess\\Demo.DataAccess.csproj",
+  "projectFilePath": "C:\\dev\\csharp\\aspnet\\.NET Demo\\Demo.DataAccess\\Demo.DataAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\domde\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\domde\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

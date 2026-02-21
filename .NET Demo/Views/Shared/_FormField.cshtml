@@ -3,7 +3,7 @@
 
 <div class="row my-1">
     <div class="col-3">@Model.Label</div>
-    @if(User.IsInRole(SD.ROLE_USER_ADMIN) || User.IsInRole(SD.ROLE_USER_EMPLOYEE) || !Model.RequiresRoleValidation)
+    @if(User.HasAdminRights() || !Model.RequiresRoleValidation)
     {
         <div class="col-9"> <input asp-for="@Model.Key" type="text" class="form-control"/></div>
     }
