@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Demo.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,6 +38,8 @@ namespace Demo.Models
         [ForeignKey("CategoryId"), ValidateNever]
         public Category Category { get; set; }
         
+        [ValidateNever]
+        public List<ProductImage> Images { get; set; }
         //public string? ImageUrl {  get; set; }
     }
 }
