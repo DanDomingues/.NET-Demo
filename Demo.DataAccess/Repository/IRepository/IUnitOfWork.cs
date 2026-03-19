@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Demo.DataAccess.Data;
 
 namespace Demo.DataAccess.Repository.IRepository
 {
@@ -15,6 +16,7 @@ namespace Demo.DataAccess.Repository.IRepository
         IShoppingCartItemRepository ShoppingCarts { get; }
         IOrderItemDetailsRepository OrderItemDetailsRepository { get; }
         IOrderHeaderRepository OrderHeaderRepository { get; }
+        ApplicationDbContext DB {get;}
 
         void Save();
     }
