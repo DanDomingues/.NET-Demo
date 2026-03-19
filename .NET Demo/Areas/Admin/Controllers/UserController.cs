@@ -5,6 +5,7 @@ using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
@@ -20,8 +21,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult RoleManagement(int userId)
         {
             var user = Repo.GetById(userId);
-            var companies = unitOfWork.CompanyRepository.GetAll(track: false);
-            var roles = unitOfWork.DB.Roles.Select(v => v.Name);
+            var companies = unitOfWork.CompanyRepository.GetAll(track: false).Select(v => new SelectListItem(v.Name, v.Id.ToString()));
+            var roles = unitOfWork.DB.Roles.Select(v => new SelectListItem(v.Name, v.Name));
             return View(new RoleManagementVM
             {
                 User = user,
