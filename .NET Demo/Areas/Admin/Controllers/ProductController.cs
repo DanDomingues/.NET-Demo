@@ -61,7 +61,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             vm.Product.Name ??= vm.Product.Title;
 
             //To be removed once ImageUrl works well enough
-            vm.Product.ImageUrl ??= string.Empty;
+            //vm.Product.ImageUrl ??= string.Empty;
 
             if (!ModelState.IsValid || !ValidateForUpsert(vm.Product))
             {
@@ -83,10 +83,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         private void UpsertProductImage(Product product, IFormFile file)
         {
+            /*
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var productPath = Path.Combine(wwwRootPath, @"images\product");
-
+            
             if (!string.IsNullOrEmpty(product.ImageUrl))
             {
                 var oldPath = Path.Combine(wwwRootPath, product.ImageUrl.TrimStart('\\'));
@@ -102,6 +103,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
             
             product.ImageUrl = @"\images\product\" + fileName;
+            */
         }
 
 
@@ -120,6 +122,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 });
             }
 
+            /*
             var path = Path.Combine(
                 webHostEnvironment.WebRootPath, 
                 obj.ImageUrl.TrimStart('\\'));    
@@ -128,6 +131,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             {
                 System.IO.File.Delete(path);
             }
+            */
 
             return base.Delete(id);
         }
