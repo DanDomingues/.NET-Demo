@@ -4,13 +4,16 @@ using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Admin")]
-    public class UserController(IUnitOfWork unitOfWork) : RepositoryBoundController<ApplicationUser, IApplicationUserRepository>(unitOfWork), IUnitOfWorkProvider
+    public class UserController(
+        IUnitOfWork unitOfWork,
+        UserManager<ApplicationUser> um) : RepositoryBoundController<ApplicationUser, IApplicationUserRepository>(unitOfWork), IUnitOfWorkProvider
     {
         public IUnitOfWork UnitOfWork => unitOfWork;
 
@@ -29,6 +32,35 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 Companies = companies,
                 Roles = roles
             });
+        }
+
+        [HttpPost] public IActionResult RoleManagement(RoleManagementVM vm)
+        {   
+            //First we retrieve the user from DB to compare and update   
+            var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
+
+            //Then fetch role data and IDs from associated DBs
+            var prevRoleName = userFromDb.Role;
+            var newRoleId = unitOfWork.DB.Roles.FirstOrDefault(r => r.Name.Equals(vm.User.Role)).Id;
+            //var userRole = unitOfWork.DB.UserRoles.FirstOrDefault(u => u.UserId.Equals(vm.User.Id));
+
+            //Finally the role is updated
+            //userRole.RoleId = newRoleId;
+            um.RemoveFromRoleAsync(userFromDb, prevRoleName);
+            um.AddToRoleAsync(userFromDb, vm.User.Role);
+
+            //And if needed, a company is assigned/unassigned
+            if(vm.User.Role == SD.ROLE_USER_COMPANY)
+            {
+                userFromDb.CompanyId = vm.User.CompanyId;                
+            }
+            else if(prevRoleName == SD.ROLE_USER_COMPANY)
+            {
+                userFromDb.CompanyId = null;
+            }
+
+            unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
         }
 
         public override IActionResult GetAll()
