@@ -1,6 +1,7 @@
 using ASP.NET_Debut.Areas.Admin.Controllers;
 using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
+using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,17 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         protected override string DefaultFeedbackName => "User";
         protected override string? DefaultIncludeProperties => "Company";
 
-        public override IActionResult Index()
+        public IActionResult RoleManagement(int userId)
         {
-            return base.Index();
-        }
-
-        public override IActionResult Delete(int id)
-        {
-            return base.Delete(id);
+            var user = Repo.GetById(userId);
+            var companies = unitOfWork.CompanyRepository.GetAll(track: false);
+            var roles = unitOfWork.DB.Roles.Select(v => v.Name);
+            return View(new RoleManagementVM
+            {
+                User = user,
+                Companies = companies,
+                Roles = roles
+            });
         }
 
         public override IActionResult GetAll()
@@ -46,5 +50,22 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 data = users
             });
         }
+
+        [HttpPost]
+        public IActionResult ToggleLock([FromBody] int id)
+        {
+            var fromDb = Repo.GetById(id, track: true);
+
+            if(fromDb == null)
+            {
+                return Json(new { success = false, message = "Error while setting account Lock" });
+            }
+
+            fromDb.LockoutEnabled = !fromDb.LockoutEnabled;
+            unitOfWork.Save();
+
+            return Json(new { success = true, message = "Lock updated successfuly" });
+        }
     }
+
 }

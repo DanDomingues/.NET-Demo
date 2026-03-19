@@ -40,7 +40,7 @@ function loadDataTable()
             <a onClick=ToggleLock('${data.id}') class="btn btn-${tag} text-white" style="cursor: pointer; width: 100px;">
                 <i class="bi bi-unlock-fill"></i> ${label}
             </a>
-            <a class="btn btn-danger text-white" style="cursor: pointer; width: 150px;">
+            <a href="/admin/user/RoleManagement?userId=${data.id}" class="btn btn-danger text-white" style="cursor: pointer; width: 150px;">
                 <i class="bi bi-pencil-square"></i> Permission
             </a>
         </div>
