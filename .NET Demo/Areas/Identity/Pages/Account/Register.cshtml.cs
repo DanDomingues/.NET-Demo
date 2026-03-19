@@ -175,6 +175,8 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
+
+                //TODO: Ideally, we'd remove the role as it's also available elsewhere in the DB, unless that behavior is provided as is
                 user.Role = Input.Role;
 
                 if(user.Role == SD.ROLE_USER_COMPANY)

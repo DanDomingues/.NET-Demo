@@ -28,6 +28,13 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public override IActionResult GetAll()
         {
+            //TODO: When role stops being tracked, it will have to be inserted here
+
+            /*
+            var userRoles = unitOfWork.DB.Roles.ToList();
+            var userRoleIds = unitOfWork.DB.UserRoles.ToList();
+            */
+
             var users = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties).Select(u =>
             {
                 u.Company ??= new() { Name = "Unassigned" };
