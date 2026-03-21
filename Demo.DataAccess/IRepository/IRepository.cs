@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.Repository.IRepository
+namespace Demo.DataAccess.IRepository
 {
     public interface IRepository<T> where T : class
     {

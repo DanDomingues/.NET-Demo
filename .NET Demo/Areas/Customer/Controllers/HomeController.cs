@@ -1,7 +1,7 @@
 ﻿using Demo.DataAccess;
 using Demo.Models;
 using Demo.Utility;
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

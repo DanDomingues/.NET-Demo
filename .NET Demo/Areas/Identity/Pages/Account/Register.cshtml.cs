@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authentication;

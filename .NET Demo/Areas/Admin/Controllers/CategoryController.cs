@@ -1,4 +1,4 @@
-﻿using Demo.DataAccess.Repository.IRepository;
+﻿using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;

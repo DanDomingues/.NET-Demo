@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.Repository.IRepository
+namespace Demo.DataAccess.IRepository
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
     }
 }

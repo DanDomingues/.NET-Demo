@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Demo.Utility;

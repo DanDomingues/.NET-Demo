@@ -1,6 +1,5 @@
-using Demo.DataAccess.Data;
 using Demo.DataAccess.Repository;
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Demo.Models;
