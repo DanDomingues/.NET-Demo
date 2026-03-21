@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Demo.Models
 {
-    public class ProductImage
+    public class ProductImage : IModelBase
     {
         public int Id { get; set; }
         [Required]

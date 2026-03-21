@@ -1,5 +1,4 @@
-﻿using Demo.DataAccess.Data;
-using Demo.DataAccess.Repository.IRepository;
+﻿using Demo.DataAccess.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,7 @@ namespace Demo.DataAccess.Repository
         private readonly ApplicationUserRepository applicationUser = new(db.ApplicationUsers);
         private readonly CategoryRepository categories = new(db.Categories);
         private readonly ProductRepository products = new(db.Products);
+        private readonly ProductImageRepository productImages = new(db.ProductImages);
         private readonly CompanyRepository companies = new(db.Companies);
         private readonly ShoppingCartItemRepository cartItems = new(db.CartItems);
         private readonly OrderItemDetailsRepository orderItems = new(db.OrderItems);
@@ -21,6 +21,7 @@ namespace Demo.DataAccess.Repository
 
         ICategoryRepository IUnitOfWork.CategoryRepository => categories;
         IProductRepository IUnitOfWork.ProductRepository => products;
+        IProductImageRepository IUnitOfWork.ProductImagesRepository => productImages;
         ICompanyRepository IUnitOfWork.CompanyRepository => companies;
         IShoppingCartItemRepository IUnitOfWork.ShoppingCarts => cartItems;
         IApplicationUserRepository IUnitOfWork.ApplicationUserRepository => applicationUser;
