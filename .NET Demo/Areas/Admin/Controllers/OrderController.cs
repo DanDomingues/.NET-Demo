@@ -7,6 +7,7 @@ using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
+using Stripe.Checkout;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
@@ -110,6 +111,23 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             
             return RedirectToAction(nameof(Details), new { orderId = header.Id });
         }
+        
+        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult RequestPayment(OrderVM vm)
+        {
+            vm.Header = Repo.GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
+            vm.Details = unitOfWork.OrderItemDetailsRepository.GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            return StripeUtility.PromptStripePayment(unitOfWork, Response, new()
+            {
+               items = vm.Details,
+               area = "Admin",
+               page = "order",
+               sucessAction = "PaymentConfirmation",
+               failAction = "Details",
+               sucessUsesId = true,
+               failUsesId = true 
+            });
+        }
 
         [HttpGet]
         public IActionResult GetAll(string status)
@@ -129,6 +147,25 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             };
 
             return Json(data: all.Where(filter));
+        }
+
+        public IActionResult PaymentConfirmation(int id)
+        {
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
+            if(orderHeader.OrderStatus == SD.PAYMENT_STATUS_DELAYED)
+            {
+                var service = new SessionService();
+                var session = service.Get(orderHeader.SessionId);
+                
+                if(session?.PaymentStatus?.ToLower() == "paid")
+                {
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
+                    unitOfWork.Save();
+                }
+            }
+
+            return View(id);
         }
     }
 }
