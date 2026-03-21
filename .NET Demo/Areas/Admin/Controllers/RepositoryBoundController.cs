@@ -2,6 +2,7 @@
 using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
+using Demo.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
@@ -16,14 +17,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected abstract TRepo Repo { get; }
         protected abstract string DefaultFeedbackName { get; }
         protected virtual string? DefaultIncludeProperties => null;
-
-        protected void AddOperationFeedback(
-            string name,
-            string? objName = null)
-        {
-            objName ??= DefaultFeedbackName;
-            TempData["success"] = $"{objName} {name} successfully";
-        }
 
         private bool Find(int? id, out TModel output, bool track = false)
         {
@@ -52,7 +45,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         {
             action(obj);
             unitOfWork.Save();
-            AddOperationFeedback(feedback);
+            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
             return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 

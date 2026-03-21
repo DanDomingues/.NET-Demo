@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor contextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,16 +43,17 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a></li>
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a></li>
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#">Other</a></li>
                                 </ul>
                             </li>                            
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart text-white flex-fill"></i>
-                            </a>    
-                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        @await Component.InvokeAsync("Cart")
+                                    </a>    
+                                </li>
                     </ul>
                     <partial name="_LoginPartial"></partial>
                 </div>

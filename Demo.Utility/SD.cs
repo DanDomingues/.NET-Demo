@@ -24,5 +24,7 @@ namespace Demo.Utility
         public const string PAYMENT_STATUS_DELAYED = "ApprovedForDelayedPayment";
         public const string PAYMENT_STATUS_REFUNDED = "Refunded";
         public const string PAYMENT_STATUS_REJECTED = "Rejected";
+
+        public const string CART_SESSION = "ShoppingCartSession";
     }
 }

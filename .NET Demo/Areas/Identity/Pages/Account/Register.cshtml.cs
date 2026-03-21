@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Demo.Utility;
 
 namespace ASP.NET_Debut.Areas.Identity.Pages.Account
 {
@@ -208,7 +209,14 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await signInManager.SignInAsync(user, isPersistent: false);
+                        if(User.IsInRole(SD.ROLE_USER_ADMIN))
+                        {
+                            ControllerUtility.AddOperationFeedback(TempData, "created", objName: "New User");
+                        }
+                        else
+                        {
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
