@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-
     //Describes a shopping cart's item, not the cart itself
 
-    public class ShoppingCartItem : ModelBase
+    public class ShoppingCartItem : ModelBase, IProductOrderItem
     {
         [Range(1, 1000, ErrorMessage = "Please enter a value between 1 and 1000")]
         public int Count { get; set; }

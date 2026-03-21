@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class OrderItemDetails : ModelBase
+    public class OrderItemDetails : ModelBase, IProductOrderItem
     {
         public int Count { get; set; }
         public double Price { get; set; }
@@ -21,5 +21,7 @@ namespace Demo.Models
         public OrderHeader OrderHeader { get; set; }
         [ForeignKey("ProductId"), ValidateNever]
         public Product Product { get; set; }
+
+        double IProductOrderItem.TotalCost => Count * Price;
     }
 }
