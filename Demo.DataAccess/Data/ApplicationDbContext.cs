@@ -49,7 +49,7 @@ namespace Demo.DataAccess.Data
                     Price100 = 80,
                     TotallyNotAnID = 666,
                     CategoryId = 3,
-                    ImageUrl = "",
+                    //ImageUrl = "",
                 }
             );
         }
