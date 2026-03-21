@@ -47,7 +47,6 @@ namespace Demo.DataAccess
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
-                    TotallyNotAnID = 666,
                     CategoryId = 3,
                     //ImageUrl = "",
                 }
