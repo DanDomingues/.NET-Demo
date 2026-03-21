@@ -10,8 +10,8 @@ namespace Demo.DataAccess.Repository
 {
     public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork
     {
-        private readonly ApplicationUserRepository applicationUser = new(db.ApplicationUsers);
         private readonly ApplicationDbContext db = db;
+        private readonly ApplicationUserRepository applicationUser = new(db.ApplicationUsers);
         private readonly CategoryRepository categories = new(db.Categories);
         private readonly ProductRepository products = new(db.Products);
         private readonly CompanyRepository companies = new(db.Companies);
@@ -26,6 +26,8 @@ namespace Demo.DataAccess.Repository
         IApplicationUserRepository IUnitOfWork.ApplicationUserRepository => applicationUser;
         IOrderItemDetailsRepository IUnitOfWork.OrderItemDetailsRepository => orderItems;
         IOrderHeaderRepository IUnitOfWork.OrderHeaderRepository => orderHeaders;
+
+        ApplicationDbContext IUnitOfWork.DB => db;
 
         public void Save()
         {

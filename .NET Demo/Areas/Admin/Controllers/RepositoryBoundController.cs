@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
     public abstract class RepositoryBoundController<TModel, TRepo>(IUnitOfWork unitOfWork) : Controller
-        where TModel : ModelBase, new()
+        where TModel : class, IModelBase, new()
         where TRepo : IRepository<TModel>
     {
         protected IUnitOfWork unitOfWork = unitOfWork;
