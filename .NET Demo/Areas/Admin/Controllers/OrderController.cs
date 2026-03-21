@@ -58,7 +58,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult StartProcess(OrderVM vm)
         {
             Repo.UpdateOrderStatus(vm.Header.Id, SD.ORDER_STATUS_PROCESSING);
-            AddOperationFeedback("Order Details Changed Sucessfully");
+            this.AddOperationFeedback("Order Details Changed Sucessfully");
             unitOfWork.Save();         
 
             return RedirectToAction(nameof(Index));
@@ -132,10 +132,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
-            var userId = User.GetUserId();
+            if(!User.TryGetId(out var userId))
+            {
+                return Json(data: Array.Empty<OrderHeader>());
+            }
+
             var all = User.HasAdminRights() ?
-                Repo.GetAll(includeProperties: DefaultIncludeProperties,track: false) :
-                Repo.GetAll(header => header.ApplicationUserId == userId, includeProperties: DefaultIncludeProperties, track: false);
+                Repo.GetAll(
+                    includeProperties: DefaultIncludeProperties, 
+                    track: false) :
+                Repo.GetAll(
+                    header => header.ApplicationUserId == userId, 
+                    includeProperties: DefaultIncludeProperties, 
+                    track: false);
 
             Func<OrderHeader, bool> filter = status switch
             {

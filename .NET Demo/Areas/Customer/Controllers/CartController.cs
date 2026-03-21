@@ -21,7 +21,11 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         private ShoppingCartVM BuildViewModel()
         {
-            var userId = User.GetUserId();
+            if(!User.TryGetId(out var userId))
+            {
+                return new();
+            }
+
             var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == userId);
             var orderItems = Repo.GetAll(e => e.ApplicationUser.Id == userId, includeProperties: "Product");
 

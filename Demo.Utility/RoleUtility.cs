@@ -15,10 +15,17 @@ namespace Demo.Utility
             return user.IsInRoles(SD.ROLE_USER_ADMIN, SD.ROLE_USER_EMPLOYEE);
         }
 
-        public static string GetUserId(this IPrincipal user)
+        public static bool TryGetId(this IPrincipal user, out string id)
         {
-            var claimsIdentity = user.Identity as ClaimsIdentity;
-            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var claimsIdentity = user.Identity as ClaimsIdentity;            
+            id = claimsIdentity?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            
+            if(string.IsNullOrEmpty(id))
+            {
+                return false;
+            }
+            
+            return true;
         }
 
         public static bool EqualsAny(this string s, params string[] values)

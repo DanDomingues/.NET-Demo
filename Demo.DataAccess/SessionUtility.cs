@@ -1,11 +1,10 @@
-
-
 using System.Security.Claims;
 using Demo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Demo.Utility;
 
-namespace Demo.Utility
+namespace Demo.DataAccess
 {
     public static class SessionUtility
     {
@@ -18,7 +17,10 @@ namespace Demo.Utility
 
         public static int RefreshCartItemsCount(this Controller controller, IUnitOfWork unitOfWork)
         {
-            return RefreshCartItemsCount(controller.HttpContext, unitOfWork, controller.User.GetUserId());
+            return 
+                controller.User.TryGetId(out var id) ?
+                RefreshCartItemsCount(controller.HttpContext, unitOfWork, id) :
+                -1;                 
         }
 
         public static int RefreshCartItemsCount<T>(this T controller) where T : Controller, IUnitOfWorkProvider

@@ -1,6 +1,7 @@
-﻿using Demo.DataAccess.Repository.IRepository;
+﻿using Demo.DataAccess;
 using Demo.Models;
 using Demo.Utility;
+using Demo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -33,7 +34,10 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, Authorize]
         public IActionResult Details(ShoppingCartItem cart)
         {
-            var userId = User.GetUserId();
+            if(!User.TryGetId(out var userId))
+            {
+                return View();
+            }
 
             var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(
                 c => c.ApplicationUserId == userId && c.ProductId == cart.ProductId, 

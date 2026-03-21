@@ -1,6 +1,7 @@
 using Demo.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Demo.Utility;
+using Demo.DataAccess;
 
 namespace Demo.ViewComponents
 {
@@ -8,8 +9,7 @@ namespace Demo.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var id = User?.GetUserId();
-            if(id != null)
+            if(User.TryGetId(out var id))
             {
                 var count = SessionUtility.RefreshCartItemsCount(HttpContext, unitOfWork, id);
                 return View(count);
