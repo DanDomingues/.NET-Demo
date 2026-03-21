@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ### DotnetCore ###
 # .NET Core build folders
 bin/
@@ -7,8 +6,3 @@ obj/
 # Common node modules locations
 /node_modules
 /wwwroot/node_modules
-=======
-Demo.Models/obj/Debug/net8.0/Demo.Models.AssemblyInfoInputs.cache
-Demo.Models/obj/Debug/net8.0/Demo.Models.AssemblyInfo.cs
-Demo.Models/obj/Debug/net8.0/Demo.Models.AssemblyInfoInputs.cache
->>>>>>> main
