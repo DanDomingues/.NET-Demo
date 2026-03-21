@@ -19,5 +19,10 @@ namespace Demo.Utility
             var claimsIdentity = user.Identity as ClaimsIdentity;
             return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
+
+        public static bool EqualsAny(this string s, params string[] values)
+        {
+            return values.Any(s.Equals);
+        }
     }
 }
