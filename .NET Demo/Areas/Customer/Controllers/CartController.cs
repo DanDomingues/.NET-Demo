@@ -2,6 +2,7 @@
 using Demo.DataAccess.Repository.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
+using Demo.DataAccess;
 using Demo.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
