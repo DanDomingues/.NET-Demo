@@ -1,0 +1,18 @@
+This file contains improvements and work points to be done in the main code
+
+Main checklist to publish
+1. Validate all systems and correct any found issues
+2. Re-inspect all code and raise points of improvement
+3. Record main screens and flows and present to Designer person
+4. Do product and UI improvements as a final step
+5. Add section on github repo about the project itself
+6. Create a branch that shows it integrated to Azure
+7. Take the azure service off, but keep it hooked on
+
+Work points: Website
+ - Manage orders is viewable, regardless of the logged in user
+ - Prod details view renders nothing in the case of empty images
+ - Manage orders is not found when acessing it
+ - Other managerial inputs (products, categoeries) are not visible
+ - Update header and footer from ASP.NET to .NET
+ - Restore shopping cart to being rendered

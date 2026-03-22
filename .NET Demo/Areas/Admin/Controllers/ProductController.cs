@@ -17,7 +17,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
-        protected override string? DefaultIncludeProperties => "Category, ProductImages";
+        protected override string? DefaultIncludeProperties => "Category,Images";
 
         private IEnumerable<SelectListItem> CategoryList
         {
