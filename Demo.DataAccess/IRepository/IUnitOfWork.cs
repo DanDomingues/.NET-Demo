@@ -17,7 +17,6 @@ namespace Demo.DataAccess.IRepository
         IShoppingCartItemRepository ShoppingCarts { get; }
         IOrderItemDetailsRepository OrderItemDetailsRepository { get; }
         IOrderHeaderRepository OrderHeaderRepository { get; }
-        ApplicationDbContext DB {get;}
 
         void Save();
     }

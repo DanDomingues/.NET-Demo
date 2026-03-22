@@ -28,7 +28,7 @@ namespace Demo.DataAccess.Repository
         IOrderItemDetailsRepository IUnitOfWork.OrderItemDetailsRepository => orderItems;
         IOrderHeaderRepository IUnitOfWork.OrderHeaderRepository => orderHeaders;
 
-        ApplicationDbContext IUnitOfWork.DB => db;
+        //ApplicationDbContext IUnitOfWork.DB => db;
 
         public void Save()
         {

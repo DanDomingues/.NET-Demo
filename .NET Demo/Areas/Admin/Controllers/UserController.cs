@@ -14,7 +14,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     [Area("Admin")]
     public class UserController(
         IUnitOfWork unitOfWork,
-        UserManager<ApplicationUser> um) : RepositoryBoundController<ApplicationUser, IApplicationUserRepository>(unitOfWork), IUnitOfWorkProvider
+        UserManager<ApplicationUser> um,
+        RoleManager<IdentityRole> rm) : RepositoryBoundController<ApplicationUser, IApplicationUserRepository>(unitOfWork), IUnitOfWorkProvider
     {
         public IUnitOfWork UnitOfWork => unitOfWork;
 
@@ -26,7 +27,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             var user = Repo.GetById(userId);
             var companies = unitOfWork.CompanyRepository.GetAll(track: false).Select(v => new SelectListItem(v.Name, v.Id.ToString()));
-            var roles = unitOfWork.DB.Roles.Select(v => new SelectListItem(v.Name, v.Name));
+            var roles = rm.Roles.Select(r => new SelectListItem(r.Name, r.Name));
             return View(new RoleManagementVM
             {
                 User = user,
@@ -42,7 +43,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             //Then fetch role data and IDs from associated DBs
             var prevRoleName = userFromDb.Role;
-            var newRoleId = unitOfWork.DB.Roles.FirstOrDefault(r => r.Name.Equals(vm.User.Role)).Id;
+            //var newRoleId = unitOfWork.DB.Roles.FirstOrDefault(r => r.Name.Equals(vm.User.Role)).Id;
             //var userRole = unitOfWork.DB.UserRoles.FirstOrDefault(u => u.UserId.Equals(vm.User.Id));
 
             //Finally the role is updated
