@@ -17,7 +17,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
-        protected override string? DefaultIncludeProperties => "Category";
+        protected override string? DefaultIncludeProperties => "Category, ProductImages";
 
         private IEnumerable<SelectListItem> CategoryList
         {
@@ -46,7 +46,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return View(vm);
             }
 
-            vm.Product = Repo.GetById(id);
+            vm.Product = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
             return View(vm);
         }
 
@@ -56,12 +56,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpsertVM(ProductVM vm, IFormFile? file)
+        public IActionResult UpsertVM(ProductVM vm, List<IFormFile>? files)
         {
             vm.Product.Name ??= vm.Product.Title;
-
-            //To be removed once ImageUrl works well enough
-            //vm.Product.ImageUrl ??= string.Empty;
 
             if (!ModelState.IsValid || !ValidateForUpsert(vm.Product))
             {
@@ -72,38 +69,85 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             {
                 return View(vm);
             }
-        
-            if (file != null)
-            {
-                UpsertProductImage(vm.Product, file);
-            }
 
-            return Upsert(vm.Product);
+            //For our product to have an assigned ID, upset to DB must come first
+            //TODO: Validate if vm.Product gets an assigned ID after being used for DB updating
+            //var output = Upsert(vm.Product);
+            Repo.AddOrUpdate(vm.Product);
+            unitOfWork.Save();
+            var prodFromDb = Repo.GetFirstOrDefault(p => p.Name.Equals(vm.Product.Name));
+
+            if (files != null)
+            {
+                UpsertProductImage(prodFromDb, files);
+                unitOfWork.Save();
+            }
+        
+            return Upsert(prodFromDb);
         }
 
-        private void UpsertProductImage(Product product, IFormFile file)
+        private void UpsertProductImage(Product product, List<IFormFile> files)
         {
-            /*
-            var wwwRootPath = webHostEnvironment.WebRootPath;
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-            var productPath = Path.Combine(wwwRootPath, @"images\product");
-            
-            if (!string.IsNullOrEmpty(product.ImageUrl))
+            if(!ModelState.IsValid)
             {
-                var oldPath = Path.Combine(wwwRootPath, product.ImageUrl.TrimStart('\\'));
-                if (System.IO.File.Exists(oldPath))
+                return;
+            }
+            
+            var wwwRootPath = webHostEnvironment.WebRootPath;
+            var productPath = Path.Combine(wwwRootPath, @$"images\products\product-{product.Name}");
+            
+            if(!Directory.Exists(productPath))
+            {
+                Directory.CreateDirectory(productPath);
+            }
+            
+            foreach (var file in files)
+            {
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";       
+
+                using (var stream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                 {
-                    System.IO.File.Delete(oldPath);
+                    file.CopyTo(stream);
                 }
+
+                var image = new ProductImage
+                {
+                    Url = @"\" + productPath + @"\" + file,
+                    ProductId = product.Id,
+                };
+                
+                if (!string.IsNullOrEmpty(image.Url))
+                {
+                    var oldPath = Path.Combine(wwwRootPath, image.Url.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }          
+
+                product.Images ??= new();
+                product.Images.Add(image);
+                unitOfWork.ProductImagesRepository.Add(image);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteImage(int? id)
+        {
+            var image = unitOfWork.ProductImagesRepository.GetById(id);
+            if(!string.IsNullOrEmpty(image?.Url))
+            {
+                var fullPath = Path.Combine(webHostEnvironment.WebRootPath, image.Url.TrimStart('\\'));
+                if(System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+                unitOfWork.ProductImagesRepository.Remove(image);
+                unitOfWork.Save();
             }
 
-            using (var stream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-            
-            product.ImageUrl = @"\images\product\" + fileName;
-            */
+            this.AddOperationFeedback("Image Deleted Successfully");
+            return RedirectToAction(nameof(UpsertVM), image?.ProductId);
         }
 
 
@@ -122,16 +166,18 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 });
             }
 
-            /*
-            var path = Path.Combine(
-                webHostEnvironment.WebRootPath, 
-                obj.ImageUrl.TrimStart('\\'));    
-            
-            if (System.IO.File.Exists(path))
+            var wwwRootPath = webHostEnvironment.WebRootPath;
+            var productPath = Path.Combine(wwwRootPath, @$"images\products\product-{obj.Name}");
+
+            if(Directory.Exists(productPath))
             {
-                System.IO.File.Delete(path);
+                Directory.Delete(productPath, true);
             }
-            */
+
+            foreach (var image in obj.Images)
+            {
+                unitOfWork.ProductImagesRepository.Remove(image);
+            }
 
             return base.Delete(id);
         }
