@@ -32,7 +32,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             var header = new OrderHeader
             {
                 ApplicationUserId = userId,
-                OrderTotal = orderItems.Select(e => e.TotalCost).Sum(),
+                OrderTotal = orderItems.Sum(e => e.TotalCost),
 
                 //Details fetching, can be overwritten later on
                 Name = appUser.Name,
@@ -42,6 +42,13 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 State = appUser.State ?? string.Empty,
                 PostalCode = appUser.PostalCode ?? string.Empty,
             };
+
+            foreach (var item in orderItems)
+            {
+                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId == item.Product.Id);
+                item.Product.Images = [image];
+            }
+
 
             return new ShoppingCartVM
             {
@@ -65,7 +72,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
             //Luckly, all the editable properties are strings that come filled in the vm
-            vm.ProductList = Repo.GetAll(e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, includeProperties: "Product");
+            vm.ProductList = Repo.GetAll(
+                e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
+                includeProperties: "Product");
 
             //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
             //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet

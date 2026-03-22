@@ -16,7 +16,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category");
+            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category, ProductImages");
             //Inits the session value to be used in the layout view
             //TODO: Test removing this and observe efffects
             this.RefreshCartItemsCount();
@@ -26,7 +26,10 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            var product = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category", track: false);
+            var product = unitOfWork.ProductRepository.GetById(
+                id, 
+                includeProperties: "Category, ProductImages", 
+                track: false);
             var cart = new ShoppingCartItem { Product = product, ProductId = product.Id, Count = 1 };
             return View(cart);
         }
