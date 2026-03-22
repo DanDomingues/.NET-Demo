@@ -22,7 +22,28 @@
 				</div>
 				<div class="row">
 					<div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-						<img @*src="Model.Product.ImageUrl"*@ width="100%" class="rounded" />
+						<div id="carouselExample" class="carousel slide">
+							@*Carousel implementation. For repeated usage, this should be isolated in a partial*@
+							<div class="carousel-inner">
+								@foreach(var image in Model.Product.Images)
+								{
+									var activeClass =  image == Model.Product.Images.First() ? "active" : "";
+									<div class="carousel-item @activeClass">
+										<img src="@image.Url" class="d-block w-100" alt="...">
+									</div>
+								}
+							</div>
+							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+									data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+								data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
 					</div>
 					<div class="col-12 col-lg-6 offset-lg-1">
 						<div class="col-12 col-md-6 pb-4">
