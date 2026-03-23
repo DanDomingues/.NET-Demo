@@ -29,7 +29,7 @@
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
+                            <a class="nav-link" asp-area="Customer" asp-controller="Order" asp-action="Index">My Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -43,21 +43,18 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a></li>
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a></li>
-                                    <li><a class="dropdown-item" asp-area="Admin" asp-page="User">Users</a></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-asp-controller="User" asp-action="Index">Users</a></li>
                                     <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#">Other</a></li>
                                 </ul>
                             </li>                            
                         }
-                        @*
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        @await Component.InvokeAsync("Cart")
-                                    </a>    
-                                </li>
-                        *@
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="CartComponent" asp-action="Index">
+                                    @await Component.InvokeAsync("Cart")
+                                </a>    
+                            </li>
                     <partial name="_LoginPartial"></partial>
                 </div>
             </div>
