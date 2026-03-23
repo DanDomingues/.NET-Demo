@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ASP.NET_Debut.Areas.Customer.Controllers
+namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UserController(
@@ -48,18 +48,24 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             //Finally the role is updated
             //userRole.RoleId = newRoleId;
-            um.RemoveFromRoleAsync(userFromDb, prevRoleName);
-            um.AddToRoleAsync(userFromDb, vm.User.Role);
+            if(!string.IsNullOrEmpty(prevRoleName))
+            {
+                um.RemoveFromRoleAsync(userFromDb, prevRoleName).GetAwaiter().GetResult();
+            }
+            um.AddToRoleAsync(userFromDb, vm.User.Role).GetAwaiter().GetResult();
 
             //And if needed, a company is assigned/unassigned
             if(vm.User.Role == SD.ROLE_USER_COMPANY)
             {
                 userFromDb.CompanyId = vm.User.CompanyId;                
             }
-            else if(prevRoleName == SD.ROLE_USER_COMPANY)
+            else if(vm.User.Role != prevRoleName && prevRoleName == SD.ROLE_USER_COMPANY)
             {
                 userFromDb.CompanyId = null;
             }
+
+            //Remove when role stops being tracked
+            userFromDb.Role = vm.User.Role;
 
             unitOfWork.Save();
             return RedirectToAction(nameof(Index));
@@ -76,7 +82,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             var users = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties).Select(u =>
             {
-                u.Company ??= new() { Name = "Unassigned" };
+                u.Company ??= new() { Name = "" };
                 return u;
             });
 
