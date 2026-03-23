@@ -26,6 +26,9 @@ namespace Demo.Models
         [ValidateNever]
         public Company Company { get; set; }
 
+        [NotMapped]
+        public bool Locked { get; set;}
+
         int IModelBase.Id => int.Parse(Id);
     }
 }

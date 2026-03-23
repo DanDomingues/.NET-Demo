@@ -83,6 +83,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var users = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties).Select(u =>
             {
                 u.Company ??= new() { Name = "" };
+                u.Locked = u.LockoutEnd != null && u.LockoutEnd.Value > DateTime.Now;
                 return u;
             });
 
@@ -102,7 +103,15 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while setting account Lock" });
             }
 
-            fromDb.LockoutEnabled = !fromDb.LockoutEnabled;
+            if(fromDb.LockoutEnd != null && fromDb.LockoutEnd.Value > DateTime.Now)
+            {
+                fromDb.LockoutEnd = null;
+            }
+            else
+            {
+                fromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+            }
+
             unitOfWork.Save();
 
             return Json(new { success = true, message = "Lock updated successfuly" });
