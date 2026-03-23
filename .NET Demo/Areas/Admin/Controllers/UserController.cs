@@ -23,9 +23,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         protected override string DefaultFeedbackName => "User";
         protected override string? DefaultIncludeProperties => "Company";
 
-        public IActionResult RoleManagement(int userId)
+        public IActionResult RoleManagement(string id)
         {
-            var user = Repo.GetById(userId);
+            var user = Repo.GetFirstOrDefault(u => u.Id == id);
             var companies = unitOfWork.CompanyRepository.GetAll(track: false).Select(v => new SelectListItem(v.Name, v.Id.ToString()));
             var roles = rm.Roles.Select(r => new SelectListItem(r.Name, r.Name));
             return View(new RoleManagementVM
@@ -87,9 +87,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public IActionResult ToggleLock([FromBody] int id)
+        public IActionResult ToggleLock([FromBody] string id)
         {
-            var fromDb = Repo.GetById(id, track: true);
+            var fromDb = Repo.GetFirstOrDefault(u => u.Id == id, track: true);
 
             if(fromDb == null)
             {

@@ -10,9 +10,14 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
- - Manage orders is viewable, regardless of the logged in user
- - Prod details view renders nothing in the case of empty images
- - Manage orders is not found when acessing it
- - Other managerial inputs (products, categoeries) are not visible
+ - Update product images is not working, read and write
+
+ Done
+ - Manage users is not found when acessing it
  - Update header and footer from ASP.NET to .NET
- - Restore shopping cart to being rendered
+ - Manage orders is not found when acessing it
+ - Manage orders is viewable, regardless of the logged in user
+ - Prod details view renders nothing in the case of empty images [DONE]
+ - On details page, the tag is not visible, being rendered over white text [DONE]
+- Restore shopping cart to being rendered
+ - Other managerial inputs (products, categoeries) are not visible
