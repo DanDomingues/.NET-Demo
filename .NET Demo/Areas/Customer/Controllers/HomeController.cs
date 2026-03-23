@@ -58,6 +58,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 //Somewhere, the Id for the cart is being bound to (apparently) be the same as the ProductId
                 //As we're adding a new entry, the id needs to be 0 so the entity system can assign it
                 cart.Id = 0;
+                
+                //Inits cart values
+                cart.ApplicationUserId = userId;
+                cart.Count = 1;
+
+                //Adds to DB and saved
                 unitOfWork.ShoppingCarts.Add(cart);
                 unitOfWork.Save();
 
