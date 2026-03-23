@@ -61,7 +61,7 @@
 						</div>
 
 						<div class="form-floating py-2 col-12">
-							<input type="file" name="file" class="form-control border-0 shadow" />
+							<input type="file" name="files" multiple accept="image/*" class="form-control border-0 shadow" />
 							<label asp-for="Product.Images" class="ms-2"></label>
 						</div>
 
@@ -82,7 +82,7 @@
 						foreach(var image in Model.Product.Images)
 						{
 							<img src="@image.Url" width=100% style="border:5px border:1px solid #bbb9b9"/>
-							<a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+							<a asp-action="DeleteImage" class="btn btn-danger" asp-route-id="@image.Id">
 								<i class="bi bi-trash-fill"></i>Delete
 							</a>
 						}
