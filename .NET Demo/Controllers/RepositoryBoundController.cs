@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
-namespace ASP.NET_Debut.Areas.Admin.Controllers
+namespace ASP.NET_Debut.Controllers
 {
     public abstract class RepositoryBoundController<TModel, TRepo>(IUnitOfWork unitOfWork) : Controller
         where TModel : class, IModelBase, new()

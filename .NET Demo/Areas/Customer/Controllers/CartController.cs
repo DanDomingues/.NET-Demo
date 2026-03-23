@@ -1,5 +1,4 @@
-﻿using ASP.NET_Debut.Areas.Admin.Controllers;
-using Demo.DataAccess.IRepository;
+﻿using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.DataAccess;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
+using ASP.NET_Debut.Controllers;
 
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {

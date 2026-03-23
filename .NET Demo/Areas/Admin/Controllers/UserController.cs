@@ -1,6 +1,6 @@
-using ASP.NET_Debut.Areas.Admin.Controllers;
 using Demo.DataAccess;
 using Demo.DataAccess.IRepository;
+using ASP.NET_Debut.Controllers;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
