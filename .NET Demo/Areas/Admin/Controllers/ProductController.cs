@@ -66,11 +66,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return View(vm);
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(vm);
-            }
-
             //For our product to have an assigned ID, upset to DB must come first
             //TODO: Validate if vm.Product gets an assigned ID after being used for DB updating
             //var output = Upsert(vm.Product);
@@ -78,7 +73,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             unitOfWork.Save();
             var prodFromDb = Repo.GetFirstOrDefault(p => p.Name.Equals(vm.Product.Name));
 
-            if (files != null)
+            if (files != null && files.Count > 0)
             {
                 UpsertProductImage(prodFromDb, files);
                 unitOfWork.Save();
@@ -94,39 +89,33 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return;
             }
             
+            var productPath = @$"images\products\product-{product.Name}";
             var wwwRootPath = webHostEnvironment.WebRootPath;
-            var productPath = Path.Combine(wwwRootPath, @$"images\products\product-{product.Name}");
+            var localDirectoryPath = Path.Combine(wwwRootPath, productPath);
             
-            if(!Directory.Exists(productPath))
+            //TODO: Experiment not explicitly adding the directory
+            if(!Directory.Exists(localDirectoryPath))
             {
-                Directory.CreateDirectory(productPath);
+                Directory.CreateDirectory(localDirectoryPath);
             }
             
             foreach (var file in files)
             {
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";       
-
-                using (var stream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                var filePath = Path.Combine(localDirectoryPath, fileName);
+                
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
-                }
+                }          
 
                 var image = new ProductImage
                 {
-                    Url = @"\" + productPath + @"\" + file,
+                    Url = $@"{productPath}\{fileName}",
                     ProductId = product.Id,
                 };
-                
-                if (!string.IsNullOrEmpty(image.Url))
-                {
-                    var oldPath = Path.Combine(wwwRootPath, image.Url.TrimStart('\\'));
-                    if (System.IO.File.Exists(oldPath))
-                    {
-                        System.IO.File.Delete(oldPath);
-                    }
-                }          
 
-                product.Images ??= new();
+                product.Images ??= [];
                 product.Images.Add(image);
                 unitOfWork.ProductImagesRepository.Add(image);
             }
