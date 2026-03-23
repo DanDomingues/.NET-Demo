@@ -23,17 +23,28 @@
 					<h2 class="text-primary">Update User Role</h2>
 				</div>
 				<div class="form-floating py-2 col-12">
-					<label asp-for="User.Name" class="ms-2"></label>
 					<input asp-for="User.Name" readonly class="form-control border-0 shadow" />
+					<label asp-for="User.Name" class="ms-2"></label>
 				</div>
-				<div class="form-floating py-2 col-12">
-                    <select asp-for="User.Role" asp-items="@Model.Roles"></select>
+                <div class="form-floating py-2 col-12">
+					<select asp-for="User.Role" asp-items="@Model.Roles" class="form-select"></select>
+					<label asp-for="User.Role" class="ms-2"></label>
 				</div>
-                
-				<div class="form-floating py-2 col-12">
-                    <select asp-for="User.CompanyId" asp-items="@Model.Companies" style="@companyStyle"></select>
-				</div>
+                <div class="form-floating py-2 col-12" id="companyField" style="@companyStyle">
+                    <select asp-for="User.CompanyId" asp-items="@Model.Companies" class="form-select"></select>
+                    <label asp-for="User.Company" class="ms-2"></label>
+                </div>
 			</div>
+            <div class="row pt-2">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">Update Role</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-action="Index" class="btn btn-outline-primary border form-control">
+                        Back to List
+                    </a>
+                </div>
+            </div>
 		</form>
 	</div>
 </div>
@@ -43,20 +54,17 @@
         <partial name="_ValidationScriptsPartial" />
     }
 
-    @*
-    *@
-
     <script>
         $(document).ready(function() {
             $('#User_Role').change(function() {
                 var selection = $('#User_Role Option:Selected').text();
                 if(selection == 'Company')
                 {
-                    $('#User_CompanyId').show();
+                    $('#companyField').show();
                 }
                 else
                 {
-                    $('#User_CompanyId').hide();
+                    $('#companyField').hide();
                 }
             })
         })
