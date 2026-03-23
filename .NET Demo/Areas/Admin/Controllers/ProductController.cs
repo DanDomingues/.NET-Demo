@@ -124,6 +124,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult DeleteImage(int? id)
         {
             var image = unitOfWork.ProductImagesRepository.GetById(id);
+
             if(!string.IsNullOrEmpty(image?.Url))
             {
                 var fullPath = Path.Combine(webHostEnvironment.WebRootPath, image.Url.TrimStart('\\'));
@@ -135,10 +136,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 unitOfWork.Save();
             }
 
-            this.AddOperationFeedback("Image Deleted Successfully");
-            return RedirectToAction(nameof(UpsertVM), image?.ProductId);
+            this.AddOperationFeedback("Image Deleted Successfully");            
+            return RedirectToAction(nameof(UpsertVM), new { id = image?.ProductId });
         }
-
 
         #region API Calls
 
@@ -154,7 +154,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                     message = "Error while deleting"
                 });
             }
-
+            
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var productPath = Path.Combine(wwwRootPath, @$"images\products\product-{obj.Name}");
 
