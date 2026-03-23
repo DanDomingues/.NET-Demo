@@ -10,7 +10,7 @@
 		{ "all", defaultClass },
 	};
 
-	if(status != null)
+	if(!string.IsNullOrEmpty(status))
 	{
 		classes[status] = $"active {classes[status]}";
 	}
