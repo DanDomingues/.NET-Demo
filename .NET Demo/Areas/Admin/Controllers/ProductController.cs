@@ -18,7 +18,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
-        protected override string? DefaultIncludeProperties => "Category,Images";
+        protected override string? DefaultIncludeProperties => "Category";
 
         private IEnumerable<SelectListItem> CategoryList
         {
@@ -47,7 +47,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 return View(vm);
             }
 
-            vm.Product = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
+            vm.Product = Repo.GetById(id, includeProperties: "Category,Images");
             return View(vm);
         }
 
@@ -132,7 +132,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
         public IActionResult DeleteImage(int? id)
         {
             var image = unitOfWork.ProductImagesRepository.GetById(id);
