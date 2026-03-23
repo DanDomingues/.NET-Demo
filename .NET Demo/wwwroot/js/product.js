@@ -1,8 +1,8 @@
 ﻿var dataTable;
 
-$(document).ready(function ()){
+$(document).ready(function (){
     loadDataTable();
-}
+});
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
@@ -12,7 +12,7 @@ function loadDataTable() {
             { data: 'isbn' },
             { data: 'price' },
             { data: 'author' },
-            { data: 'category.name' }
+            { data: 'category.name' },
             {
                 data: 'id',
                 "render": function (data) {
