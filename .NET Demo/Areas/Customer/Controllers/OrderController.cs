@@ -131,7 +131,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(string status)
+        public IActionResult GetAllByStatus(string status)
         {
             if(!User.TryGetId(out var userId))
             {
