@@ -111,7 +111,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
                 var image = new ProductImage
                 {
-                    Url = $@"{productPath}\{fileName}",
+                    Url = $@"\{productPath}\{fileName}",
                     ProductId = product.Id,
                 };
 
