@@ -121,7 +121,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return StripeUtility.PromptStripePayment(unitOfWork, Response, new()
             {
                items = vm.Details,
-               area = "Admin",
+               area = "Customer",
                page = "order",
                sucessAction = "PaymentConfirmation",
                failAction = "Details",

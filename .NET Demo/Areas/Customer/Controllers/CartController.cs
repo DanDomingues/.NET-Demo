@@ -43,12 +43,15 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 PostalCode = appUser.PostalCode ?? string.Empty,
             };
 
+            //NOTE: By adding a header to the DB, the id gets automatically assigned
+            unitOfWork.OrderHeaderRepository.Add(header);
+            unitOfWork.Save();
+
             foreach (var item in orderItems)
             {
                 var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId == item.Product.Id);
                 item.Product.Images = [image];
             }
-
 
             return new ShoppingCartVM
             {
@@ -81,14 +84,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
 
             //Order total needs to be recalculated as the products may have been changed in the view
-            vm.OrderHeader.OrderTotal = vm.ProductList.Select(item => item.TotalCost).Sum();
+            vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
 
             //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
             var isCompanyUser = appUser.CompanyId.GetValueOrDefault() > 0;
             vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
             vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
-
-            unitOfWork.OrderHeaderRepository.Add(vm.OrderHeader);
 
             if(!isCompanyUser)
             {
@@ -96,7 +97,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 {
                     items = vm.ProductList,
                     headerId = vm.OrderHeader.Id,
-                    area = "Admin",
+                    area = "Customer",
                     page = "cart",
                     sucessAction = "OrderConfirmation",
                     failAction = "Index",

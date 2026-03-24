@@ -12,14 +12,26 @@ namespace Demo.DataAccess.Repository
 {
     public class OrderHeaderRepository(DbSet<OrderHeader> set) : Repository<OrderHeader>(set), IOrderHeaderRepository
     {
+
+        //TODO: Move validation to base and/or utility class
+        /*
+        protected void RunAndUpdate(OrderHeader obj, Action<OrderHeader> action)
+        {
+            action.Invoke(obj);
+            Update(obj);
+        }
+        */
+
         protected void IfIdValid(Action<OrderHeader> action, int id)
         {
-            var obj = GetById(id);
+            var obj = GetById(id, tracked: true);
             if(obj == null)
             {
                 return;
             }
+            
             action.Invoke(obj);
+            //RunAndUpdate(obj, action);
         }
 
         protected void IfIdAndArgsValid(Action<OrderHeader> action, int id, params string[] args)
@@ -31,6 +43,7 @@ namespace Demo.DataAccess.Repository
             IfIdValid(action, id);
         }
 
+        /*
         protected void IfArgsValid(Action<OrderHeader> action, int id, params string[] args)
         {
             if (args?.Any(a => string.IsNullOrEmpty(a)) != false)
@@ -39,6 +52,7 @@ namespace Demo.DataAccess.Repository
             }
             action?.Invoke(GetById(id));
         }
+        */
 
         public void UpdateOrderStatus(int id, string status)
         {
