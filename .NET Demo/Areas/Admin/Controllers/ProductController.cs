@@ -71,15 +71,14 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             //var output = Upsert(vm.Product);
             Repo.AddOrUpdate(vm.Product);
             unitOfWork.Save();
-            var prodFromDb = Repo.GetFirstOrDefault(p => p.Name.Equals(vm.Product.Name));
 
             if (files != null && files.Count > 0)
             {
-                UpsertProductImage(prodFromDb, files);
+                UpsertProductImage(vm.Product, files);
                 unitOfWork.Save();
             }
         
-            return Upsert(prodFromDb);
+            return Upsert(vm.Product);
         }
 
         private void UpsertProductImage(Product product, List<IFormFile> files)
