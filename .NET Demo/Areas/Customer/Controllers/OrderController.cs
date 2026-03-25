@@ -35,7 +35,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
         {
-            var orderHeader = Repo.GetFirstOrDefault(order => order.ApplicationUserId.Equals(vm.Header.ApplicationUserId), track: false);
+            var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
                
             // Map fields from vm.Header to orderHeader
             orderHeader.Name = vm.Header.Name ?? orderHeader.Name;
@@ -51,8 +51,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 orderHeader, 
                 unitOfWork.OrderHeaderRepository.Update, 
                 feedback: "Order Updated Sucessfully", 
-                redirection: "Details", 
-                redirectionArgs: new { id = orderHeader.Id });
+                redirection: "Index");
         }
 
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
