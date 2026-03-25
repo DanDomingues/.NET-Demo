@@ -51,29 +51,29 @@
 							</h4>
 						</div>
 
-						@await Html.PartialAsync(partialName, new FormFieldModel(name, label: "Name"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(streetAddress, "Street Address"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(city, "City"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(state, "State"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(postalCode, "Postal Code"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(email, "Email"))
-						@await Html.PartialAsync(partialName, new FormFieldModel(orderDate.ToString(), "Order Date"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.Name", name, label: "Name"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.StreetAddress", streetAddress, "Street Address"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.City", city, "City"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.State", state, "State"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PostalCode", postalCode, "Postal Code"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.ApplicationUser.Email", email, "Email", isReadOnly: true))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.OrderDate", orderDate.ToString(), "Order Date", isReadOnly: true))
 						
 						@if(Model.Header?.SessionId != null)
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel(paymentDate.ToString(), "Payment Date"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDate", paymentDate.ToString(), "Payment Date", isReadOnly: true))
 						}
 						else
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel(paymentDueDate.ToString(), "Payment Due Date"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDueDate", paymentDueDate.ToString(), "Payment Due Date", isReadOnly: true))
 						}
 
-						@await Html.PartialAsync(partialName, new FormFieldModel(paymentStatus, "Payment Status"))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentStatus", paymentStatus, "Payment Status", isReadOnly: true))
 
 						@if(User.HasAdminRights())
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel(sessionId, "Session Id"))
-							@await Html.PartialAsync(partialName, new FormFieldModel(paymentIntentId, "Payment Intent Id"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.SessionId", sessionId, "Session Id", isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, "Payment Intent Id", isReadOnly: true))
 							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
 						}
 					</div>
@@ -86,9 +86,9 @@
 									<span class="text-primary">Shipping</span>
 								</h4>
 							</div>
-							@await Html.PartialAsync(partialName, new FormFieldModel(carrier, "Carrier"))
-							@await Html.PartialAsync(partialName, new FormFieldModel(shippingDate.ToString(), "Shipping Date"))
-							@await Html.PartialAsync(partialName, new FormFieldModel(trackingNumber, "Tracking Number"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier, "Carrier"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), "Shipping Date", isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.TrackingNumber", trackingNumber, "Tracking Number"))
 						</div>
 					}
 
@@ -164,7 +164,7 @@
 	<script>
 		function validateInput()
 		{
-			if(document.getElementById("trackingNumber").value == "")
+			if(document.getElementById("Header_TrackingNumber").value == "")
 			{
 				Swal.fire({
 					icon: 'error',
@@ -173,7 +173,7 @@
 				});
 				return false;
 			}
-			if(document.getElementById("carrier").value == "")
+			if(document.getElementById("Header_Carrier").value == "")
 			{
 				Swal.fire({
 					icon: 'error',
