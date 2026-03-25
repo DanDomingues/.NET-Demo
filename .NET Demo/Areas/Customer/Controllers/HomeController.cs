@@ -1,7 +1,7 @@
 ﻿using Demo.DataAccess;
 using Demo.Models;
 using Demo.Utility;
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -16,7 +16,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category");
+            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category,Images");
             //Inits the session value to be used in the layout view
             //TODO: Test removing this and observe efffects
             this.RefreshCartItemsCount();
@@ -26,8 +26,22 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            var product = unitOfWork.ProductRepository.GetById(id, includeProperties: "Category", track: false);
-            var cart = new ShoppingCartItem { Product = product, ProductId = product.Id, Count = 1 };
+            User.TryGetId(out var userId);
+
+            var product = unitOfWork.ProductRepository.GetById(
+                id, 
+                includeProperties: "Category,Images",
+                track: false);
+            
+            var cart = new ShoppingCartItem 
+            { 
+                Product = product, 
+                ProductId = product.Id,
+                ApplicationUserId = userId,
+                //Id = 0,
+                Count = 1 
+            };
+
             return View(cart);
         }
 
@@ -51,10 +65,11 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             }
             else
             {
-                //TODO: Review why this is happening
-                //Somewhere, the Id for the cart is being bound to (apparently) be the same as the ProductId
-                //As we're adding a new entry, the id needs to be 0 so the entity system can assign it
+                //As binding may assign the directly available id through routing, we reset it to 0
+                //Entity id needs to be at 0 prior to adding to a DB through EF
                 cart.Id = 0;
+                
+                //Adds to DB and save
                 unitOfWork.ShoppingCarts.Add(cart);
                 unitOfWork.Save();
 

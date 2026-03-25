@@ -41,5 +41,8 @@ namespace Demo.Models
         [ValidateNever]
         public List<ProductImage> Images { get; set; }
         //public string? ImageUrl {  get; set; }
+
+        public bool ImagesAreValid => Images?.Any() == true;
+        public string ThumbnailUrl => Images?.FirstOrDefault()?.Url ?? "https://placehold.co/500x600/png";
     }
 }

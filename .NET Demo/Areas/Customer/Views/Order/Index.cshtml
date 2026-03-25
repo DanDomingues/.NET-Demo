@@ -10,7 +10,7 @@
 		{ "all", defaultClass },
 	};
 
-	if(status != null)
+	if(!string.IsNullOrEmpty(status))
 	{
 		classes[status] = $"active {classes[status]}";
 	}
@@ -52,6 +52,7 @@
 					<th>Name</th>
 					<th>Phone Number</th>
 					<th>Email</th>
+					<th>Order Date</th>
 					<th>Status</th>
 					<th>Total</th>
 				</tr>
@@ -61,5 +62,5 @@
 </div>
 
 @section Scripts {
-	<script src="~/js/order.js"></script>
+	<script src="~/js/order.js" asp-append-version="true"></script>
 }

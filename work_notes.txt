@@ -1,0 +1,30 @@
+This file contains improvements and work points to be done in the main code
+
+Main checklist to publish
+1. Validate all systems and correct any found issues
+2. Re-inspect all code and raise points of improvement
+3. Record main screens and flows and present to Designer person
+4. Do product and UI improvements as a final step
+5. Add section on github repo about the project itself
+6. Create a branch that shows it integrated to Azure
+7. Take the azure service off, but keep it hooked on
+
+Work points: Website
+ - Upon purchasing, cart does not get emptied
+ - Update order info could be grouped in 2 parts
+ - Start process could assign carrier and tracking number
+ - Order summary to be aligned with pick up details
+ - Order date does not get assigned upon purchase
+ - Order date to be displayed on data table
+ - Order items dont get loaded into the vm
+ - Update order details doesnt work
+Done
+ - Update product images is not working, read and write
+ - Manage users is not found when acessing it
+ - Update header and footer from ASP.NET to .NET
+ - Manage orders is not found when acessing it
+ - Manage orders is viewable, regardless of the logged in user
+ - Prod details view renders nothing in the case of empty images [DONE]
+ - On details page, the tag is not visible, being rendered over white text [DONE]
+ - Restore shopping cart to being rendered
+ - Other managerial inputs (products, categoeries) are not visible

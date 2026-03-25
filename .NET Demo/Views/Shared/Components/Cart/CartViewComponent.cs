@@ -1,9 +1,9 @@
-using Demo.DataAccess.Repository.IRepository;
+using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Demo.Utility;
 using Demo.DataAccess;
 
-namespace Demo.ViewComponents
+namespace Demo
 {
     public class CartViewComponent(IUnitOfWork unitOfWork) : ViewComponent
     {

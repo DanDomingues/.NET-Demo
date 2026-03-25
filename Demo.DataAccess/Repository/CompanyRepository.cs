@@ -1,5 +1,5 @@
-﻿using Demo.DataAccess.Data;
-using Demo.DataAccess.Repository.IRepository;
+﻿
+using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

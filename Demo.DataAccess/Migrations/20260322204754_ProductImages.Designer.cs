@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP.NET_Debut.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260129032427_updateDataHierarchy")]
-    partial class updateDataHierarchy
+    [Migration("20260322204754_ProductImages")]
+    partial class ProductImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,10 +242,6 @@ namespace ASP.NET_Debut.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -280,13 +276,34 @@ namespace ASP.NET_Debut.Migrations
                             CategoryId = 3,
                             Description = "Lorem ipsum",
                             ISBN = "SWD999901",
-                            ImageUrl = "",
                             Price = 90.0,
                             Price100 = 80.0,
                             Price50 = 85.0,
                             Title = "Fortune of Time",
-                            TotallyNotAnID = 666
+                            TotallyNotAnID = 0
                         });
+                });
+
+            modelBuilder.Entity("Demo.Models.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Demo.Models.ShoppingCartItem", b =>
@@ -596,6 +613,17 @@ namespace ASP.NET_Debut.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Demo.Models.ProductImage", b =>
+                {
+                    b.HasOne("Demo.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Demo.Models.ShoppingCartItem", b =>
                 {
                     b.HasOne("Demo.Models.ApplicationUser", "ApplicationUser")
@@ -673,6 +701,11 @@ namespace ASP.NET_Debut.Migrations
                         .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Demo.Models.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

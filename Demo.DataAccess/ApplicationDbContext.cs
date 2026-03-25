@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Demo.DataAccess.Data
+namespace Demo.DataAccess
 {
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        //public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ShoppingCartItem> CartItems { get; set; }
@@ -47,7 +47,6 @@ namespace Demo.DataAccess.Data
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
-                    TotallyNotAnID = 666,
                     CategoryId = 3,
                     //ImageUrl = "",
                 }

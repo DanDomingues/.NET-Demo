@@ -1,4 +1,4 @@
-using Demo.DataAccess.Data;
+
 using Demo.Models;
 using Demo.Utility;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Demo.DataAccess
 {
     public class DbInitializer(
-        UserManager<IdentityUser> um, 
+        UserManager<ApplicationUser> um, 
         RoleManager<IdentityRole> rm, 
         ApplicationDbContext db) : IDbInitializer
     {
