@@ -51,29 +51,29 @@
 							</h4>
 						</div>
 
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.Name", name, label: "Name"))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.StreetAddress", streetAddress, "Street Address"))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.City", city, "City"))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.State", state, "State"))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PostalCode", postalCode, "Postal Code"))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.ApplicationUser.Email", email, "Email", isReadOnly: true))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.OrderDate", orderDate.ToString(), "Order Date", isReadOnly: true))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.Name", name))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.StreetAddress", streetAddress))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.City", city))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.State", state))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PostalCode", postalCode))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.ApplicationUser.Email", email, isReadOnly: true))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.OrderDate", orderDate.ToString(), isReadOnly: true))
 						
 						@if(Model.Header?.SessionId != null)
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDate", paymentDate.ToString(), "Payment Date", isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDate", paymentDate.ToString(), isReadOnly: true))
 						}
 						else
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDueDate", paymentDueDate.ToString(), "Payment Due Date", isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDueDate", paymentDueDate.ToString(), isReadOnly: true))
 						}
 
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentStatus", paymentStatus, "Payment Status", isReadOnly: true))
+						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentStatus", paymentStatus, isReadOnly: true))
 
 						@if(User.HasAdminRights())
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.SessionId", sessionId, "Session Id", isReadOnly: true))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, "Payment Intent Id", isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.SessionId", sessionId, isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, isReadOnly: true))
 							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
 						}
 					</div>
@@ -86,9 +86,9 @@
 									<span class="text-primary">Shipping</span>
 								</h4>
 							</div>
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier, "Carrier"))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), "Shipping Date", isReadOnly: true))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.TrackingNumber", trackingNumber, "Tracking Number"))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.TrackingNumber", trackingNumber, isReadOnly: true))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), isReadOnly: true))
 						</div>
 					}
 
