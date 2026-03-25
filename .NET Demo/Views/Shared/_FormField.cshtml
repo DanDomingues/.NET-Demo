@@ -5,10 +5,10 @@
     <div class="col-3">@Model.Label</div>
     @if(User.HasAdminRights() || !Model.RequiresRoleValidation)
     {
-        <div class="col-9"> <input asp-for="@Model.Key" type="text" class="form-control"/></div>
+        <div class="col-9"> <input asp-for="@Model.Value" type="text" class="form-control"/></div>
     }
     else
     {
-        <div class="col-9"> <input asp-for="@Model.Key" type="text" class="form-control" readonly/></div>
+        <div class="col-9"> <input asp-for="@Model.Value" type="text" class="form-control" readonly/></div>
     }
 </div>

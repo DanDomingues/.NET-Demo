@@ -16,6 +16,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     {
         protected override string DefaultFeedbackName => "Shopping Cart";
         protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
+        protected override string? DefaultIncludeProperties => "Product";
 
         IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
 
@@ -27,12 +28,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             }
 
             var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == userId);
-            var orderItems = Repo.GetAll(e => e.ApplicationUser.Id == userId, includeProperties: "Product");
+            var cartItems = Repo.GetAll(e => e.ApplicationUser.Id == userId, includeProperties: DefaultIncludeProperties);
 
             var header = new OrderHeader
             {
                 ApplicationUserId = userId,
-                OrderTotal = orderItems.Sum(e => e.TotalCost),
+                OrderTotal = cartItems.Sum(e => e.TotalCost),
 
                 //Details fetching, can be overwritten later on
                 Name = appUser.Name,
@@ -47,7 +48,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             unitOfWork.OrderHeaderRepository.Add(header);
             unitOfWork.Save();
 
-            foreach (var item in orderItems)
+            foreach (var item in cartItems)
             {
                 var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId == item.Product.Id);
                 item.Product.Images = [image];
@@ -55,7 +56,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             return new ShoppingCartVM
             {
-                ProductList = orderItems,
+                ProductList = cartItems,
                 OrderHeader = header
             };
         }
@@ -77,7 +78,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             //Luckly, all the editable properties are strings that come filled in the vm
             vm.ProductList = Repo.GetAll(
                 e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
-                includeProperties: "Product");
+                includeProperties: DefaultIncludeProperties);
 
             //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
             //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
@@ -105,17 +106,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 });
             }
 
-            foreach (var item in vm.ProductList)
-            {
-                unitOfWork.OrderItemDetailsRepository.Add(new()
-                {
-                    ProductId = item.ProductId,
-                    OrderHeaderId = vm.OrderHeader.Id,
-                    Count = item.Count,
-                    Price = item.TotalCost,
-                });   
-            }
-
             unitOfWork.Save();
 
             return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
@@ -134,6 +124,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 
                 if(session?.PaymentStatus?.ToLower() == "paid")
                 {
+                    paymentSuccessful = true;
                     unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
                     unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
                     unitOfWork.OrderHeaderRepository.UpdateOrderStatus(id, SD.ORDER_STATUS_APPROVED);
@@ -143,9 +134,25 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             if(paymentSuccessful)
             {
-                var cart = Repo.GetAll(e => e.ApplicationUserId == orderHeader.ApplicationUserId);
-                Repo.RemoveRange([.. cart]);
+                var cartItems = Repo.GetAll(
+                    e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
+                    includeProperties: DefaultIncludeProperties).ToArray();
+                var orderItems = cartItems.Select(item => new OrderItemDetails
+                {
+                    ProductId = item.ProductId,
+                    OrderHeaderId = id,
+                    Count = item.Count,
+                    Price = item.Product.Price
+                }).ToArray();
+
+                foreach (var item in orderItems) 
+                {
+                    unitOfWork.OrderItemDetailsRepository.Add(item);
+                }
+
+                Repo.RemoveRange([.. cartItems]);
                 HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
+                unitOfWork.Save();
             }
 
             return View(id);

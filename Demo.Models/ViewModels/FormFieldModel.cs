@@ -1,16 +1,9 @@
 namespace Demo.Models.ViewModels
 {
-    public class FormFieldModel
+    public class FormFieldModel(string? value, string? label = null, bool requiresRoleValidation = true)
     {
-        public string? Label { get; set; }
-        public string? Key { get; set; }
-        public bool RequiresRoleValidation { get; set; }
-
-        public FormFieldModel(string? key, string? label = null, bool requiresRoleValidation = true)
-        {
-            RequiresRoleValidation = requiresRoleValidation;
-            Key = key;
-            Label = label ?? key.Split('.').Last();
-        }
+        public string? Label { get; set; } = label;
+        public string? Value { get; set; } = value;
+        public bool RequiresRoleValidation { get; set; } = requiresRoleValidation;
     }
 }

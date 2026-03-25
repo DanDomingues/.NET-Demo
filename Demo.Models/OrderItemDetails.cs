@@ -22,6 +22,6 @@ namespace Demo.Models
         [ForeignKey("ProductId"), ValidateNever]
         public Product Product { get; set; }
 
-        double IProductOrderItem.TotalCost => Count * Price;
+        public double TotalCost => Count * Price;
     }
 }

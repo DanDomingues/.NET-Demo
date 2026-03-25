@@ -21,9 +21,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         protected override string? DefaultIncludeProperties => "ApplicationUser";
 
-        public IActionResult Details(int? orderId)
+        public IActionResult Details(int? id)
         {
-            var header = Repo.GetById(orderId, includeProperties: DefaultIncludeProperties);
+            var header = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
             var orderItems = unitOfWork.OrderItemDetailsRepository.GetAll(
                 details => details.OrderHeaderId == header.Id, 
                 track: false, 
@@ -36,14 +36,14 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult UpdateDetails(OrderVM vm)
         {
             var orderHeader = Repo.GetFirstOrDefault(order => order.ApplicationUserId.Equals(vm.Header.ApplicationUserId), track: false);
-
+               
             // Map fields from vm.Header to orderHeader
-            orderHeader.Name = vm.Header.Name;
-            orderHeader.PhoneNumber = vm.Header.PhoneNumber;
-            orderHeader.StreetAddress = vm.Header.StreetAddress;
-            orderHeader.City = vm.Header.City;
-            orderHeader.State = vm.Header.State;
-            orderHeader.PostalCode = vm.Header.PostalCode;           
+            orderHeader.Name = vm.Header.Name ?? orderHeader.Name;
+            orderHeader.PhoneNumber = vm.Header.PhoneNumber ?? orderHeader.PhoneNumber;
+            orderHeader.StreetAddress = vm.Header.StreetAddress ?? orderHeader.StreetAddress;
+            orderHeader.City = vm.Header.City ?? orderHeader.City;
+            orderHeader.State = vm.Header.State ?? orderHeader.State;
+            orderHeader.PostalCode = vm.Header.PostalCode ?? orderHeader.PostalCode;           
             orderHeader.TrackingNumber = vm.Header.TrackingNumber ?? orderHeader.TrackingNumber;
             orderHeader.Carrier = vm.Header.Carrier ?? orderHeader.Carrier;
                 
@@ -52,26 +52,37 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 unitOfWork.OrderHeaderRepository.Update, 
                 feedback: "Order Updated Sucessfully", 
                 redirection: "Details", 
-                redirectionArgs: new { orderId = orderHeader.Id });
+                redirectionArgs: new { id = orderHeader.Id });
         }
 
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult StartProcess(OrderVM vm)
         {
-            Repo.UpdateOrderStatus(vm.Header.Id, SD.ORDER_STATUS_PROCESSING);
+            var header = Repo.GetById(vm.Header.Id, track: true);
+            
+            //TODO: Work carrier options into a dropdown input
+            var defaultCarrier = "iCarry";
+            header.Carrier = defaultCarrier;
+            header.OrderStatus = SD.ORDER_STATUS_PROCESSING;
+            header.TrackingNumber = Guid.NewGuid().ToString();
             this.AddOperationFeedback("Order Details Changed Sucessfully");
             unitOfWork.Save();         
 
-            return RedirectToAction(nameof(Index));
+            return UpdateRepo(
+                header,
+                Repo.Update,
+                feedback: "Order Shipped",
+                redirection: "Details",
+                redirectionArgs: new { id = header.Id });
         }
 
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult ShipOrder(OrderVM vm)
         {
-            var header = Repo.GetById(vm.Header.Id);
+            var header = Repo.GetById(vm.Header.Id, track: false);
 
-            header.TrackingNumber = vm.Header.TrackingNumber;
-            header.Carrier = vm.Header.Carrier;
+            header.TrackingNumber = vm.Header.TrackingNumber ?? header.TrackingNumber;
+            header.Carrier = vm.Header.Carrier ?? header.Carrier;
             header.OrderStatus = SD.ORDER_STATUS_SHIPPED;
             header.ShippingDate = DateTime.Now;
 
@@ -84,8 +95,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 header,
                 Repo.Update,
                 feedback: "Order Shipped",
-                redirection: "Order set to Ship",
-                redirectionArgs: new { orderId = header.Id });
+                redirection: "Details",
+                redirectionArgs: new { id = header.Id });
         }
 
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
@@ -153,10 +164,10 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
                 "completed" => header => header.OrderStatus == SD.PAYMENT_STATUS_APPROVED,
                 "approved" => header => header.OrderStatus == SD.ORDER_STATUS_APPROVED,
-                _ => header => true,
+                _ => header => !string.IsNullOrEmpty(header.OrderStatus),
             };
 
-            return Json(data: all.Where(filter));
+            return Json(new { data = all.Where(filter) });
         }
 
         public IActionResult PaymentConfirmation(int id)
