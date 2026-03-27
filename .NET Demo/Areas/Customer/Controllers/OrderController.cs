@@ -16,9 +16,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     public class OrderController(IUnitOfWork unitOfWork) : RepositoryBoundController<OrderHeader, IOrderHeaderRepository>(unitOfWork)
     {
         protected override IOrderHeaderRepository Repo => unitOfWork.OrderHeaderRepository;
-
         protected override string DefaultFeedbackName => "Order";
-
         protected override string? DefaultIncludeProperties => "ApplicationUser";
 
         public IActionResult Details(int? id)
@@ -28,8 +26,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 details => details.OrderHeaderId == header.Id, 
                 track: false, 
                 includeProperties: "Product");
-            var vm = new OrderVM { Header = header, Details = orderItems };
-            return View(vm);
+
+            return View(new OrderVM 
+            { 
+                Header = header, 
+                Details = orderItems 
+            });
         }
 
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
@@ -126,8 +128,11 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult RequestPayment(OrderVM vm)
         {
-            vm.Header = Repo.GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
-            vm.Details = unitOfWork.OrderItemDetailsRepository.GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            vm.Header = Repo
+                .GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
+            vm.Details = unitOfWork.OrderItemDetailsRepository
+                .GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            
             return StripeUtility.PromptStripePayment(unitOfWork, Response, new()
             {
                items = vm.Details,

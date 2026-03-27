@@ -17,10 +17,10 @@ namespace Demo.DataAccess
         public bool sucessUsesId;
         public bool failUsesId;
 
-        public string SucessFullAction => FormatFullAction(sucessAction, sucessUsesId, headerId);
-        public string FailFullAction => FormatFullAction(failAction, failUsesId, headerId);
+        public readonly string SucessFullAction => FormatFullAction(sucessAction, sucessUsesId, headerId);
+        public readonly string FailFullAction => FormatFullAction(failAction, failUsesId, headerId);
 
-        public string FormatFullAction(string action, bool usesId, int id, string idTag = "id")
+        public static string FormatFullAction(string action, bool usesId, int id, string idTag = "id")
         {
             return usesId ? $"{action}?{idTag}={id}" : action;
         }
@@ -60,7 +60,7 @@ namespace Demo.DataAccess
                         PriceData = new SessionLineItemPriceDataOptions
                         {
                             //TODO: Add a method for getting the quantity appropriate price without factoring in the item's quantity
-                            UnitAmount = (long)((item.TotalCost / item.Count) * 100),
+                            UnitAmount = (long)(item.Product.Price * 100),
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {

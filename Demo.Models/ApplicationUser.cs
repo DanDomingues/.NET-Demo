@@ -12,8 +12,8 @@ namespace Demo.Models
 {
     public class ApplicationUser : IdentityUser, IModelBase
     {
-        [Required]
-        public string Name { get; set; }
+        //TODO: Research difference between 'required' and [Required]
+        [Required] public required string Name { get; set; }
         public string? StreetAddress { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
@@ -22,8 +22,8 @@ namespace Demo.Models
         //TODO: Stop mapping role directly in data table
         public string Role { get; set; }
         public int? CompanyId { get; set; }
-        [ForeignKey("CompanyId")]
-        [ValidateNever]
+
+        [ForeignKey("CompanyId"), ValidateNever] 
         public Company Company { get; set; }
 
         [NotMapped]

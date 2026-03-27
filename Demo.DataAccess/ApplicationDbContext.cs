@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Demo.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -15,11 +15,7 @@ namespace Demo.DataAccess
         public DbSet<OrderItemDetails> OrderItems { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            
-        }
-
+        //TODO: Improve model seeding to have more models with better descriptions
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -36,21 +32,18 @@ namespace Demo.DataAccess
                 new Company { Id = 3, Name = "Tito books" }
             );
 
-            modelBuilder.Entity<Product>().HasData(
-            new Product 
-                { 
-                    Id = 2,
-                    Title = "Fortune of Time",
-                    Author = "Billy Spark",
-                    ISBN = "SWD999901",
-                    Description = "Lorem ipsum",
-                    Price = 90,
-                    Price50 = 85,
-                    Price100 = 80,
-                    CategoryId = 3,
-                    //ImageUrl = "",
-                }
-            );
+            modelBuilder.Entity<Product>().HasData(new Product 
+            { 
+                Id = 2,
+                Title = "Fortune of Time",
+                Author = "Billy Spark",
+                ISBN = "SWD999901",
+                Description = "Lorem ipsum",
+                Price = 90,
+                Price50 = 85,
+                Price100 = 80,
+                CategoryId = 3,
+            });
         }
     }
 }

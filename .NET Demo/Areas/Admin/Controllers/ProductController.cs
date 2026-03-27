@@ -13,9 +13,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]
     public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : RepositoryBoundController<Product, IProductRepository>(unitOfWork)
-    {
-        private readonly IWebHostEnvironment webHostEnvironment = webHostEnvironment;
-        
+    {        
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
         protected override string? DefaultIncludeProperties => "Category";
@@ -56,6 +54,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return Upsert(id);
         }
 
+        //TODO: Remove upsert (as directly implemented) to remove UpsertVM as a method
         [HttpPost]
         public IActionResult UpsertVM(ProductVM vm, List<IFormFile>? files)
         {
@@ -74,14 +73,14 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
             if (files != null && files.Count > 0)
             {
-                UpsertProductImage(vm.Product, files);
+                AddProductImages(vm.Product, files);
                 unitOfWork.Save();
             }
         
             return Upsert(vm.Product);
         }
 
-        private void UpsertProductImage(Product product, List<IFormFile> files)
+        private void AddProductImages(Product product, List<IFormFile> files)
         {
             if(!ModelState.IsValid)
             {
@@ -139,8 +138,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return RedirectToAction(nameof(UpsertVM), new { id = image?.ProductId });
         }
 
-        #region API Calls
+        //TODO: Make key findings
 
+        #region API Calls
         [HttpDelete]
         public override IActionResult Delete(int id)
         {

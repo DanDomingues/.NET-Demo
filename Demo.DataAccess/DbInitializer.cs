@@ -22,12 +22,12 @@ namespace Demo.DataAccess
             }
             catch(Exception e)
             {
-                
+                throw new InvalidOperationException(e.Message);
             }
 
             if(!rm.RoleExistsAsync(SD.ROLE_USER_ADMIN).GetAwaiter().GetResult())
             {
-                void CreateRole(RoleManager<IdentityRole> manager, string role)
+                static void CreateRole(RoleManager<IdentityRole> manager, string role)
                 {
                     manager.CreateAsync(new(role));
                 }

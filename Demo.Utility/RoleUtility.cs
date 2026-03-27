@@ -28,6 +28,7 @@ namespace Demo.Utility
             return true;
         }
 
+        //TODO: Move to general utility class
         public static bool EqualsAny(this string s, params string[] values)
         {
             return values.Any(s.Equals);

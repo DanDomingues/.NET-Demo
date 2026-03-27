@@ -29,20 +29,18 @@ namespace Demo.Models
         [Required, Display(Name = "Price for 100+"), Range(1, 1000)]
         public double Price100 { get; set; }
 
-        [Required] 
-        public int TotallyNotAnID { get; set; }
+        //TODO: Remove this field
+        [Required] public int TotallyNotAnID { get; set; }
         
-        [Required] 
-        public int CategoryId { get; set; }
+        [Required] public int CategoryId { get; set; }
         
         [ForeignKey("CategoryId"), ValidateNever]
         public Category Category { get; set; }
         
-        [ValidateNever]
-        public List<ProductImage> Images { get; set; }
+        [ValidateNever] public List<ProductImage> Images { get; set; }
         //public string? ImageUrl {  get; set; }
 
-        public bool ImagesAreValid => Images?.Any() == true;
+        public bool ImagesAreValid => Images != null && Images.Count > 0;
         public string ThumbnailUrl => Images?.FirstOrDefault()?.Url ?? "https://placehold.co/500x600/png";
     }
 }

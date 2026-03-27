@@ -27,7 +27,6 @@ namespace Demo.Models.ViewModels
             }
             
             Label = label;
-
             RequiresRoleValidation = requiresRoleValidation;
             IsReadOnly = isReadOnly;
         }

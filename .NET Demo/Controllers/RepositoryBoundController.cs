@@ -73,9 +73,6 @@ namespace ASP.NET_Debut.Controllers
                     ModelState.AddModelError(
                         "Name",
                         $"A {feedbackName} with the {propertyName} '{prop}' was already added.");
-                    ModelState.AddModelError(
-                        "",
-                        $"A {feedbackName} with the {propertyName} '{prop}' was already added");
                 }
                 return true;
             }
@@ -106,9 +103,11 @@ namespace ASP.NET_Debut.Controllers
 
         public virtual IActionResult Index()
         {
-            //Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
+            //TODO: Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
             return View(Repo.GetAll(includeProperties: DefaultIncludeProperties).ToList());
         }
+
+        //TODO: Stated before, but view binding methods should be sealed and implemented as needed by inheriting classes
 
         public IActionResult Create()
         {
@@ -197,8 +196,8 @@ namespace ASP.NET_Debut.Controllers
         [HttpGet]
         public virtual IActionResult GetAll()
         {
-            var list = Repo.GetAll(includeProperties: DefaultIncludeProperties);
-            return Json(new { data = list });
+            var all = Repo.GetAll(includeProperties: DefaultIncludeProperties);
+            return Json(new { data = all });
         }
 
         [HttpDelete]
@@ -216,6 +215,7 @@ namespace ASP.NET_Debut.Controllers
 
             Repo.Remove(obj);
             unitOfWork.Save();
+
             return Json(new 
             { 
                 success = true, 

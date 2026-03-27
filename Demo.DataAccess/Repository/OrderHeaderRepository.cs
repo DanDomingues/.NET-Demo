@@ -14,13 +14,6 @@ namespace Demo.DataAccess.Repository
     {
 
         //TODO: Move validation to base and/or utility class
-        /*
-        protected void RunAndUpdate(OrderHeader obj, Action<OrderHeader> action)
-        {
-            action.Invoke(obj);
-            Update(obj);
-        }
-        */
 
         protected void IfIdValid(Action<OrderHeader> action, int id)
         {
@@ -31,7 +24,6 @@ namespace Demo.DataAccess.Repository
             }
             
             action.Invoke(obj);
-            //RunAndUpdate(obj, action);
         }
 
         protected void IfIdAndArgsValid(Action<OrderHeader> action, int id, params string[] args)

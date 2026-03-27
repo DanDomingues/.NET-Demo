@@ -9,10 +9,9 @@ using System.Diagnostics;
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
+    public class HomeController(IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
     {
-        private readonly IUnitOfWork unitOfWork = unitOfWork;
-        public IUnitOfWork UnitOfWork => unitOfWork;
+        IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
 
         public IActionResult Index()
         {
@@ -38,8 +37,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 Product = product, 
                 ProductId = product.Id,
                 ApplicationUserId = userId,
-                //Id = 0,
-                Count = 1 
             };
 
             return View(cart);
@@ -67,6 +64,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             {
                 //As binding may assign the directly available id through routing, we reset it to 0
                 //Entity id needs to be at 0 prior to adding to a DB through EF
+                
+                //TODO: Add a VM instead of editing the cart item directly to avoid having the cart id pre-set
                 cart.Id = 0;
                 
                 //Adds to DB and save

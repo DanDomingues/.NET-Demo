@@ -25,9 +25,14 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         public IActionResult RoleManagement(string id)
         {
-            var user = Repo.GetFirstOrDefault(u => u.Id == id);
-            var companies = unitOfWork.CompanyRepository.GetAll(track: false).Select(v => new SelectListItem(v.Name, v.Id.ToString()));
-            var roles = rm.Roles.Select(r => new SelectListItem(r.Name, r.Name));
+            var user = Repo
+                .GetFirstOrDefault(u => u.Id == id);
+            var companies = unitOfWork.CompanyRepository
+                .GetAll(track: false)
+                .Select(v => new SelectListItem(v.Name, v.Id.ToString()));
+            var roles = rm.Roles
+                .Select(r => new SelectListItem(r.Name, r.Name));
+                
             return View(new RoleManagementVM
             {
                 User = user,

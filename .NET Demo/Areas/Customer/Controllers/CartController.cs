@@ -14,8 +14,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     [Area("Customer")]
     public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork), IUnitOfWorkProvider
     {
-        protected override string DefaultFeedbackName => "Shopping Cart";
         protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
+        protected override string DefaultFeedbackName => "Shopping Cart";
         protected override string? DefaultIncludeProperties => "Product";
 
         IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
@@ -36,7 +36,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 OrderTotal = cartItems.Sum(e => e.TotalCost),
 
                 //Details fetching, can be overwritten later on
-                Name = appUser.Name,
+                Name = appUser.Name ?? string.Empty,
                 PhoneNumber = appUser.PhoneNumber ?? string.Empty,
                 StreetAddress = appUser.StreetAddress ?? string.Empty,
                 City = appUser.City ?? string.Empty,
@@ -50,7 +50,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             foreach (var item in cartItems)
             {
-                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId == item.Product.Id);
+                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId.Equals(item.Product.Id));
                 item.Product.Images = [image];
             }
 
@@ -137,6 +137,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 var cartItems = Repo.GetAll(
                     e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
                     includeProperties: DefaultIncludeProperties).ToArray();
+
                 var orderItems = cartItems.Select(item => new OrderItemDetails
                 {
                     ProductId = item.ProductId,
@@ -145,6 +146,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                     Price = item.Product.Price
                 }).ToArray();
 
+                //TODO: Implement through AddRange
                 foreach (var item in orderItems) 
                 {
                     unitOfWork.OrderItemDetailsRepository.Add(item);

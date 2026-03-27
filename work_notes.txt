@@ -24,6 +24,9 @@ Work points: Website
  - [Extension]: Use google sign
  - Have an "empty cart" view instead of rendering the base as is
  - Currency formatting is using BRL instead of USD
+ - When a user either opens the cart or their orders and they're not logged in, redirect to login page
+ - Alternatively, have A/B buttons for these two actions 
+ - Remove DemoWithRazor folder
  
 Done
  - Start process could assign carrier and tracking number

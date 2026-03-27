@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Utility
 {
+    //TODO: Remove if possible
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)

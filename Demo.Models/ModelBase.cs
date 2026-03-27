@@ -9,8 +9,7 @@ namespace Demo.Models
 {
     public abstract class ModelBase : IModelBase
     {
-        [Key]
-        public int Id { get; set; }
+        [Key] public int Id { get; set; }
     }
 
     public abstract class NamedModel : ModelBase, INamedModel
