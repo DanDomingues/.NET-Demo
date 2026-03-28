@@ -114,7 +114,11 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult OrderConfirmation(int id)
         {
             var paymentSuccessful = true;
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, includeProperties: "ApplicationUser");
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(
+                id, 
+                includeProperties: "ApplicationUser");
+            
+            orderHeader.OrderDate = DateTime.Now;
 
             if(orderHeader.OrderStatus != SD.PAYMENT_STATUS_DELAYED)
             {
@@ -128,12 +132,13 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                     unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
                     unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
                     unitOfWork.OrderHeaderRepository.UpdateOrderStatus(id, SD.ORDER_STATUS_APPROVED);
-                    unitOfWork.Save();
                 }
             }
 
             if(paymentSuccessful)
             {
+                orderHeader.PaymentDate = DateTime.Now;
+
                 var cartItems = Repo.GetAll(
                     e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
                     includeProperties: DefaultIncludeProperties).ToArray();
@@ -151,8 +156,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 unitOfWork.OrderItemDetailsRepository.AddRange(orderItems);
                 Repo.RemoveRange([.. cartItems]);
                 HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
-                unitOfWork.Save();
             }
+            
+            unitOfWork.Save();
 
             return View(id);
         }

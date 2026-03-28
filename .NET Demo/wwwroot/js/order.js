@@ -5,14 +5,6 @@ $(document).ready(function ()
     var url = new URLSearchParams(window.location.search);
     var userFilter = url.get("filter");
     var statusFilter = url.get("status") ?? "all";
-
-    var statusValues = [
-        "completed", 
-        "pending", 
-        "approved",
-        "inprocess", 
-        "shipped"];
-
     loadDataTable({ status: statusFilter, filter: userFilter});
 });
 
@@ -24,7 +16,7 @@ function loadDataTable(options) {
             { data: 'name' },
             { data: 'phoneNumber' },
             { data: 'applicationUser.email' },
-            { data: 'orderDate' },
+            { data: 'orderDate', render: renderDateTime },
             { data: 'orderStatus' },
             { data: 'orderTotal' },
             {
@@ -37,4 +29,15 @@ function loadDataTable(options) {
             }
         ]
     });
+}
+
+function renderDateTime(data) {
+    var date = new Date(data);
+    var day = date.getDate().toString().padStart(2, '0');
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var year = date.getFullYear().toString().padStart();
+    var hour = date.getHours().toString().padStart(2, '0');
+    var minute = date.getMinutes().toString().padStart(2, '0');
+    var second = date.getSeconds().toString().padStart(2, '0');
+    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
 }
