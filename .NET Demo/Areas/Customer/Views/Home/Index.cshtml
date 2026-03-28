@@ -14,9 +14,9 @@
 							<p class="card-title h5 text-dark opacity-75 text-uppercase text-center product-card-title">@product.Title</p>
 							<p class="card-title text-warning text-center product-card-author">by <b>@product.Author</b></p>
 							<p class="text-dark text-opacity-75 text-center">List price: 
-								<span class="text-decoration-line-through">@product.Price.ToString("c")</span>
+								<span class="text-decoration-line-through">@product.Price.FormatAsUSD()</span>
 							</p>
-							<p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.ToString("c")</span></p>
+							<p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.FormatAsUSD()</span></p>
 							<div class="mt-auto">
 							<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary bg-gradient border-0 form-control">
 								Details

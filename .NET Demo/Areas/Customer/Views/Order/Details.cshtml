@@ -108,11 +108,11 @@
 									<div class="row-container">
 										<div class="col-8">
 											<h6 class="text-white">@item.Product.Title</h6>
-											<small class="text-white">Price : @item.Product.Price.ToString("c")</small><br />
-											<small class="text-white">Quantity : @item.TotalCost.ToString("c")</small>
+											<small class="text-white">Price : @item.Product.Price.FormatAsUSD()</small><br />
+											<small class="text-white">Quantity : @item.TotalCost.FormatAsUSD()</small>
 										</div>
 										<div class="col-4 text-end">
-											<h5 class="text-success">@item.TotalCost.ToString("c")</h5>
+											<h5 class="text-success">@item.TotalCost.FormatAsUSD()</h5>
 										</div>
 									</div>
 								</li>
@@ -123,7 +123,7 @@
 										<h5 class="text-white">TOTAL</h5>
 									</div>
 									<div class="col-6 text-end">
-										<h5 class="text-white">@Model.Header.OrderTotal.ToString("c")</h5>
+										<h5 class="text-white">@Model.Header.OrderTotal.FormatAsUSD()</h5>
 									</div>
 								</div>
 							</li>

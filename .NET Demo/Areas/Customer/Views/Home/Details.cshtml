@@ -66,7 +66,7 @@
 							<h6 class="text-dark text-opacity-50 pb-2">
 								List Price:
 								<span class="text-decoration-line-through">
-									@Model.Product.Price.ToString("c")
+									@Model.Product.Price.FormatAsUSD()
 								</span>
 							</h6>
 						</div>
@@ -89,13 +89,13 @@
 								<div>Price</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price.ToString("c")</div>
+								<div>@Model.Product.Price.FormatAsUSD()</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price50.ToString("c")</div>
+								<div>@Model.Product.Price50.FormatAsUSD()</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price100.ToString("c")</div>
+								<div>@Model.Product.Price100.FormatAsUSD()</div>
 							</div>
 						</div>
 						<div class="row p-lg-2 my-3">

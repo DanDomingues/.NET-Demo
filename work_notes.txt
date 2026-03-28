@@ -11,9 +11,6 @@ Main checklist to publish
 
 Work points: Website
 
-    Front-End
-    - Disable "use another service" part for now
-
     Controlling
     - On user reg, the initial state of the form displays the company field regardless of role
     - Currency formatting is using BRL instead of USD
@@ -25,13 +22,13 @@ Work points: Website
     - Same thing for user registration
  
     Light Extensions
-    - Have an "empty cart" view instead of rendering the base as is
     
     Project Architecture
-     - Remove DemoWithRazor folder
      - Work on warnings whenever possible
  
 Done
+    - Remove DemoWithRazor folder
+    - Disable "use another service" part for now
     - On users management, change color of edit role button and switch colors for lock/unlock buttons
     - Move update order details button to be aligned with the other buttons on Order Details View
     - Make category on product details more "tag-like"
@@ -56,5 +53,6 @@ Done
     - Other managerial inputs (products, categoeries) are not visible
 
 Extensions
- - [Extension]: Use google sign
- - Alternatively, have A/B buttons for these two actions (adding products to cart with no user logged in)
+    - Have an "empty cart" view instead of rendering the base as is
+    - Use google sign
+    - Alternatively, have A/B buttons for these two actions (adding products to cart with no user logged in)
