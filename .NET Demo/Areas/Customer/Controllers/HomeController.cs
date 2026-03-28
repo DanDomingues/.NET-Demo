@@ -12,12 +12,13 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     public class HomeController(IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
     {
         IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
+        private const string ProductIncludeProperties = "Category,Images";
 
         public IActionResult Index()
         {
-            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category,Images");
+            var list = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
             //Inits the session value to be used in the layout view
-            //TODO: Test removing this and observe efffects
+            //TODO-2: Test removing this and observe efffects
             this.RefreshCartItemsCount();
 
             return View(list);
@@ -29,7 +30,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             var product = unitOfWork.ProductRepository.GetById(
                 id, 
-                includeProperties: "Category,Images",
+                includeProperties: ProductIncludeProperties,
                 track: false);
             
             var cart = new ShoppingCartItem 
@@ -65,7 +66,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 //As binding may assign the directly available id through routing, we reset it to 0
                 //Entity id needs to be at 0 prior to adding to a DB through EF
                 
-                //TODO: Add a VM instead of editing the cart item directly to avoid having the cart id pre-set
+                //TODO-1: Add a VM instead of editing the cart item directly to avoid having the cart id pre-set
                 cart.Id = 0;
                 
                 //Adds to DB and save

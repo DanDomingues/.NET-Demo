@@ -103,11 +103,9 @@ namespace ASP.NET_Debut.Controllers
 
         public virtual IActionResult Index()
         {
-            //TODO: Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
+            //TODO-1: Experiment with passing the IEnumerable directly to the view instead
             return View(Repo.GetAll(includeProperties: DefaultIncludeProperties).ToList());
         }
-
-        //TODO: Stated before, but view binding methods should be sealed and implemented as needed by inheriting classes
 
         public IActionResult Create()
         {

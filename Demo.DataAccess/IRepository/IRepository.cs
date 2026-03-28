@@ -14,6 +14,7 @@ namespace Demo.DataAccess.IRepository
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = true, string? includeProperties = null);
         T GetById(int? id, bool track = true, string? includeProperties = null);
         void Add(T entity);
+        void AddRange(T[] entities);
         void Update(T entity);
         void AddOrUpdate(T entity);
         void Remove(T entity);

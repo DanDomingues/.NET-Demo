@@ -27,6 +27,7 @@ Work points: Website
  - When a user either opens the cart or their orders and they're not logged in, redirect to login page
  - Alternatively, have A/B buttons for these two actions 
  - Remove DemoWithRazor folder
+ - Work on exceptions whenever possible
  
 Done
  - Start process could assign carrier and tracking number

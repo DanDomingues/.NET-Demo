@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Demo.Utility
 {
-    //TODO: Remove if possible
+    //TODO-5: Remove if possible
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            //TODO: Develop feature
+            //TODO-6: Develop feature
             return Task.CompletedTask;
         }
     }

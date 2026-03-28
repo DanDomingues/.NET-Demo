@@ -54,7 +54,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return Upsert(id);
         }
 
-        //TODO: Remove upsert (as directly implemented) to remove UpsertVM as a method
+        //TODO-3: Remove upsert (as directly implemented) to remove UpsertVM as a method
         [HttpPost]
         public IActionResult UpsertVM(ProductVM vm, List<IFormFile>? files)
         {
@@ -66,8 +66,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             //For our product to have an assigned ID, upset to DB must come first
-            //TODO: Validate if vm.Product gets an assigned ID after being used for DB updating
-            //var output = Upsert(vm.Product);
             Repo.AddOrUpdate(vm.Product);
             unitOfWork.Save();
 
@@ -91,7 +89,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var localDirectoryPath = Path.Combine(wwwRootPath, productPath);
             
-            //TODO: Experiment not explicitly adding the directory
+            //TODO-2: Experiment not explicitly adding the directory
             if(!Directory.Exists(localDirectoryPath))
             {
                 Directory.CreateDirectory(localDirectoryPath);
@@ -137,8 +135,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             this.AddOperationFeedback("Image Deleted Successfully");            
             return RedirectToAction(nameof(UpsertVM), new { id = image?.ProductId });
         }
-
-        //TODO: Make key findings
 
         #region API Calls
         [HttpDelete]

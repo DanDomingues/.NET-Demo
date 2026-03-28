@@ -138,20 +138,17 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                     e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
                     includeProperties: DefaultIncludeProperties).ToArray();
 
-                var orderItems = cartItems.Select(item => new OrderItemDetails
-                {
-                    ProductId = item.ProductId,
-                    OrderHeaderId = id,
-                    Count = item.Count,
-                    Price = item.Product.Price
-                }).ToArray();
+                var orderItems = cartItems
+                    .Select(item => new OrderItemDetails
+                    {
+                        ProductId = item.ProductId,
+                        OrderHeaderId = id,
+                        Count = item.Count,
+                        Price = item.Product.Price
+                    })
+                    .ToArray();
 
-                //TODO: Implement through AddRange
-                foreach (var item in orderItems) 
-                {
-                    unitOfWork.OrderItemDetailsRepository.Add(item);
-                }
-
+                unitOfWork.OrderItemDetailsRepository.AddRange(orderItems);
                 Repo.RemoveRange([.. cartItems]);
                 HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
                 unitOfWork.Save();

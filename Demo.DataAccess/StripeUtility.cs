@@ -59,7 +59,6 @@ namespace Demo.DataAccess
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            //TODO: Add a method for getting the quantity appropriate price without factoring in the item's quantity
                             UnitAmount = (long)(item.Product.Price * 100),
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions

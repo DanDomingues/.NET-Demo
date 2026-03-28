@@ -13,7 +13,7 @@ namespace Demo.DataAccess.Repository
     public class OrderHeaderRepository(DbSet<OrderHeader> set) : Repository<OrderHeader>(set), IOrderHeaderRepository
     {
 
-        //TODO: Move validation to base and/or utility class
+        //TODO-2: Move validation to base and/or utility class
 
         protected void IfIdValid(Action<OrderHeader> action, int id)
         {

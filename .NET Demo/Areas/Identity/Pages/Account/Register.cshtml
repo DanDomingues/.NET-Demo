@@ -53,8 +53,9 @@
                         <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
                         <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">PhoneNumber</label>
                     </div>
-                    @*TODO: Uncomment this after production is set. Currently, we need to manually create admin accounts*@
+                    @*TODO-1: Uncomment this after production is set. Currently, we need to manually create admin accounts*@
                     @*In a better state, the admin account will be seeded and roles will need to be granted*@
+                    @*Another option is having a const somewhere to quickly toggle this behaviour*@
                     @*
                     @if(User.IsInRole(SD.ROLE_USER_ADMIN))
                     {

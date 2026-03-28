@@ -29,7 +29,7 @@ namespace Demo.Models
         [Required, Display(Name = "Price for 100+"), Range(1, 1000)]
         public double Price100 { get; set; }
 
-        //TODO: Remove this field
+        //TODO-1: Remove this field
         [Required] public int TotallyNotAnID { get; set; }
         
         [Required] public int CategoryId { get; set; }
