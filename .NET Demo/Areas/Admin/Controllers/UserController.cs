@@ -46,13 +46,10 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             //First we retrieve the user from DB to compare and update   
             var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
 
-            //Then fetch role data and IDs from associated DBs
-            var prevRoleName = userFromDb.Role;
-            //var newRoleId = unitOfWork.DB.Roles.FirstOrDefault(r => r.Name.Equals(vm.User.Role)).Id;
-            //var userRole = unitOfWork.DB.UserRoles.FirstOrDefault(u => u.UserId.Equals(vm.User.Id));
+            //Then fetch role data and IDs from managers
+            var prevRoleName = um.GetRolesAsync(userFromDb).GetAwaiter().GetResult().FirstOrDefault();
 
             //Finally the role is updated
-            //userRole.RoleId = newRoleId;
             if(!string.IsNullOrEmpty(prevRoleName))
             {
                 um.RemoveFromRoleAsync(userFromDb, prevRoleName).GetAwaiter().GetResult();
@@ -69,22 +66,12 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 userFromDb.CompanyId = null;
             }
 
-            //Remove when role stops being tracked
-            userFromDb.Role = vm.User.Role;
-
             unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
         public override IActionResult GetAll()
         {
-            //TODO-1: When role stops being tracked, it will have to be inserted here
-
-            /*
-            var userRoles = unitOfWork.DB.Roles.ToList();
-            var userRoleIds = unitOfWork.DB.UserRoles.ToList();
-            */
-
             var users = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties).Select(u =>
             {
                 u.Company ??= new() { Name = "" };

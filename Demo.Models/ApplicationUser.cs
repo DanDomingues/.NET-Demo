@@ -18,12 +18,13 @@ namespace Demo.Models
         public string? State { get; set; }
         public string? PostalCode { get; set; }
 
-        //TODO-1: Stop mapping role directly in data table
-        public string Role { get; set; } = null!;
         public int? CompanyId { get; set; }
 
         [ForeignKey("CompanyId"), ValidateNever] 
         public Company? Company { get; set; }
+
+        [NotMapped]
+        public string Role { get; set; } = null!;
 
         [NotMapped]
         public bool Locked { get; set;}

@@ -176,13 +176,19 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                 user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                //TODO-1: Ideally, we'd remove the role as it's also available elsewhere in the DB, unless that behavior is provided as is
-                //Moreso, we'd use the role value just to assign it through proper channels
-                user.Role = Input.Role;
 
-                if(user.Role == SD.ROLE_USER_COMPANY)
+                var userRole = userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
+                if(userRole != null)
                 {
-                    user.CompanyId = Input.CompanyId;
+                    userManager.RemoveFromRoleAsync(user, userRole).GetAwaiter().GetResult();
+                }
+                if(Input.Role != null)
+                {
+                    userManager.AddToRoleAsync(user, Input.Role).GetAwaiter().GetResult();
+                    if(Input.Role == SD.ROLE_USER_COMPANY)
+                    {
+                        user.CompanyId = Input.CompanyId;
+                    }
                 }
 
                 var result = await userManager.CreateAsync(user, Input.Password);
