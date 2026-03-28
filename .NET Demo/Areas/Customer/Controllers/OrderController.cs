@@ -19,6 +19,15 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         protected override string DefaultFeedbackName => "Order";
         protected override string? DefaultIncludeProperties => "ApplicationUser";
 
+        public IActionResult ShowAll(string? status, string filter)
+        {
+            if((filter == "all" && User.HasAdminRights()) || filter == "user")
+            {
+                return View();
+            }
+            throw new ArgumentException("Invalid filter value. Expected 'all' or 'user'.");
+        }
+
         public IActionResult Details(int? id)
         {
             var header = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
@@ -148,23 +157,16 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllByStatus(string status)
+        public IActionResult GetAllByStatus(string status, string filter)
         {
-            if(!User.TryGetId(out var userId))
+            var all = GetAllByPermission(filter);
+
+            if(!all.Any())
             {
                 return Json(data: Array.Empty<OrderHeader>());
             }
 
-            var all = User.HasAdminRights() ?
-                Repo.GetAll(
-                    includeProperties: DefaultIncludeProperties, 
-                    track: false) :
-                Repo.GetAll(
-                    header => header.ApplicationUserId == userId, 
-                    includeProperties: DefaultIncludeProperties, 
-                    track: false);
-
-            Func<OrderHeader, bool> filter = status switch
+            Func<OrderHeader, bool> linqFilter = status switch
             {
                 "paymentpending" => header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING,
                 "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
@@ -173,7 +175,31 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 _ => header => !string.IsNullOrEmpty(header.OrderStatus),
             };
 
-            return Json(new { data = all.Where(filter) });
+            return Json(new { data = all.Where(linqFilter) });
+        }
+
+        private IEnumerable<OrderHeader> GetAllByPermission(string filter)
+        {
+            if(!User.TryGetId(out var userId))
+            {
+                return [];
+            }
+
+            if (filter == "all" && User.HasAdminRights())
+            {
+                return Repo.GetAll(
+                    includeProperties: DefaultIncludeProperties,
+                    track: false);
+            }
+            else if(filter == "user")
+            {
+                return Repo.GetAll(
+                    header => header.ApplicationUserId == userId, 
+                    includeProperties: DefaultIncludeProperties, 
+                    track: false);
+            }
+
+            throw new ArgumentException("Invalid filter value or permissions. Expected 'all' or 'user' with appropriate permissions.");
         }
 
         public IActionResult PaymentConfirmation(int id)

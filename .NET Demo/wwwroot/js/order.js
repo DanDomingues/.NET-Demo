@@ -2,22 +2,23 @@
 
 $(document).ready(function () 
 {
-    var url = window.location.search;
-    var statusValues = ["inprocess", "completed", "pending", "approved"];
-    for (var i = 0; i < statusValues.length; i++) 
-    {
-        if (url.includes(statusValues[i])) 
-        {
-            loadDataTable(statusValues[i]);
-            return;
-        }
-    }
-    loadDataTable("all");
+    var url = new URLSearchParams(window.location.search);
+    var userFilter = url.get("filter");
+    var statusFilter = url.get("status") ?? "all";
+
+    var statusValues = [
+        "completed", 
+        "pending", 
+        "approved",
+        "inprocess", 
+        "shipped"];
+
+    loadDataTable({ status: statusFilter, filter: userFilter});
 });
 
-function loadDataTable(status) {
+function loadDataTable(options) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/customer/order/getallbystatus?status=' + status },
+        "ajax": { url: '/customer/order/getallbystatus?status=' + options.status + '&filter=' + options.filter },
         "columns":[
             { data: 'id' },
             { data: 'name' },
