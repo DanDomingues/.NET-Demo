@@ -20,7 +20,7 @@ function loadDataTable()
                 "render": function (data) 
                 {
                     return renderBody(
-                        data.locked == true ? 'danger' : 'success', 
+                        data.locked == true ? 'success' : 'danger', 
                         data.locked == true ? 'Unlock' : 'Lock', 
                         data);
                 }
@@ -35,7 +35,7 @@ function loadDataTable()
             <a onClick=ToggleLock('${data.id}') class="btn btn-${tag} text-white" style="cursor: pointer; width: 120px;">
                 <i class="bi bi-unlock-fill"></i>${label}
             </a>
-            <a href="/admin/user/RoleManagement?id=${data.id}" class="btn btn-danger text-white" style="cursor: pointer; width: 120px;">
+            <a href="/admin/user/RoleManagement?id=${data.id}" class="btn btn-outline-warning" style="cursor: pointer; width: 120px;">
                 <i class="bi bi-pencil-square"></i>Edit Role
             </a>
         </div>
