@@ -103,8 +103,7 @@ namespace ASP.NET_Debut.Controllers
 
         public virtual IActionResult Index()
         {
-            //TODO-1: Experiment with passing the IEnumerable directly to the view instead
-            return View(Repo.GetAll(includeProperties: DefaultIncludeProperties).ToList());
+            return View(Repo.GetAll(includeProperties: DefaultIncludeProperties));
         }
 
         public IActionResult Create()
