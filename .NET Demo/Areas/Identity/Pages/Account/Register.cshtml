@@ -13,7 +13,7 @@
             <div class="col-md-12">
                 <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account</h3>
-                    <hr/>
+                    @*<hr/>*@
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="form-floating mb-3 col-md-12">
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
@@ -72,6 +72,8 @@
                     </div>
                 </form>
             </div>
+            @* External Login Providers *@
+            @*
             <div class="col-md-12">
                 <section>
                     <p class="divider-text d-flex pt-3">or</p>
@@ -104,6 +106,7 @@
                     }
                 </section>
             </div>
+            *@
         </div>
     </div>
 </div>
