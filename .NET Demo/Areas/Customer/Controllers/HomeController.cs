@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess;
 using Demo.Models;
+using Demo.Models.ViewModels;
 using Demo.Utility;
 using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -40,11 +41,17 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 ApplicationUserId = userId,
             };
 
-            return View(cart);
+            return View(new ShoppingCartItemVM 
+            { 
+                Product = product,
+                ProductId = product.Id,
+                ApplicationUserId = userId,
+                Count = 1
+            });
         }
 
         [HttpPost, Authorize]
-        public IActionResult Details(ShoppingCartItem cart)
+        public IActionResult Details(ShoppingCartItemVM vm)
         {
             if(!User.TryGetId(out var userId))
             {
@@ -52,25 +59,24 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             }
 
             var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(
-                c => c.ApplicationUserId == userId && c.ProductId == cart.ProductId, 
+                c => c.ApplicationUserId == userId && c.ProductId == vm.ProductId, 
                 track: false);
 
             if (existing != null)
             {
-                existing.Count += cart.Count;
+                existing.Count += vm.Count;
                 unitOfWork.ShoppingCarts.Update(existing);
                 unitOfWork.Save();
             }
             else
             {
-                //As binding may assign the directly available id through routing, we reset it to 0
-                //Entity id needs to be at 0 prior to adding to a DB through EF
-                
-                //TODO-1: Add a VM instead of editing the cart item directly to avoid having the cart id pre-set
-                cart.Id = 0;
-                
                 //Adds to DB and save
-                unitOfWork.ShoppingCarts.Add(cart);
+                unitOfWork.ShoppingCarts.Add(new()
+                {
+                    ProductId = vm.ProductId,
+                    ApplicationUserId = userId,
+                    Count = vm.Count
+                });
                 unitOfWork.Save();
 
                 //Updates the session value, to be used in the view
