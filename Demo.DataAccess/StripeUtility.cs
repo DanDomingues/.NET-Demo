@@ -37,7 +37,7 @@ namespace Demo.DataAccess
             var service = new SessionService();
             var session = service.Create(options);
             
-            Response.Headers.Add("Location", session.Url);
+            Response.Headers.Append("Location", session.Url);
 
             //We update the session id so that it can be found on confirmation validation
             //As the payment is still to be made, there's no value or need to update it yet

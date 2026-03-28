@@ -33,13 +33,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 id, 
                 includeProperties: ProductIncludeProperties,
                 track: false);
-            
-            var cart = new ShoppingCartItem 
-            { 
-                Product = product, 
-                ProductId = product.Id,
-                ApplicationUserId = userId,
-            };
 
             return View(new ShoppingCartItemVM 
             { 
@@ -55,7 +48,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             if(!User.TryGetId(out var userId))
             {
-                return View();
+                return this.RedirectToLogin();
             }
 
             var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(

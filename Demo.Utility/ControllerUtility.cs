@@ -20,5 +20,10 @@ namespace Demo.Utility
         {
             AddOperationFeedback(controller.TempData, actionName, objName: objName);
         }
+
+        public static IActionResult RedirectToLogin(this Controller controller)
+        {
+            return controller.RedirectToAction("Login", "Account", new { area = "Identity" });
+        }
     }
 }

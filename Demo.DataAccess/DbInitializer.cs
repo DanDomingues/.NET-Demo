@@ -50,7 +50,10 @@ namespace Demo.DataAccess
                 },
                 "Admin123");
 
-                var userInDb = db.ApplicationUsers.FirstOrDefault(u => u.UserName.Equals("admin@email.com"));
+                var userInDb = 
+                    db.ApplicationUsers.FirstOrDefault(u => u.UserName != null && u.UserName.Equals("admin@email.com")) 
+                    ?? throw new InvalidOperationException("Admin user was not created successfully.");
+                    
                 um.AddToRoleAsync(userInDb, SD.ROLE_USER_ADMIN);
             }
         }

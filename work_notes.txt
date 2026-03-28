@@ -15,14 +15,12 @@ Work points: Website
     - When a user either opens the cart or their orders and they're not logged in, redirect to login page
 
     Model
-    - Order date does not get assigned upon purchase
     - On role edit, have company editing for both company and employee roles
     - Same thing for user registration
-    
-    Project Architecture
-     - Work on warnings whenever possible
- 
+     
 Done
+    - Work on warnings whenever possible
+    - Order date does not get assigned upon purchase
     - On user reg, the initial state of the form displays the company field regardless of role
     - Currency formatting is using BRL instead of USD
     - Remove DemoWithRazor folder
