@@ -41,3 +41,54 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.product-grid .product-grid-item {
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 992px) {
+  .product-grid .product-grid-item {
+    flex: 0 0 27%;
+    max-width: 27%;
+  }
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+}
+
+.product-card-image {
+  aspect-ratio: 4 / 5;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card-body p {
+  margin-bottom: 0.5rem;
+}
+
+.product-card-title,
+.product-card-author {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card-title {
+  -webkit-line-clamp: 2;
+  min-height: 3.75rem;
+}
+
+.product-card-author {
+  -webkit-line-clamp: 2;
+  min-height: 3rem;
+}

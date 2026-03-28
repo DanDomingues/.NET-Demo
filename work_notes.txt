@@ -12,9 +12,7 @@ Main checklist to publish
 Work points: Website
 
     Front-End
-    - Separate "My Orders" as filtering only to the current user and "Manage/Orders" seeing all orders
     - Make category on product details more "tag-like"
-    - Enforce a max image height for product images on home view
     - Add shipped and processing filters to manage orders
     - Move update order details button to be aligned with the other buttons on Order Details View
     - On users management, change color of edit role button and switch colors for lock/unlock buttons
@@ -38,22 +36,24 @@ Work points: Website
      - Work on warnings whenever possible
  
 Done
- - Start process could assign carrier and tracking number
- - Update order info could be grouped in 2 parts
- - Upon purchasing, cart does not get emptied
- - Order summary to be aligned with pick up details
- - Order date to be displayed on data table
- - Order items dont get loaded into the vm
- - Update order details doesnt work
- - Update product images is not working, read and write
- - Manage users is not found when acessing it
- - Update header and footer from ASP.NET to .NET
- - Manage orders is not found when acessing it
- - Manage orders is viewable, regardless of the logged in user
- - Prod details view renders nothing in the case of empty images [DONE]
- - On details page, the tag is not visible, being rendered over white text [DONE]
- - Restore shopping cart to being rendered
- - Other managerial inputs (products, categoeries) are not visible
+    - Enforce a max image height for product images on home view
+    - Separate "My Orders" as filtering only to the current user and "Manage/Orders" seeing all orders
+    - Start process could assign carrier and tracking number
+    - Update order info could be grouped in 2 parts
+    - Upon purchasing, cart does not get emptied
+    - Order summary to be aligned with pick up details
+    - Order date to be displayed on data table
+    - Order items dont get loaded into the vm
+    - Update order details doesnt work
+    - Update product images is not working, read and write
+    - Manage users is not found when acessing it
+    - Update header and footer from ASP.NET to .NET
+    - Manage orders is not found when acessing it
+    - Manage orders is viewable, regardless of the logged in user
+    - Prod details view renders nothing in the case of empty images [DONE]
+    - On details page, the tag is not visible, being rendered over white text [DONE]
+    - Restore shopping cart to being rendered
+    - Other managerial inputs (products, categoeries) are not visible
 
 Extensions
  - [Extension]: Use google sign
