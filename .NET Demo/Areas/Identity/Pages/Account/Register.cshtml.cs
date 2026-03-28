@@ -185,7 +185,7 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                 if(Input.Role != null)
                 {
                     userManager.AddToRoleAsync(user, Input.Role).GetAwaiter().GetResult();
-                    if(Input.Role == SD.ROLE_USER_COMPANY)
+                    if(Input.Role.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE))
                     {
                         user.CompanyId = Input.CompanyId;
                     }

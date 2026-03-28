@@ -27,6 +27,9 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         {
             var user = Repo
                 .GetFirstOrDefault(u => u.Id == id);
+
+            user.Role = um.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;
+
             var companies = unitOfWork.CompanyRepository
                 .GetAll(track: false)
                 .Select(v => new SelectListItem(v.Name, v.Id.ToString()));
@@ -47,7 +50,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
 
             //Then fetch role data and IDs from managers
-            var prevRoleName = um.GetRolesAsync(userFromDb).GetAwaiter().GetResult().FirstOrDefault();
+            var prevRoleName = um.GetRolesAsync(userFromDb).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;
 
             //Finally the role is updated
             if(!string.IsNullOrEmpty(prevRoleName))
@@ -57,11 +60,11 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             um.AddToRoleAsync(userFromDb, vm.User.Role).GetAwaiter().GetResult();
 
             //And if needed, a company is assigned/unassigned
-            if(vm.User.Role == SD.ROLE_USER_COMPANY)
+            if(vm.User.Role.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE))
             {
                 userFromDb.CompanyId = vm.User.CompanyId;                
             }
-            else if(vm.User.Role != prevRoleName && prevRoleName == SD.ROLE_USER_COMPANY)
+            else if(vm.User.Role != prevRoleName && prevRoleName.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE))
             {
                 userFromDb.CompanyId = null;
             }
@@ -76,6 +79,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             {
                 u.Company ??= new() { Name = "" };
                 u.Locked = u.LockoutEnd != null && u.LockoutEnd.Value > DateTime.Now;
+                u.Role = um.GetRolesAsync(u).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;
                 return u;
             });
 

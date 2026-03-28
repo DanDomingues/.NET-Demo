@@ -8,5 +8,10 @@ namespace Demo.Utility
         {
             return amount.ToString("c", CultureInfo.GetCultureInfo("en-US"));
         }
+
+        public static bool EqualsAny(this string s, params string[] values)
+        {
+            return values.Any(s.Equals);
+        }
     }
 }
