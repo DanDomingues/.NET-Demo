@@ -92,3 +92,18 @@ body {
   -webkit-line-clamp: 2;
   min-height: 3rem;
 }
+
+.product-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #5aa7f5;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d8ecff 0%, #8cc7ff 100%);
+  color: #0d3b66;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(27, 110, 194, 0.18);
+}

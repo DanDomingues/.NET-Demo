@@ -12,8 +12,6 @@ Main checklist to publish
 Work points: Website
 
     Front-End
-    - Make category on product details more "tag-like"
-    - Add shipped and processing filters to manage orders
     - Move update order details button to be aligned with the other buttons on Order Details View
     - On users management, change color of edit role button and switch colors for lock/unlock buttons
     - Disable "use another service" part for now
@@ -36,6 +34,8 @@ Work points: Website
      - Work on warnings whenever possible
  
 Done
+    - Make category on product details more "tag-like"
+    - Add shipped and processing filters to manage orders
     - Enforce a max image height for product images on home view
     - Separate "My Orders" as filtering only to the current user and "Manage/Orders" seeing all orders
     - Start process could assign carrier and tracking number
