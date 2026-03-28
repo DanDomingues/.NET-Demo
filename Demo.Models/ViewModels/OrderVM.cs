@@ -8,8 +8,8 @@ namespace Demo.Models.ViewModels
 {
     public class OrderVM
     {
-        public OrderHeader? Header { get; set; }
-        public IEnumerable<OrderItemDetails>? Details { get; set; }
-        public IEnumerable<string>? Carriers { get; set; }
+        public OrderHeader Header { get; set; } = null!;
+        public IEnumerable<OrderItemDetails> Details { get; set; } = null!;
+        public IEnumerable<string> Carriers { get; set; } = null!;
     }
 }

@@ -74,7 +74,6 @@
 						{
 							@await Html.PartialAsync(partialName, new FormFieldModel("Header.SessionId", sessionId, isReadOnly: true))
 							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, isReadOnly: true))
-							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
 						}
 					</div>
 
@@ -138,6 +137,7 @@
 
 						@if(User.HasAdminRights())
 						{
+							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
 							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
 							{
 								<button asp-action="StartProcess" class="btn btn-success form-control my-1">Process Order</button>
