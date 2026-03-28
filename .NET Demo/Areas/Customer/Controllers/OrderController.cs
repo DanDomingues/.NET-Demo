@@ -22,6 +22,9 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult Details(int? id)
         {
             var header = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
+
+            var carriers = new string[] { "iCarry", "FedEx", "UPS", "USPS" };
+
             var orderItems = unitOfWork.OrderItemDetailsRepository.GetAll(
                 details => details.OrderHeaderId == header.Id, 
                 track: false, 
@@ -30,7 +33,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return View(new OrderVM 
             { 
                 Header = header, 
-                Details = orderItems 
+                Details = orderItems,
+                Carriers = carriers
             });
         }
 
@@ -61,9 +65,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             var header = Repo.GetById(vm.Header.Id, track: true);
             
-            //TODO-1: Work carrier options into a dropdown input
-            var defaultCarrier = "iCarry";
-            header.Carrier = defaultCarrier;
+            header.Carrier = vm.Header.Carrier ?? header.Carrier;
             header.OrderStatus = SD.ORDER_STATUS_PROCESSING;
             header.TrackingNumber = Guid.NewGuid().ToString();
             this.AddOperationFeedback("Order Details Changed Sucessfully");

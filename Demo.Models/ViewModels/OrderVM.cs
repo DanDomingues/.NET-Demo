@@ -10,5 +10,6 @@ namespace Demo.Models.ViewModels
     {
         public OrderHeader? Header { get; set; }
         public IEnumerable<OrderItemDetails>? Details { get; set; }
+        public IEnumerable<string>? Carriers { get; set; }
     }
 }

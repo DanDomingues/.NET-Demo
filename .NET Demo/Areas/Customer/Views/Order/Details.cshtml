@@ -81,12 +81,13 @@
 					@if(Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED))
 					{
 						<div class="col-12 col-lg-6 pb-4">
+							@*TODO-3: Make the following title a partial*@
 							<div class="row">
 								<h4 class="d-flex justify-content-between align-content-center mb-3">
 									<span class="text-primary">Shipping</span>
 								</h4>
 							</div>
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier))
+							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier, options: Model.Carriers))
 							@await Html.PartialAsync(partialName, new FormFieldModel("Header.TrackingNumber", trackingNumber, isReadOnly: true))
 							@await Html.PartialAsync(partialName, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), isReadOnly: true))
 						</div>

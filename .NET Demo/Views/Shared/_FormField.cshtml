@@ -17,7 +17,20 @@
     else
     {
         <div class="col-9">
-            @Html.TextBox(Model.FieldName, Model.Value, new { @class = "form-control" })
+            @if(Model.Options?.Any() == true)
+            {
+                @Html.DropDownList(
+                    Model.FieldName, 
+                    Model.Options.Select(option => new SelectListItem(option, option)),
+                    new { @class = "form-control" })
+            }
+            else
+            {
+                 @Html.TextBox(
+                    Model.FieldName, 
+                    Model.Value, 
+                    new { @class = "form-control" })
+            }
         </div>
     }
 </div>
