@@ -44,7 +44,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             });
         }
 
-        [HttpPost] public IActionResult RoleManagement(RoleManagementVM vm)
+        [HttpPost] 
+        public IActionResult RoleManagement(RoleManagementVM vm)
         {   
             //First we retrieve the user from DB to compare and update   
             var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
@@ -73,6 +74,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region API CALLS
         public override IActionResult GetAll()
         {
             var users = Repo.GetAll(track: false, includeProperties: DefaultIncludeProperties).Select(u =>
@@ -113,5 +115,5 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return Json(new { success = true, message = "Lock updated successfuly" });
         }
     }
-
+    #endregion
 }

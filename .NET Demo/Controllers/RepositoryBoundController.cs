@@ -18,6 +18,19 @@ namespace ASP.NET_Debut.Controllers
         protected abstract string DefaultFeedbackName { get; }
         protected virtual string? DefaultIncludeProperties => null;
 
+        protected IActionResult UpdateRepo(
+            TModel obj, 
+            Action<TModel> action,
+            string feedback = "success",
+            string redirection = "Index",
+            object? redirectionArgs = null)
+        {
+            action(obj);
+            unitOfWork.Save();
+            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
+            return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
+        }
+
         private bool Find(int? id, out TModel output, bool track = false)
         {
             if (id == null || id == 0)
@@ -34,19 +47,6 @@ namespace ASP.NET_Debut.Controllers
             }
 
             return true;
-        }
-
-        protected IActionResult UpdateRepo(
-            TModel obj, 
-            Action<TModel> action,
-            string feedback = "success",
-            string redirection = "Index",
-            object? redirectionArgs = null)
-        {
-            action(obj);
-            unitOfWork.Save();
-            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
-            return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 
         protected bool CheckForDuplicates(
@@ -101,28 +101,20 @@ namespace ASP.NET_Debut.Controllers
             return true;
         }
 
-        public virtual IActionResult Index()
+        //TODO-5: Possibly move this to a partial class
+        #region HTTP GET
+
+        protected IActionResult IndexInternal()
         {
             return View(Repo.GetAll(includeProperties: DefaultIncludeProperties));
         }
 
-        public IActionResult Create()
+        protected IActionResult CreateInternal()
         {
             return View(new TModel());
         }
 
-        [HttpPost]
-        public virtual IActionResult Create(TModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                return UpdateRepo(obj, Repo.Add, feedback : "created");
-            }
-
-            return View();
-        }
-
-        public IActionResult Edit(int? id)
+        protected IActionResult EditInternal(int? id)
         {
             if (!Find(id, out TModel model))
             {
@@ -132,8 +124,41 @@ namespace ASP.NET_Debut.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult Edit(TModel model)
+        protected IActionResult DeleteInternal(int? id)
+        {
+            if (!Find(id, out TModel model))
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        protected IActionResult UpsertInternal(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return View(new TModel());
+            }
+
+            return View(Repo.GetById(id));
+        }
+
+        #endregion
+
+        #region HTTP POST
+
+        protected IActionResult CreateInternalOnPost(TModel obj)
+        {
+            if (ModelState.IsValid)
+            {
+                return UpdateRepo(obj, Repo.Add, feedback : "created");
+            }
+
+            return View();
+        }
+
+        protected IActionResult EditInternalOnPost(TModel model)
         {
             if(!Find(model.Id, out TModel _))
             {
@@ -148,18 +173,7 @@ namespace ASP.NET_Debut.Controllers
             return View();
         }
 
-        public IActionResult Delete(int? id)
-        {
-            if (!Find(id, out TModel model))
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Delete(TModel model)
+        protected IActionResult DeleteInternalOnPost(TModel model)
         {
             if (!Find(model.Id, out var foundModel))
             {
@@ -169,18 +183,7 @@ namespace ASP.NET_Debut.Controllers
             return UpdateRepo(foundModel, Repo.Remove, feedback: "deleted");
         }
 
-        public virtual IActionResult Upsert(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return View(new TModel());
-            }
-
-            return View(Repo.GetById(id));
-        }
-
-        [HttpPost]
-        public IActionResult Upsert(TModel model)
+        protected IActionResult UpsertInternalOnPost(TModel model)
         {
             if(ModelState.IsValid && ValidateForUpsert(model))
             {
@@ -188,6 +191,8 @@ namespace ASP.NET_Debut.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        
+        #endregion
 
         #region APICalls
         [HttpGet]

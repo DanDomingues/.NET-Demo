@@ -61,7 +61,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             };
         }
 
-        public override IActionResult Index()
+        public IActionResult Index()
         {
             return View(BuildViewModel());
         }
@@ -69,46 +69,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult Summary()
         {
             return View(BuildViewModel());
-        }
-
-        [HttpPost, ActionName("Summary")]
-        public IActionResult SummaryPost(ShoppingCartVM vm)
-        {
-            //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
-            //Luckly, all the editable properties are strings that come filled in the vm
-            vm.ProductList = Repo.GetAll(
-                e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
-                includeProperties: DefaultIncludeProperties);
-
-            //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
-            //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
-            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
-
-            //Order total needs to be recalculated as the products may have been changed in the view
-            vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
-
-            //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
-            var isCompanyUser = appUser.CompanyId.GetValueOrDefault() > 0;
-            vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
-            vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
-
-            if(!isCompanyUser)
-            {
-                return StripeUtility.PromptStripePayment(unitOfWork, Response, new StripeProcessDto
-                {
-                    items = vm.ProductList,
-                    headerId = vm.OrderHeader.Id,
-                    area = "Customer",
-                    page = "cart",
-                    sucessAction = "OrderConfirmation",
-                    failAction = "Index",
-                    sucessUsesId = true,
-                });
-            }
-
-            unitOfWork.Save();
-
-            return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
         }
 
         public IActionResult OrderConfirmation(int id)
@@ -162,6 +122,48 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             return View(id);
         }
+
+        [HttpPost]
+        public IActionResult Summary(ShoppingCartVM vm)
+        {
+            //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
+            //Luckly, all the editable properties are strings that come filled in the vm
+            vm.ProductList = Repo.GetAll(
+                e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
+                includeProperties: DefaultIncludeProperties);
+
+            //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
+            //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
+            var appUser = unitOfWork.ApplicationUserRepository
+                .GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
+
+            //Order total needs to be recalculated as the products may have been changed in the view
+            vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
+
+            //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
+            var isCompanyUser = appUser.CompanyId.GetValueOrDefault() > 0;
+            vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
+            vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;
+
+            if(!isCompanyUser)
+            {
+                return StripeUtility.PromptStripePayment(unitOfWork, Response, new StripeProcessDto
+                {
+                    items = vm.ProductList,
+                    headerId = vm.OrderHeader.Id,
+                    area = "Customer",
+                    page = "cart",
+                    sucessAction = "OrderConfirmation",
+                    failAction = "Index",
+                    sucessUsesId = true,
+                });
+            }
+
+            unitOfWork.Save();
+
+            return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
+        }
+
 
         public IActionResult Add(int id)
         {

@@ -32,7 +32,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return base.ValidateForUpsert(model) && !CheckForDuplicatesByName(model);
         }
 
-        public override IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id)
         {
             var vm = new ProductVM
             {
@@ -49,14 +49,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
-        public IActionResult UpsertVM(int? id)
-        {
-            return Upsert(id);
-        }
-
-        //TODO-3: Remove upsert (as directly implemented) to remove UpsertVM as a method
         [HttpPost]
-        public IActionResult UpsertVM(ProductVM vm, List<IFormFile>? files)
+        public IActionResult Upsert(ProductVM vm, List<IFormFile>? files)
         {
             vm.Product.Name ??= vm.Product.Title;
 
@@ -75,7 +69,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 unitOfWork.Save();
             }
         
-            return Upsert(vm.Product);
+            return UpsertInternalOnPost(vm.Product);
         }
 
         private void AddProductImages(Product product, List<IFormFile> files)
@@ -132,7 +126,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             this.AddOperationFeedback("Image Deleted Successfully");            
-            return RedirectToAction(nameof(UpsertVM), new { id = image?.ProductId });
+            return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
         }
 
         #region API Calls

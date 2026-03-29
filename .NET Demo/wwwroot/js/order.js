@@ -10,7 +10,7 @@ $(document).ready(function ()
 
 function loadDataTable(options) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/customer/order/getallbystatus?status=' + options.status + '&filter=' + options.filter },
+        "ajax": { url: '/customer/order/getallby?status=' + options.status + '&filter=' + options.filter },
         "columns":[
             { data: 'id' },
             { data: 'name' },

@@ -19,7 +19,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         protected override string DefaultFeedbackName => "Order";
         protected override string? DefaultIncludeProperties => "ApplicationUser";
 
-        public IActionResult ShowAll(string? status, string filter)
+        public IActionResult Index(string filter)
         {
             if((filter == "all" && User.HasAdminRights()) || filter == "user")
             {
@@ -32,7 +32,14 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         {
             var header = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
 
-            var carriers = new string[] { "iCarry", "FedEx", "UPS", "USPS" };
+            //TODO-5: Move this to an utility class
+            var carriers = new string[] 
+            { 
+                "iCarry", 
+                "FedEx", 
+                "UPS", 
+                "USPS" 
+            };
 
             var orderItems = unitOfWork.OrderItemDetailsRepository.GetAll(
                 details => details.OrderHeaderId == header.Id, 
@@ -47,7 +54,28 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult PaymentConfirmation(int id)
+        {
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
+            if(orderHeader.OrderStatus == SD.PAYMENT_STATUS_DELAYED)
+            {
+                var service = new SessionService();
+                var session = service.Get(orderHeader.SessionId);
+                
+                if(session?.PaymentStatus?.ToLower() == "paid")
+                {
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
+                    unitOfWork.Save();
+                }
+            }
+
+            return View(id);
+        }
+
+        //BUTTON ACTIONS
+
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
         {
             var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
@@ -69,7 +97,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirection: "Index");
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult StartProcess(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id, track: true);
@@ -88,7 +116,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirectionArgs: new { id = header.Id });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult ShipOrder(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id, track: false);
@@ -111,7 +139,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirectionArgs: new { id = header.Id });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult CancelOrder(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id);
@@ -136,7 +164,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return RedirectToAction(nameof(Details), new { orderId = header.Id });
         }
         
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult RequestPayment(OrderVM vm)
         {
             vm.Header = Repo
@@ -157,7 +185,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllByStatus(string status, string filter)
+        public IActionResult GetAllBy(string status, string filter)
         {
             var all = GetAllByPermission(filter);
 
@@ -166,7 +194,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 return Json(data: Array.Empty<OrderHeader>());
             }
 
-            Func<OrderHeader, bool> linqFilter = status switch
+            Func<OrderHeader, bool> statusFilter = status switch
             {
                 "paymentpending" => header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING,
                 "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
@@ -175,7 +203,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 _ => header => !string.IsNullOrEmpty(header.OrderStatus),
             };
 
-            return Json(new { data = all.Where(linqFilter) });
+            return Json(new { data = all.Where(statusFilter) });
         }
 
         private IEnumerable<OrderHeader> GetAllByPermission(string filter)
@@ -200,25 +228,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             }
 
             throw new ArgumentException("Invalid filter value or permissions. Expected 'all' or 'user' with appropriate permissions.");
-        }
-
-        public IActionResult PaymentConfirmation(int id)
-        {
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
-            if(orderHeader.OrderStatus == SD.PAYMENT_STATUS_DELAYED)
-            {
-                var service = new SessionService();
-                var session = service.Get(orderHeader.SessionId);
-                
-                if(session?.PaymentStatus?.ToLower() == "paid")
-                {
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
-                    unitOfWork.Save();
-                }
-            }
-
-            return View(id);
         }
     }
 }

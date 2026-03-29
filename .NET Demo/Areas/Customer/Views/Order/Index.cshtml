@@ -32,7 +32,7 @@
 			<ul class="list-group list-group-horizontal-sm">
 				@foreach(var item in classes)
 				{
-					<a style="text-decoration:none;" asp-controller="Order" asp-action="ShowAll" asp-route-status=@item.Key asp-route-filter=@filter">
+					<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status=@item.Key asp-route-filter=@filter">
 						<li class="list-group-item @classes[item.Key].Item1">@classes[item.Key].Item2</li>
 					</a>
 				}
