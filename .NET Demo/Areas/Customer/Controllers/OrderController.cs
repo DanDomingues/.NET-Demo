@@ -31,16 +31,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         public IActionResult Details(int? id)
         {
             var header = Repo.GetById(id, includeProperties: DefaultIncludeProperties);
-
-            //TODO-5: Move this to an utility class
-            var carriers = new string[] 
-            { 
-                "iCarry", 
-                "FedEx", 
-                "UPS", 
-                "USPS" 
-            };
-
             var orderItems = unitOfWork.OrderItemDetailsRepository.GetAll(
                 details => details.OrderHeaderId == header.Id, 
                 track: false, 
@@ -50,7 +40,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             { 
                 Header = header, 
                 Details = orderItems,
-                Carriers = carriers
+                Carriers = [.. SD.CARRIER_LIST]
             });
         }
 
