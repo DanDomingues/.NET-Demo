@@ -7,6 +7,7 @@ namespace Demo.Models.ViewModels
         public string FieldName { get; set; }
         public string? Label { get; set; }
         public string? Value { get; set; }
+        public IEnumerable<string>? Options { get; set; }
         public bool RequiresRoleValidation { get; set; }
         public bool IsReadOnly { get; set; }
 
@@ -14,6 +15,7 @@ namespace Demo.Models.ViewModels
             string fieldName,
             string? value,
             string? label = null,
+            IEnumerable<string>? options = null,
             bool requiresRoleValidation = true,
             bool isReadOnly = false)
         {
@@ -27,7 +29,7 @@ namespace Demo.Models.ViewModels
             }
             
             Label = label;
-
+            Options = options;
             RequiresRoleValidation = requiresRoleValidation;
             IsReadOnly = isReadOnly;
         }

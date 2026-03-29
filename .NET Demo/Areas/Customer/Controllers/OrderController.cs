@@ -16,10 +16,17 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     public class OrderController(IUnitOfWork unitOfWork) : RepositoryBoundController<OrderHeader, IOrderHeaderRepository>(unitOfWork)
     {
         protected override IOrderHeaderRepository Repo => unitOfWork.OrderHeaderRepository;
-
         protected override string DefaultFeedbackName => "Order";
-
         protected override string? DefaultIncludeProperties => "ApplicationUser";
+
+        public IActionResult Index(string filter)
+        {
+            if((filter == "all" && User.HasAdminRights()) || filter == "user")
+            {
+                return View();
+            }
+            throw new ArgumentException("Invalid filter value. Expected 'all' or 'user'.");
+        }
 
         public IActionResult Details(int? id)
         {
@@ -28,11 +35,37 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 details => details.OrderHeaderId == header.Id, 
                 track: false, 
                 includeProperties: "Product");
-            var vm = new OrderVM { Header = header, Details = orderItems };
-            return View(vm);
+
+            return View(new OrderVM 
+            { 
+                Header = header, 
+                Details = orderItems,
+                Carriers = [.. SD.CARRIER_LIST]
+            });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        public IActionResult PaymentConfirmation(int id)
+        {
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
+            if(orderHeader.OrderStatus == SD.PAYMENT_STATUS_DELAYED)
+            {
+                var service = new SessionService();
+                var session = service.Get(orderHeader.SessionId);
+                
+                if(session?.PaymentStatus?.ToLower() == "paid")
+                {
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
+                    unitOfWork.Save();
+                }
+            }
+
+            return View(id);
+        }
+
+        //BUTTON ACTIONS
+
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
         {
             var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
@@ -54,14 +87,12 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirection: "Index");
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult StartProcess(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id, track: true);
             
-            //TODO: Work carrier options into a dropdown input
-            var defaultCarrier = "iCarry";
-            header.Carrier = defaultCarrier;
+            header.Carrier = vm.Header.Carrier ?? header.Carrier;
             header.OrderStatus = SD.ORDER_STATUS_PROCESSING;
             header.TrackingNumber = Guid.NewGuid().ToString();
             this.AddOperationFeedback("Order Details Changed Sucessfully");
@@ -75,7 +106,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirectionArgs: new { id = header.Id });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult ShipOrder(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id, track: false);
@@ -98,7 +129,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 redirectionArgs: new { id = header.Id });
         }
 
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult CancelOrder(OrderVM vm)
         {
             var header = Repo.GetById(vm.Header.Id);
@@ -123,11 +154,14 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return RedirectToAction(nameof(Details), new { orderId = header.Id });
         }
         
-        [HttpPost, Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
+        [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult RequestPayment(OrderVM vm)
         {
-            vm.Header = Repo.GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
-            vm.Details = unitOfWork.OrderItemDetailsRepository.GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            vm.Header = Repo
+                .GetById(vm.Header.Id, includeProperties: DefaultIncludeProperties);
+            vm.Details = unitOfWork.OrderItemDetailsRepository
+                .GetAll(item => item.OrderHeaderId.Equals(vm.Header.Id), includeProperties: "Product");
+            
             return StripeUtility.PromptStripePayment(unitOfWork, Response, new()
             {
                items = vm.Details,
@@ -141,23 +175,16 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllByStatus(string status)
+        public IActionResult GetAllBy(string status, string filter)
         {
-            if(!User.TryGetId(out var userId))
+            var all = GetAllByPermission(filter);
+
+            if(!all.Any())
             {
                 return Json(data: Array.Empty<OrderHeader>());
             }
 
-            var all = User.HasAdminRights() ?
-                Repo.GetAll(
-                    includeProperties: DefaultIncludeProperties, 
-                    track: false) :
-                Repo.GetAll(
-                    header => header.ApplicationUserId == userId, 
-                    includeProperties: DefaultIncludeProperties, 
-                    track: false);
-
-            Func<OrderHeader, bool> filter = status switch
+            Func<OrderHeader, bool> statusFilter = status switch
             {
                 "paymentpending" => header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING,
                 "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
@@ -166,26 +193,31 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 _ => header => !string.IsNullOrEmpty(header.OrderStatus),
             };
 
-            return Json(new { data = all.Where(filter) });
+            return Json(new { data = all.Where(statusFilter) });
         }
 
-        public IActionResult PaymentConfirmation(int id)
+        private IEnumerable<OrderHeader> GetAllByPermission(string filter)
         {
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
-            if(orderHeader.OrderStatus == SD.PAYMENT_STATUS_DELAYED)
+            if(!User.TryGetId(out var userId))
             {
-                var service = new SessionService();
-                var session = service.Get(orderHeader.SessionId);
-                
-                if(session?.PaymentStatus?.ToLower() == "paid")
-                {
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
-                    unitOfWork.Save();
-                }
+                return [];
             }
 
-            return View(id);
+            if (filter == "all" && User.HasAdminRights())
+            {
+                return Repo.GetAll(
+                    includeProperties: DefaultIncludeProperties,
+                    track: false);
+            }
+            else if(filter == "user")
+            {
+                return Repo.GetAll(
+                    header => header.ApplicationUserId == userId, 
+                    includeProperties: DefaultIncludeProperties, 
+                    track: false);
+            }
+
+            throw new ArgumentException("Invalid filter value or permissions. Expected 'all' or 'user' with appropriate permissions.");
         }
     }
 }

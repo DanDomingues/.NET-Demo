@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -12,7 +12,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Demo.DataAccess.IRepository;
 using Demo.Models;
-using Demo.Utility;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,11 +28,11 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IUserStore<ApplicationUser> userStore;
-        private readonly IUserEmailStore<ApplicationUser> emailStore;
+        private readonly IUserStore<IdentityUser> userStore;
+        private readonly IUserEmailStore<IdentityUser> emailStore;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
         private readonly IUnitOfWork unitOfWork;
@@ -110,10 +109,10 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
         }
 
         public RegisterModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IUserStore<ApplicationUser> userStore,
-            SignInManager<ApplicationUser> signInManager,
+            IUserStore<IdentityUser> userStore,
+            SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IUnitOfWork unitOfWork)
@@ -176,12 +175,19 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
                 user.State = Input.State;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                //TODO: Ideally, we'd remove the role as it's also available elsewhere in the DB, unless that behavior is provided as is
-                user.Role = Input.Role;
 
-                if(user.Role == SD.ROLE_USER_COMPANY)
+                var userRole = userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
+                if(userRole != null)
                 {
-                    user.CompanyId = Input.CompanyId;
+                    userManager.RemoveFromRoleAsync(user, userRole).GetAwaiter().GetResult();
+                }
+                if(Input.Role != null)
+                {
+                    userManager.AddToRoleAsync(user, Input.Role).GetAwaiter().GetResult();
+                    if(Input.Role.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE))
+                    {
+                        user.CompanyId = Input.CompanyId;
+                    }
                 }
 
                 var result = await userManager.CreateAsync(user, Input.Password);
@@ -246,13 +252,14 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<ApplicationUser> GetEmailStore()
+        private IUserEmailStore<IdentityUser> GetEmailStore()
         {
             if (!userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<ApplicationUser>)userStore;
+            return (IUserEmailStore<IdentityUser>)userStore;
         }
     }
 }
+

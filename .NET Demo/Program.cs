@@ -21,11 +21,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-//builder.Services.AddIdentity<ApplicationUser, IdentityUser>();
 
 //Must be added after AddIdentity
 builder.Services.ConfigureApplicationCookie(options =>
@@ -45,8 +44,8 @@ builder.Services.AddSession(options =>
 
 //Handles custom DI
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddRazorPages();
 

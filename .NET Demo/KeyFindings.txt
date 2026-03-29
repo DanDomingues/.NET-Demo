@@ -1,0 +1,29 @@
+Key Findings
+
+1. API calls
+- The admin product controller exposes an HTTP DELETE action for product removal.
+- The delete action returns JSON so client-side code can handle success and failure states without a full page reload.
+
+2. AJAX
+- AJAX is typically used here to call controller endpoints asynchronously from the UI.
+- This is useful for actions like delete because the page can update dynamically after the server responds.
+
+3. DataTables
+- DataTables is commonly paired with JSON endpoints to render searchable, sortable, paginated tables in the browser.
+- In this project, it likely consumes controller data and refreshes rows after CRUD actions.
+
+4. Role of ID
+- The `id` parameter uniquely identifies the product or image being fetched, updated, or deleted.
+- It is passed from routes or query values into controller actions to target a single database record.
+
+5. What Entity Framework does
+- Entity Framework Core maps C# model classes to database tables and handles querying and persistence.
+- Repository methods like `GetById`, `GetAll`, `AddOrUpdate`, and `Remove` are thin wrappers over EF Core operations.
+
+6. Product image flow
+- Uploaded files are stored under `wwwroot\\images\\products\\product-{productName}`.
+- Each stored file is represented by a `ProductImage` row linked back to its parent product through `ProductId`.
+
+7. Admin controller responsibility
+- The controller coordinates validation, persistence, file storage, and user feedback for product management.
+- It relies on the unit of work and repository abstractions instead of writing data-access logic directly in each action.

@@ -31,9 +31,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Order" asp-action="Index">My Orders</a>
-                        </li>
+                        @if(User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Order" asp-action="Index" asp-route-filter="user">My Orders</a>
+                            </li>
+                        }
                         @if(User.IsInRole(SD.ROLE_USER_ADMIN))
                         {
                             <li class="nav-item dropdown">
@@ -44,8 +47,9 @@
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a></li>
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a></li>
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a></li>
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Order" asp-action="Index" asp-route-filter="all">Orders</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User</a></li>
+                                    <li><a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Register">Create User</a></li>
                                 </ul>
                             </li>                            
                         }

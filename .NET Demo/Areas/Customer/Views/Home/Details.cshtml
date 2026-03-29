@@ -1,8 +1,7 @@
-﻿@model ShoppingCartItem
+﻿@model ShoppingCartItemVM
 
 <form method="post">
 
-	<input hidden asp-for="Id" />
 	<input hidden asp-for="ProductId" />
 	<input hidden asp-for="ApplicationUserId" />
 
@@ -58,7 +57,7 @@
 					</div>
 					<div class="col-12 col-lg-6 offset-lg-1">
 						<div class="col-12 col-md-6 pb-4">
-							<span class="badge text-dark">@Model.Product.Category.Name</span>
+							<span class="product-category-badge">@Model.Product.Category.Name</span>
 						</div>
 						<div class="row ps-2">
 							<h6 class="text-dark text-opacity-50">ISBN : @Model.Product.ISBN</h6>
@@ -67,7 +66,7 @@
 							<h6 class="text-dark text-opacity-50 pb-2">
 								List Price:
 								<span class="text-decoration-line-through">
-									@Model.Product.Price.ToString("c")
+									@Model.Product.Price.FormatAsUSD()
 								</span>
 							</h6>
 						</div>
@@ -90,13 +89,13 @@
 								<div>Price</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price.ToString("c")</div>
+								<div>@Model.Product.Price.FormatAsUSD()</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price50.ToString("c")</div>
+								<div>@Model.Product.Price50.FormatAsUSD()</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-								<div>@Model.Product.Price100.ToString("c")</div>
+								<div>@Model.Product.Price100.FormatAsUSD()</div>
 							</div>
 						</div>
 						<div class="row p-lg-2 my-3">

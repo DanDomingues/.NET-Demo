@@ -19,6 +19,7 @@ namespace Demo.Models
 
         [ForeignKey("OrderHeaderId"), ValidateNever]
         public OrderHeader OrderHeader { get; set; }
+        
         [ForeignKey("ProductId"), ValidateNever]
         public Product Product { get; set; }
 

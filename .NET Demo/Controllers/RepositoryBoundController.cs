@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace ASP.NET_Debut.Controllers
 {
-    public abstract class RepositoryBoundController<TModel, TRepo>(IUnitOfWork unitOfWork) : Controller
+    public abstract partial class RepositoryBoundController<TModel, TRepo>(IUnitOfWork unitOfWork) : Controller
         where TModel : class, IModelBase, new()
         where TRepo : IRepository<TModel>
     {
@@ -17,6 +17,19 @@ namespace ASP.NET_Debut.Controllers
         protected abstract TRepo Repo { get; }
         protected abstract string DefaultFeedbackName { get; }
         protected virtual string? DefaultIncludeProperties => null;
+
+        protected IActionResult UpdateRepo(
+            TModel obj, 
+            Action<TModel> action,
+            string feedback = "success",
+            string redirection = "Index",
+            object? redirectionArgs = null)
+        {
+            action(obj);
+            unitOfWork.Save();
+            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
+            return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
+        }
 
         private bool Find(int? id, out TModel output, bool track = false)
         {
@@ -34,19 +47,6 @@ namespace ASP.NET_Debut.Controllers
             }
 
             return true;
-        }
-
-        protected IActionResult UpdateRepo(
-            TModel obj, 
-            Action<TModel> action,
-            string feedback = "success",
-            string redirection = "Index",
-            object? redirectionArgs = null)
-        {
-            action(obj);
-            unitOfWork.Save();
-            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
-            return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 
         protected bool CheckForDuplicates(
@@ -73,9 +73,6 @@ namespace ASP.NET_Debut.Controllers
                     ModelState.AddModelError(
                         "Name",
                         $"A {feedbackName} with the {propertyName} '{prop}' was already added.");
-                    ModelState.AddModelError(
-                        "",
-                        $"A {feedbackName} with the {propertyName} '{prop}' was already added");
                 }
                 return true;
             }
@@ -103,125 +100,5 @@ namespace ASP.NET_Debut.Controllers
         {
             return true;
         }
-
-        public virtual IActionResult Index()
-        {
-            //Might be best to have the .ToList() conversion inside the GetAll method, depending on future use cases
-            return View(Repo.GetAll(includeProperties: DefaultIncludeProperties).ToList());
-        }
-
-        public IActionResult Create()
-        {
-            return View(new TModel());
-        }
-
-        [HttpPost]
-        public virtual IActionResult Create(TModel obj)
-        {
-            if (ModelState.IsValid)
-            {
-                return UpdateRepo(obj, Repo.Add, feedback : "created");
-            }
-
-            return View();
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (!Find(id, out TModel model))
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(TModel model)
-        {
-            if(!Find(model.Id, out TModel _))
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                return UpdateRepo(model, Repo.Update, feedback: "updated");
-            }
-
-            return View();
-        }
-
-        public IActionResult Delete(int? id)
-        {
-            if (!Find(id, out TModel model))
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult Delete(TModel model)
-        {
-            if (!Find(model.Id, out var foundModel))
-            {
-                return NotFound();
-            }
-
-            return UpdateRepo(foundModel, Repo.Remove, feedback: "deleted");
-        }
-
-        public virtual IActionResult Upsert(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return View(new TModel());
-            }
-
-            return View(Repo.GetById(id));
-        }
-
-        [HttpPost]
-        public IActionResult Upsert(TModel model)
-        {
-            if(ModelState.IsValid && ValidateForUpsert(model))
-            {
-                UpdateRepo(model, Repo.AddOrUpdate, feedback: model.Id == 0 ? "created" : "updated");
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        #region APICalls
-        [HttpGet]
-        public virtual IActionResult GetAll()
-        {
-            var list = Repo.GetAll(includeProperties: DefaultIncludeProperties);
-            return Json(new { data = list });
-        }
-
-        [HttpDelete]
-        public virtual IActionResult Delete(int id)
-        {
-            var obj = Repo.GetById(id);
-            if (obj == null)
-            {
-                return Json(new 
-                { 
-                    success = false, 
-                    message = "Error while deleting" 
-                });
-            }
-
-            Repo.Remove(obj);
-            unitOfWork.Save();
-            return Json(new 
-            { 
-                success = true, 
-                message = "Delete Successful" 
-            });
-        }
-        #endregion
     }
 }

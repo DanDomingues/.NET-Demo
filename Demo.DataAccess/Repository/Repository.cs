@@ -18,6 +18,14 @@ namespace Demo.DataAccess.Repository
             dbSet.Add(entity);
         }
 
+        public void AddRange(T[] entities)
+        {
+            foreach (var entity in entities)
+            {
+                Add(entity);
+            }
+        }
+
         public void Update(T entity)
         {
             dbSet.Update(entity);
@@ -47,7 +55,7 @@ namespace Demo.DataAccess.Repository
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, bool track = false, string? includeProperties = null)
         {
-            var query = GetAllWithProperties(dbSet, includeProperties);
+            var query = Repository<T>.GetAllWithProperties(dbSet, includeProperties);
             if(!track)
             {
                 query = query.AsNoTracking();
@@ -67,7 +75,7 @@ namespace Demo.DataAccess.Repository
             return GetFirstOrDefault(e => e.Id == id, tracked, includeProperties);
         }
 
-        private IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)
+        private static IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)
         {
             if(!string.IsNullOrEmpty(includeProperties))
             {
@@ -76,7 +84,6 @@ namespace Demo.DataAccess.Repository
                     query = query.Include(property);
                 }
             }
-
             return query;
         }
     }

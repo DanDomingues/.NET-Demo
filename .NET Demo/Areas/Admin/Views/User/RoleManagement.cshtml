@@ -2,7 +2,7 @@
 @model RoleManagementVM
 
 @{
-    var companyStyle = Model.User.Role?.Equals(SD.ROLE_USER_COMPANY) == true ?
+    var companyStyle = Model.User.Role?.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE) == true ?
         "display:block" :
         "display:none";
 }
@@ -58,7 +58,7 @@
         $(document).ready(function() {
             $('#User_Role').change(function() {
                 var selection = $('#User_Role Option:Selected').text();
-                if(selection == 'Company')
+                if(selection == 'Company' || selection == 'Employee')
                 {
                     $('#companyField').show();
                 }

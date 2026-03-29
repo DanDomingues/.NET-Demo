@@ -13,9 +13,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]
     public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : RepositoryBoundController<Product, IProductRepository>(unitOfWork)
-    {
-        private readonly IWebHostEnvironment webHostEnvironment = webHostEnvironment;
-        
+    {        
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
         protected override string? DefaultIncludeProperties => "Category";
@@ -34,7 +32,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return base.ValidateForUpsert(model) && !CheckForDuplicatesByName(model);
         }
 
-        public override IActionResult Upsert(int? id)
+        public IActionResult Upsert(int? id)
         {
             var vm = new ProductVM
             {
@@ -51,13 +49,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(vm);
         }
 
-        public IActionResult UpsertVM(int? id)
-        {
-            return Upsert(id);
-        }
-
         [HttpPost]
-        public IActionResult UpsertVM(ProductVM vm, List<IFormFile>? files)
+        public IActionResult Upsert(ProductVM vm, List<IFormFile>? files)
         {
             vm.Product.Name ??= vm.Product.Title;
 
@@ -67,21 +60,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             //For our product to have an assigned ID, upset to DB must come first
-            //TODO: Validate if vm.Product gets an assigned ID after being used for DB updating
-            //var output = Upsert(vm.Product);
             Repo.AddOrUpdate(vm.Product);
             unitOfWork.Save();
 
             if (files != null && files.Count > 0)
             {
-                UpsertProductImage(vm.Product, files);
+                AddProductImages(vm.Product, files);
                 unitOfWork.Save();
             }
         
-            return Upsert(vm.Product);
+            return UpsertInternalOnPost(vm.Product);
         }
 
-        private void UpsertProductImage(Product product, List<IFormFile> files)
+        private void AddProductImages(Product product, List<IFormFile> files)
         {
             if(!ModelState.IsValid)
             {
@@ -92,7 +83,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var localDirectoryPath = Path.Combine(wwwRootPath, productPath);
             
-            //TODO: Experiment not explicitly adding the directory
             if(!Directory.Exists(localDirectoryPath))
             {
                 Directory.CreateDirectory(localDirectoryPath);
@@ -136,11 +126,10 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             this.AddOperationFeedback("Image Deleted Successfully");            
-            return RedirectToAction(nameof(UpsertVM), new { id = image?.ProductId });
+            return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
         }
 
         #region API Calls
-
         [HttpDelete]
         public override IActionResult Delete(int id)
         {

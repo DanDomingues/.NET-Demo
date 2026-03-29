@@ -16,15 +16,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         protected override string DefaultFeedbackName => "Category";
 
+        public IActionResult Index() => IndexInternal();
+        public IActionResult Edit(int? id) => EditInternal(id);
+        public IActionResult Delete(int? id) => DeleteInternal(id);
+
         [HttpPost]
-        public override IActionResult Create(Category model)
+        public IActionResult Create(Category model)
         {
             if(CheckForDuplicatesByName(model))
             {
                 return View();
             }
 
-            return base.Create(model);
+            return CreateInternalOnPost(model);
         }
     }
 }

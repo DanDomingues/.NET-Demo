@@ -1,4 +1,4 @@
-﻿
+﻿using Demo.Utility;
 using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,51 +12,10 @@ namespace Demo.DataAccess.Repository
 {
     public class OrderHeaderRepository(DbSet<OrderHeader> set) : Repository<OrderHeader>(set), IOrderHeaderRepository
     {
-
-        //TODO: Move validation to base and/or utility class
-        /*
-        protected void RunAndUpdate(OrderHeader obj, Action<OrderHeader> action)
-        {
-            action.Invoke(obj);
-            Update(obj);
-        }
-        */
-
-        protected void IfIdValid(Action<OrderHeader> action, int id)
-        {
-            var obj = GetById(id, tracked: true);
-            if(obj == null)
-            {
-                return;
-            }
-            
-            action.Invoke(obj);
-            //RunAndUpdate(obj, action);
-        }
-
-        protected void IfIdAndArgsValid(Action<OrderHeader> action, int id, params string[] args)
-        {
-            if(args?.Any(a => string.IsNullOrEmpty(a)) != false)
-            {
-                return;
-            }
-            IfIdValid(action, id);
-        }
-
-        /*
-        protected void IfArgsValid(Action<OrderHeader> action, int id, params string[] args)
-        {
-            if (args?.Any(a => string.IsNullOrEmpty(a)) != false)
-            {
-                return;
-            }
-            action?.Invoke(GetById(id));
-        }
-        */
-
         public void UpdateOrderStatus(int id, string status)
         {
-            IfIdAndArgsValid(
+            ValidationUtility.IfIdAndArgsValid(
+                id => GetById(id, tracked: true),
                 obj => obj.OrderStatus = status,
                 id,
                 status);
@@ -64,7 +23,8 @@ namespace Demo.DataAccess.Repository
 
         public void UpdatePaymentStatus(int id, string status)
         {
-            IfIdAndArgsValid(
+            ValidationUtility.IfIdAndArgsValid(
+                id => GetById(id, tracked: true),
                 obj => obj.PaymentStatus = status,
                 id,
                 status);
@@ -72,7 +32,8 @@ namespace Demo.DataAccess.Repository
 
         public void UpdateSessionID(int objId, string id)
         {
-            IfIdAndArgsValid(
+            ValidationUtility.IfIdAndArgsValid(
+                id => GetById(id, tracked: true),
                 obj => obj.SessionId = id,
                 objId,
                 id);
@@ -80,7 +41,8 @@ namespace Demo.DataAccess.Repository
 
         public void UpdatePaymentID(int objId, string id)
         {
-            IfIdAndArgsValid(
+            ValidationUtility.IfIdAndArgsValid(
+                id => GetById(id, tracked: true),
                 obj => obj.PaymentIntentId = id,
                 objId,
                 id);

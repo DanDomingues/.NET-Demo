@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess;
 using Demo.Models;
+using Demo.Models.ViewModels;
 using Demo.Utility;
 using Demo.DataAccess.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -9,19 +10,15 @@ using System.Diagnostics;
 namespace ASP.NET_Debut.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
+    public class HomeController(IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider
     {
-        private readonly IUnitOfWork unitOfWork = unitOfWork;
-        public IUnitOfWork UnitOfWork => unitOfWork;
+        IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
+        private const string ProductIncludeProperties = "Category,Images";
 
         public IActionResult Index()
         {
-            var list = unitOfWork.ProductRepository.GetAll(includeProperties:"Category,Images");
-            //Inits the session value to be used in the layout view
-            //TODO: Test removing this and observe efffects
-            this.RefreshCartItemsCount();
-
-            return View(list);
+            var product = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
+            return View(product);
         }
 
         public IActionResult Details(int id)
@@ -30,47 +27,45 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             var product = unitOfWork.ProductRepository.GetById(
                 id, 
-                includeProperties: "Category,Images",
+                includeProperties: ProductIncludeProperties,
                 track: false);
-            
-            var cart = new ShoppingCartItem 
+
+            return View(new ShoppingCartItemVM 
             { 
-                Product = product, 
+                Product = product,
                 ProductId = product.Id,
                 ApplicationUserId = userId,
-                //Id = 0,
-                Count = 1 
-            };
-
-            return View(cart);
+                Count = 1
+            });
         }
 
         [HttpPost, Authorize]
-        public IActionResult Details(ShoppingCartItem cart)
+        public IActionResult Details(ShoppingCartItemVM vm)
         {
             if(!User.TryGetId(out var userId))
             {
-                return View();
+                return this.RedirectToLogin();
             }
 
             var existing = unitOfWork.ShoppingCarts.GetFirstOrDefault(
-                c => c.ApplicationUserId == userId && c.ProductId == cart.ProductId, 
+                c => c.ApplicationUserId == userId && c.ProductId == vm.ProductId, 
                 track: false);
 
             if (existing != null)
             {
-                existing.Count += cart.Count;
+                existing.Count += vm.Count;
                 unitOfWork.ShoppingCarts.Update(existing);
                 unitOfWork.Save();
             }
             else
             {
-                //As binding may assign the directly available id through routing, we reset it to 0
-                //Entity id needs to be at 0 prior to adding to a DB through EF
-                cart.Id = 0;
-                
                 //Adds to DB and save
-                unitOfWork.ShoppingCarts.Add(cart);
+                unitOfWork.ShoppingCarts.Add(new()
+                {
+                    ProductId = vm.ProductId,
+                    ApplicationUserId = userId,
+                    Count = vm.Count
+                });
                 unitOfWork.Save();
 
                 //Updates the session value, to be used in the view

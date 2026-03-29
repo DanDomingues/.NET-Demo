@@ -2,28 +2,21 @@
 
 $(document).ready(function () 
 {
-    var url = window.location.search;
-    var statusValues = ["inprocess", "completed", "pending", "approved"];
-    for (var i = 0; i < statusValues.length; i++) 
-    {
-        if (url.includes(statusValues[i])) 
-        {
-            loadDataTable(statusValues[i]);
-            return;
-        }
-    }
-    loadDataTable("all");
+    var url = new URLSearchParams(window.location.search);
+    var userFilter = url.get("filter");
+    var statusFilter = url.get("status") ?? "all";
+    loadDataTable({ status: statusFilter, filter: userFilter});
 });
 
-function loadDataTable(status) {
+function loadDataTable(options) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/customer/order/getallbystatus?status=' + status },
+        "ajax": { url: '/customer/order/getallby?status=' + options.status + '&filter=' + options.filter },
         "columns":[
             { data: 'id' },
             { data: 'name' },
             { data: 'phoneNumber' },
             { data: 'applicationUser.email' },
-            { data: 'orderDate' },
+            { data: 'orderDate', render: renderDateTime },
             { data: 'orderStatus' },
             { data: 'orderTotal' },
             {
@@ -36,4 +29,15 @@ function loadDataTable(status) {
             }
         ]
     });
+}
+
+function renderDateTime(data) {
+    var date = new Date(data);
+    var day = date.getDate().toString().padStart(2, '0');
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var year = date.getFullYear().toString().padStart();
+    var hour = date.getHours().toString().padStart(2, '0');
+    var minute = date.getMinutes().toString().padStart(2, '0');
+    var second = date.getSeconds().toString().padStart(2, '0');
+    return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
 }

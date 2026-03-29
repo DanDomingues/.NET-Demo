@@ -22,18 +22,18 @@ namespace Demo.Models
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
 
-        [Required] public string PhoneNumber { get; set; }
-        [Required] public string StreetAddress { get; set; }
-        [Required] public string City { get; set; }
-        [Required] public string State { get; set; }
-        [Required] public string PostalCode { get; set; }
-        [Required] public string Name { get; set; }
+        [Required] public string PhoneNumber { get; set; } = null!;
+        [Required] public string StreetAddress { get; set; } = null!;
+        [Required] public string City { get; set; } = null!;
+        [Required] public string State { get; set; } = null!;
+        [Required] public string PostalCode { get; set; } = null!;
+        [Required] public string Name { get; set; } = null!;
 
         public string? SessionId { get; set; }
         public string? PaymentIntentId { get; set; }
-        public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; } = null!;
 
         [ForeignKey("ApplicationUserId"), ValidateNever]
-        public ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUser ApplicationUser { get; set; } = null!;
     }
 }

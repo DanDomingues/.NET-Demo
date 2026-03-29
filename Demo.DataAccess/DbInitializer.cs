@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Demo.DataAccess
 {
     public class DbInitializer(
-        UserManager<ApplicationUser> um, 
+        UserManager<IdentityUser> um, 
         RoleManager<IdentityRole> rm, 
         ApplicationDbContext db) : IDbInitializer
     {
@@ -22,12 +22,12 @@ namespace Demo.DataAccess
             }
             catch(Exception e)
             {
-                
+                throw new InvalidOperationException(e.Message);
             }
 
             if(!rm.RoleExistsAsync(SD.ROLE_USER_ADMIN).GetAwaiter().GetResult())
             {
-                void CreateRole(RoleManager<IdentityRole> manager, string role)
+                static void CreateRole(RoleManager<IdentityRole> manager, string role)
                 {
                     manager.CreateAsync(new(role));
                 }
@@ -50,7 +50,10 @@ namespace Demo.DataAccess
                 },
                 "Admin123");
 
-                var userInDb = db.ApplicationUsers.FirstOrDefault(u => u.UserName.Equals("admin@email.com"));
+                var userInDb = 
+                    db.ApplicationUsers.FirstOrDefault(u => u.UserName != null && u.UserName.Equals("admin@email.com")) 
+                    ?? throw new InvalidOperationException("Admin user was not created successfully.");
+                    
                 um.AddToRoleAsync(userInDb, SD.ROLE_USER_ADMIN);
             }
         }

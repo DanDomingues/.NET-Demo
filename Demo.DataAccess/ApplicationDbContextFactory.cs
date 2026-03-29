@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Demo.DataAccess;
 
+//Stock class to allow for DB operations through a separate project
 public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     public ApplicationDbContext CreateDbContext(string[] args)

@@ -14,7 +14,6 @@ namespace Demo.DataAccess
             context.Session.SetInt32(SD.CART_SESSION, count);
             return count;
         }
-
         public static int RefreshCartItemsCount(this Controller controller, IUnitOfWork unitOfWork)
         {
             return 
@@ -22,7 +21,6 @@ namespace Demo.DataAccess
                 RefreshCartItemsCount(controller.HttpContext, unitOfWork, id) :
                 -1;                 
         }
-
         public static int RefreshCartItemsCount<T>(this T controller) where T : Controller, IUnitOfWorkProvider
         {
             return controller.RefreshCartItemsCount(controller.UnitOfWork);

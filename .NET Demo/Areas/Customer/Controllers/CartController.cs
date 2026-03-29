@@ -14,8 +14,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
     [Area("Customer")]
     public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork), IUnitOfWorkProvider
     {
-        protected override string DefaultFeedbackName => "Shopping Cart";
         protected override IShoppingCartItemRepository Repo => unitOfWork.ShoppingCarts;
+        protected override string DefaultFeedbackName => "Shopping Cart";
         protected override string? DefaultIncludeProperties => "Product";
 
         IUnitOfWork IUnitOfWorkProvider.UnitOfWork => unitOfWork;
@@ -36,7 +36,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 OrderTotal = cartItems.Sum(e => e.TotalCost),
 
                 //Details fetching, can be overwritten later on
-                Name = appUser.Name,
+                Name = appUser.Name ?? string.Empty,
                 PhoneNumber = appUser.PhoneNumber ?? string.Empty,
                 StreetAddress = appUser.StreetAddress ?? string.Empty,
                 City = appUser.City ?? string.Empty,
@@ -50,7 +50,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             foreach (var item in cartItems)
             {
-                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId == item.Product.Id);
+                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId.Equals(item.Product.Id));
                 item.Product.Images = [image];
             }
 
@@ -61,7 +61,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             };
         }
 
-        public override IActionResult Index()
+        public IActionResult Index()
         {
             return View(BuildViewModel());
         }
@@ -71,8 +71,60 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return View(BuildViewModel());
         }
 
-        [HttpPost, ActionName("Summary")]
-        public IActionResult SummaryPost(ShoppingCartVM vm)
+        public IActionResult OrderConfirmation(int id)
+        {
+            var paymentSuccessful = true;
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(
+                id, 
+                includeProperties: "ApplicationUser");
+            
+            orderHeader.OrderDate = DateTime.Now;
+
+            if(orderHeader.OrderStatus != SD.PAYMENT_STATUS_DELAYED)
+            {
+                paymentSuccessful = false;
+                var service = new SessionService();
+                var session = service.Get(orderHeader.SessionId);
+                
+                if(session?.PaymentStatus?.ToLower() == "paid")
+                {
+                    paymentSuccessful = true;
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
+                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
+                    unitOfWork.OrderHeaderRepository.UpdateOrderStatus(id, SD.ORDER_STATUS_APPROVED);
+                }
+            }
+
+            if(paymentSuccessful)
+            {
+                orderHeader.PaymentDate = DateTime.Now;
+
+                var cartItems = Repo.GetAll(
+                    e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
+                    includeProperties: DefaultIncludeProperties).ToArray();
+
+                var orderItems = cartItems
+                    .Select(item => new OrderItemDetails
+                    {
+                        ProductId = item.ProductId,
+                        OrderHeaderId = id,
+                        Count = item.Count,
+                        Price = item.Product.Price
+                    })
+                    .ToArray();
+
+                unitOfWork.OrderItemDetailsRepository.AddRange(orderItems);
+                Repo.RemoveRange([.. cartItems]);
+                HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
+            }
+            
+            unitOfWork.Save();
+
+            return View(id);
+        }
+
+        [HttpPost]
+        public IActionResult Summary(ShoppingCartVM vm)
         {
             //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
             //Luckly, all the editable properties are strings that come filled in the vm
@@ -82,7 +134,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
             //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
             //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
-            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
+            var appUser = unitOfWork.ApplicationUserRepository
+                .GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
 
             //Order total needs to be recalculated as the products may have been changed in the view
             vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
@@ -111,52 +164,6 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             return RedirectToAction(nameof(OrderConfirmation), vm.OrderHeader.Id);
         }
 
-        public IActionResult OrderConfirmation(int id)
-        {
-            var paymentSuccessful = true;
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, includeProperties: "ApplicationUser");
-
-            if(orderHeader.OrderStatus != SD.PAYMENT_STATUS_DELAYED)
-            {
-                paymentSuccessful = false;
-                var service = new SessionService();
-                var session = service.Get(orderHeader.SessionId);
-                
-                if(session?.PaymentStatus?.ToLower() == "paid")
-                {
-                    paymentSuccessful = true;
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentID(id, session.PaymentIntentId);
-                    unitOfWork.OrderHeaderRepository.UpdatePaymentStatus(id, SD.PAYMENT_STATUS_APPROVED);
-                    unitOfWork.OrderHeaderRepository.UpdateOrderStatus(id, SD.ORDER_STATUS_APPROVED);
-                    unitOfWork.Save();
-                }
-            }
-
-            if(paymentSuccessful)
-            {
-                var cartItems = Repo.GetAll(
-                    e => e.ApplicationUserId == orderHeader.ApplicationUserId, 
-                    includeProperties: DefaultIncludeProperties).ToArray();
-                var orderItems = cartItems.Select(item => new OrderItemDetails
-                {
-                    ProductId = item.ProductId,
-                    OrderHeaderId = id,
-                    Count = item.Count,
-                    Price = item.Product.Price
-                }).ToArray();
-
-                foreach (var item in orderItems) 
-                {
-                    unitOfWork.OrderItemDetailsRepository.Add(item);
-                }
-
-                Repo.RemoveRange([.. cartItems]);
-                HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
-                unitOfWork.Save();
-            }
-
-            return View(id);
-        }
 
         public IActionResult Add(int id)
         {
