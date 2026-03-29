@@ -25,7 +25,7 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-//TODO-5: Revert all main IdentityUser using ApplicationUser, make the binding work just as ApplicationUser
+//TODO-5+: Revert all main IdentityUser using ApplicationUser, make the binding work just as ApplicationUser
 //builder.Services.AddIdentity<ApplicationUser, IdentityUser>();
 
 //Must be added after AddIdentity
@@ -46,8 +46,8 @@ builder.Services.AddSession(options =>
 
 //Handles custom DI
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddRazorPages();
 

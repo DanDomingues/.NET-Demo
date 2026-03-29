@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace Demo.Utility
 {
-    //TODO-5: Remove if possible
+    //Placeholder for email sender, expected by Identity, but currently not implemented
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            //TODO-6: Develop feature
             return Task.CompletedTask;
         }
     }
