@@ -25,7 +25,7 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-//TODO-5+: Revert all main IdentityUser using ApplicationUser, make the binding work just as ApplicationUser
+//TODO-2: Revert all main IdentityUser using ApplicationUser, make the binding work just as ApplicationUser
 //builder.Services.AddIdentity<ApplicationUser, IdentityUser>();
 
 //Must be added after AddIdentity

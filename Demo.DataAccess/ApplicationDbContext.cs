@@ -15,7 +15,7 @@ namespace Demo.DataAccess
         public DbSet<OrderItemDetails> OrderItems { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
 
-        //TODO-5+: Improve model seeding to have more models with better descriptions
+        //TODO-3: Improve model seeding to have more models with better descriptions
         //This also would require the concept of the main theme of this shop
         //Although simple, this will be put on a lower priority for now, as it may require input from the Design side
         

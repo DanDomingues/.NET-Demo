@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace ASP.NET_Debut.Controllers
 {
-    //TODO-7: Consider moving those to modules, instead of shoving it to a partial. Partials are sometimes described as code smells 
+    //TODO-1: Consider moving those to modules, instead of shoving it to a partial. Partials are sometimes described as code smells 
     public abstract partial class RepositoryBoundController<TModel, TRepo> : Controller
         where TModel : class, IModelBase, new()
         where TRepo : IRepository<TModel>
