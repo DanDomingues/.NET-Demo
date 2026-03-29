@@ -89,7 +89,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var localDirectoryPath = Path.Combine(wwwRootPath, productPath);
             
-            //TODO-2: Experiment not explicitly adding the directory
             if(!Directory.Exists(localDirectoryPath))
             {
                 Directory.CreateDirectory(localDirectoryPath);

@@ -17,12 +17,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var list = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
-            //Inits the session value to be used in the layout view
-            //TODO-2: Test removing this and observe efffects
-            this.RefreshCartItemsCount();
-
-            return View(list);
+            var product = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
+            return View(product);
         }
 
         public IActionResult Details(int id)
