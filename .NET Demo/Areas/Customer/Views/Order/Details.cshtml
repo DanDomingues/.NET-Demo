@@ -3,7 +3,10 @@
 @model OrderVM
 
 @{
-	var partialName = "_FormField";
+	var formFieldPartial = "_FormField";
+	var sectionHeadingPartial = "_SectionHeading";
+
+	@*TODO-4: Make this into a dictionary*@
 	var name = Model.Header?.Name;
 	var streetAddress = Model.Header?.StreetAddress;
 	var city = Model.Header?.City;	
@@ -19,10 +22,6 @@
 	var paymentDueDate = Model.Header?.PaymentDueDate;
 	var paymentDate = Model.Header?.PaymentDate;
 	var paymentStatus = Model.Header?.PaymentStatus;
-}
-
-@functions{
-	
 }
 
 <form method="post">
@@ -45,61 +44,47 @@
 			<div class="card-body">
 				<div class="container rounded p-2">
 					<div class="col-12 col-lg-6 pb-4">
-						<div class="row">
-							<h4 class="d-flex justify-content-between align-content-center mb-3">
-								<span class="text-primary">Pick-up Details</span>
-							</h4>
-						</div>
-
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.Name", name))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.StreetAddress", streetAddress))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.City", city))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.State", state))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PostalCode", postalCode))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.ApplicationUser.Email", email, isReadOnly: true))
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.OrderDate", orderDate.ToString(), isReadOnly: true))
+						<partial name="@sectionHeadingPartial" model=@("Pick-up Details") />
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.Name", name))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.StreetAddress", streetAddress))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.City", city))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.State", state))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PostalCode", postalCode))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ApplicationUser.Email", email, isReadOnly: true))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.OrderDate", orderDate.ToString(), isReadOnly: true))
 						
 						@if(Model.Header?.SessionId != null)
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDate", paymentDate.ToString(), isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDate", paymentDate.ToString(), isReadOnly: true))
 						}
 						else
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentDueDate", paymentDueDate.ToString(), isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDueDate", paymentDueDate.ToString(), isReadOnly: true))
 						}
 
-						@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentStatus", paymentStatus, isReadOnly: true))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentStatus", paymentStatus, isReadOnly: true))
 
 						@if(User.HasAdminRights())
 						{
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.SessionId", sessionId, isReadOnly: true))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.SessionId", sessionId, isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentIntentId", paymentIntentId, isReadOnly: true))
 						}
 					</div>
 
 					@if(Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED))
 					{
 						<div class="col-12 col-lg-6 pb-4">
-							@*TODO-3: Make the following title a partial*@
-							<div class="row">
-								<h4 class="d-flex justify-content-between align-content-center mb-3">
-									<span class="text-primary">Shipping</span>
-								</h4>
-							</div>
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.Carrier", carrier, options: Model.Carriers))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.TrackingNumber", trackingNumber, isReadOnly: true))
-							@await Html.PartialAsync(partialName, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), isReadOnly: true))
+							<partial name="@sectionHeadingPartial" model=@("Shipping") />
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.Carrier", carrier, options: Model.Carriers))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.TrackingNumber", trackingNumber, isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ShippingDate", shippingDate.ToString(), isReadOnly: true))
 						</div>
 					}
 
 					<div class="col-12 col-lg-6 pb-4">
-						<div class="row">
-							<h4 class="d-flex justify-content-between align-items-center mb-3">
-								<span class="text-primary">Order Summary</span>
-							</h4>
-						</div>
+						<partial name="@sectionHeadingPartial" model=@("Order Summary") />
 
-						@*Verify the below line in the original docs*@
+						@*TODO-5:Verify the below line in the original docs*@
 						<label class="my-2">Order Status - @Model.Header?.OrderStatus</label>
 						<ul>
 							@foreach(var item in Model.Details) 
