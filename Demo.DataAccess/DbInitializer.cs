@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Demo.DataAccess
 {
     public class DbInitializer(
-        UserManager<ApplicationUser> um, 
+        UserManager<IdentityUser> um, 
         RoleManager<IdentityRole> rm, 
         ApplicationDbContext db) : IDbInitializer
     {

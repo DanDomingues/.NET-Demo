@@ -14,7 +14,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
     [Area("Admin")]
     public class UserController(
         IUnitOfWork unitOfWork,
-        UserManager<ApplicationUser> um,
+        UserManager<IdentityUser> um,
         RoleManager<IdentityRole> rm) : RepositoryBoundController<ApplicationUser, IApplicationUserRepository>(unitOfWork), IUnitOfWorkProvider
     {
         public IUnitOfWork UnitOfWork => unitOfWork;

@@ -21,12 +21,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-//TODO-2: Revert all main IdentityUser using ApplicationUser, make the binding work just as ApplicationUser
-//builder.Services.AddIdentity<ApplicationUser, IdentityUser>();
 
 //Must be added after AddIdentity
 builder.Services.ConfigureApplicationCookie(options =>
