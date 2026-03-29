@@ -2,36 +2,37 @@ namespace Demo.Utility
 {
     public static class ValidationUtility
     {
-        public static void IfIdValid<T>(Func<int, T> getById, Action<T> action, int id)
+        public static bool IfIdValid<T>(Func<int, T>? getById = null, Action<T>? action = null, int id = 0)
         {
-            var obj = getById(id);
+            var obj = getById != null ? getById(id) : default;
             if(obj == null)
             {
-                return;
+                return false;
             }
-            
-            action.Invoke(obj);
+            action?.Invoke(obj);
+            return true;
         }
 
-        public static void IfIdAndArgsValid<T>(Func<int, T> getById, Action<T> action, int id, params string[] args)
-        {
-            if(args?.Any(a => string.IsNullOrEmpty(a)) != false)
-            {
-                return;
-            }
-            IfIdValid(getById, action, id);
-        }
-
-        //TODO-4: Rework this into a more composite, additive style 
-        /*
-        protected void IfArgsValid(Action<OrderHeader> action, int id, params string[] args)
-        {
+        public static bool IfArgsValid<T>(Func<int, T>? getById = null, Action<T>? action = null, int id = 0, params string[] args)
+        {   
             if (args?.Any(a => string.IsNullOrEmpty(a)) != false)
             {
-                return;
+                return false;
             }
-            action?.Invoke(GetById(id));
+            
+            var obj = getById != null ? getById(id) : default;
+
+            if(obj != null)
+            {
+                action?.Invoke(obj);
+            }
+            
+            return true;
         }
-        */
+
+        public static bool IfIdAndArgsValid<T>(Func<int, T>? getById = null, Action<T>? action = null, int id = 0, params string[] args)
+        {
+            return IfIdValid<T>(id: id) && IfArgsValid(getById, action, id, args); 
+        }
     }
 }
