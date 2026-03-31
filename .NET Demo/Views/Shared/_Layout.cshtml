@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -67,14 +67,14 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container flex-fill">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer bg-primary text-light">
+    <footer class="border-top footer bg-primary text-light mt-auto">
         <div class="container">
             &copy; 2026 - .NET Demo <i class="bi bi-globe"></i> <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
