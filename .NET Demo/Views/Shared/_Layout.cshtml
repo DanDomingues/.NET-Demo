@@ -28,9 +28,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if(User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -56,9 +53,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                     @await Component.InvokeAsync("Cart")
-                                </a>    
+                                </a>
                             </li>
-                    <partial name="_LoginPartial"></partial>
+                    </ul>
+                    @*<div class="d-flex align-items-center border-start border-light ps-sm-2 ms-sm-2 mt-2 mt-sm-0">*@
+                    <div class="d-flex align-items-center ps-sm-2 ms-sm-2 mt-2 mt-sm-0">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
