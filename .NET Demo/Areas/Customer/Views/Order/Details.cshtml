@@ -8,7 +8,8 @@
 
 	var props = new Dictionary<string, string>
 	{
-		{ "name", Model.Header?.Name },
+		{ "firstName", Model.Header?.FirstName },
+		{ "lastName", Model.Header?.LastName },
 		{ "streetAddress", Model.Header?.StreetAddress },
 		{ "city", Model.Header?.City },
 		{ "state", Model.Header?.State },
@@ -47,7 +48,8 @@
 				<div class="container rounded p-2">
 					<div class="col-12 col-lg-6 pb-4">
 						<partial name="@sectionHeadingPartial" model=@("Pick-up Details") />
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.Name", props["name"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.FirstName", props["firstName"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.LastName", props["lastName"]))
 						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.StreetAddress", props["streetAddress"]))
 						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.City", props["city"]))
 						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.State", props["state"]))

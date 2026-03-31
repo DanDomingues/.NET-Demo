@@ -23,8 +23,8 @@
 					<h2 class="text-primary">Update User Role</h2>
 				</div>
 				<div class="form-floating py-2 col-12">
-					<input asp-for="User.Name" readonly class="form-control border-0 shadow" />
-					<label asp-for="User.Name" class="ms-2"></label>
+					<input asp-for="User.FullName" readonly class="form-control border-0 shadow" />
+					<label asp-for="User.FullName" class="ms-2"></label>
 				</div>
                 <div class="form-floating py-2 col-12">
 					<select asp-for="User.Role" asp-items="@Model.Roles" class="form-select"></select>

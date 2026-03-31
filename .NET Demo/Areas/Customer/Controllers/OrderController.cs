@@ -71,7 +71,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
             var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
                
             // Map fields from vm.Header to orderHeader
-            orderHeader.Name = vm.Header.Name ?? orderHeader.Name;
+            orderHeader.FirstName = vm.Header.FirstName ?? orderHeader.FirstName;
+            orderHeader.LastName = vm.Header.LastName ?? orderHeader.LastName;
             orderHeader.PhoneNumber = vm.Header.PhoneNumber ?? orderHeader.PhoneNumber;
             orderHeader.StreetAddress = vm.Header.StreetAddress ?? orderHeader.StreetAddress;
             orderHeader.City = vm.Header.City ?? orderHeader.City;

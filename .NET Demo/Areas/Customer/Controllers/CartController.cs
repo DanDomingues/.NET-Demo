@@ -36,7 +36,8 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
                 OrderTotal = cartItems.Sum(e => e.TotalCost),
 
                 //Details fetching, can be overwritten later on
-                Name = appUser.Name ?? string.Empty,
+                FirstName = appUser.FirstName ?? string.Empty,
+                LastName = appUser.LastName ?? string.Empty,
                 PhoneNumber = appUser.PhoneNumber ?? string.Empty,
                 StreetAddress = appUser.StreetAddress ?? string.Empty,
                 City = appUser.City ?? string.Empty,

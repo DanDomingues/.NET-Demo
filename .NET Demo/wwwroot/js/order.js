@@ -13,7 +13,7 @@ function loadDataTable(options) {
         "ajax": { url: '/customer/order/getallby?status=' + options.status + '&filter=' + options.filter },
         "columns":[
             { data: 'id' },
-            { data: 'name' },
+            { data: 'fullName' },
             { data: 'phoneNumber' },
             { data: 'applicationUser.email' },
             { data: 'orderDate', render: renderDateTime },

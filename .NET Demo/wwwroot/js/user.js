@@ -10,7 +10,7 @@ function loadDataTable()
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/getall' },
         "columns": [
-            { data: 'name', width: '20%' },
+            { data: 'fullName', width: '20%' },
             { data: 'email', width: '20%' },
             { data: 'phoneNumber', width: '15%' },
             { data: 'company.name', width: '15%' },

@@ -94,8 +94,8 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
-            [Required]
-            public string Name { get; set; }
+            [Required] public string FirstName { get; set; }
+            [Required] public string LastName { get; set; }
             public string? StreetAddress { get; set; }
             public string? City { get; set; }
             public string? State { get; set; }
@@ -168,7 +168,8 @@ namespace ASP.NET_Debut.Areas.Identity.Pages.Account
 
                 await userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.Name = Input.Name;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
                 user.PostalCode = Input.PostalCode;

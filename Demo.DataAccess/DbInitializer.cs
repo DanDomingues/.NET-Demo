@@ -41,7 +41,8 @@ namespace Demo.DataAccess
                 {
                     UserName = "admin@email.com",
                     Email = "admin@email.com",
-                    Name = "John Smith",
+                    FirstName = "John",
+                    LastName = "Smith",
                     PhoneNumber = "12345678",
                     StreetAddress = "Test Avenue",
                     State = "IP",
