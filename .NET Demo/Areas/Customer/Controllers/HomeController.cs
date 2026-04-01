@@ -17,8 +17,18 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var product = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
-            return View(product);
+            var categories = unitOfWork.CategoryRepository.GetAll();
+            var products = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
+            var vm = new ProductsHomeViewModel
+            {
+                Products = products,
+                Categories = categories.ToDictionary(c => c.Id),
+                CategoryProducts = categories.ToDictionary(
+                    c => c.Id, 
+                    c => products.Where(p => p.CategoryId == c.Id)),
+            };
+
+            return View(vm);
         }
 
         public IActionResult Details(int id)
