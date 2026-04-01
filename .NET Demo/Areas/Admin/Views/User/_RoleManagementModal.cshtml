@@ -11,7 +11,8 @@
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<form id="roleManagementForm" method="post" asp-action="ManageRole" asp-controller="User" asp-area="Admin">
+<form id="roleManagementForm" method="post" asp-action="RoleManagement" asp-controller="User" asp-area="Admin">
+
     <input asp-for="User.Id" type="hidden" />
 
     <div class="modal-body">
@@ -22,7 +23,7 @@
         </div>
 
         <div class="form-floating mb-3">
-            <select asp-for="User.Role" asp-items="@Model.Roles" id="User_Role" class="form-select"></select>
+            <select asp-for="User.Role" asp-items="@Model.Roles" id="roleField" class="form-select"></select>
             <label asp-for="User.Role" class="ms-2"></label>
             <span asp-validation-for="User.Role" class="text-danger"></span>
         </div>
@@ -34,35 +35,10 @@
         </div>
 
         <div class="modal-footer">
-            <div class="row gap-2">
-                <button type="button" class="btn btn-outline-primary border form-control" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary form-control">Update Role</button>
+            <div class="row gap-2 flex-fill">
+                <button type="submit" class="btn btn-primary">Update Role</button>
+                <button type="button" class="btn btn-outline-primary border" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
-
-        @*genAI
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Update Role</button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-        </div>
-        *@
     </div>
 </form>
-
-@section Scripts{
-    <script>
-        $(document).ready(function() {
-            $('#User_Role').change(function() {
-                var selection = $('#User_Role Option:Selected').text();
-                if(selection == 'Company' || selection == 'Employee')
-                {
-                    $('#companyField').show();
-                }
-                else
-                {
-                    $('#companyField').hide();
-                }
-            })
-        })
-    </script>
-}

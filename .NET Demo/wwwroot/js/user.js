@@ -5,6 +5,10 @@ $(document).ready(function ()
     loadDataTable();
 });
 
+$(document).on('change', '#roleField', function () {
+    toggleCompanyField($(this).val());
+});
+
 function loadDataTable() 
 {
     dataTable = $('#tblData').DataTable({
@@ -55,4 +59,10 @@ function ToggleLock(id)
             dataTable.ajax.reload();
         }
     });
+}
+
+function toggleCompanyField(role)
+{
+    const shouldShowCompany = role === 'Company' || role === 'Employee';
+    $('#companyField').toggle(shouldShowCompany);
 }
