@@ -1,6 +1,7 @@
 ﻿using Demo.DataAccess.IRepository;
 using ASP.NET_Debut.Controllers;
 using Demo.Models;
+using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,19 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         protected override string DefaultFeedbackName => "Category";
 
-        public IActionResult Index() => IndexInternal();
+        public IActionResult Index()
+        {
+            var categories = Repo.GetAll(includeProperties: DefaultIncludeProperties);
+            var VMs = categories.Select(c => new CategoryViewModel
+            {
+                Category = c,
+                ProductCount = unitOfWork.ProductRepository.GetAll(p => p.CategoryId == c.Id).Count()
+
+            });    
+            return View(VMs);
+        }
+
+        public IActionResult Create() => CreateInternal();
         public IActionResult Edit(int? id) => EditInternal(id);
         public IActionResult Delete(int? id) => DeleteInternal(id);
 
@@ -29,6 +42,17 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             return CreateInternalOnPost(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Category model)
+        {
+            if(CheckForDuplicatesByName(model))
+            {
+                return View(model);
+            }
+
+            return EditInternalOnPost(model);
         }
     }
 }
