@@ -23,20 +23,28 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected override string DefaultFeedbackName => "User";
         protected override string? DefaultIncludeProperties => "Company";
 
+        public IActionResult Index() => IndexInternal();
+
+        [HttpGet]
         public IActionResult RoleManagement(string id)
         {
             var user = Repo
                 .GetFirstOrDefault(u => u.Id == id);
 
-            user.Role = um.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;
+            user.Role = um
+                .GetRolesAsync(user)
+                .GetAwaiter()
+                .GetResult()
+                .FirstOrDefault() ?? string.Empty;
 
             var companies = unitOfWork.CompanyRepository
                 .GetAll(track: false)
                 .Select(v => new SelectListItem(v.Name, v.Id.ToString()));
+            
             var roles = rm.Roles
                 .Select(r => new SelectListItem(r.Name, r.Name));
                 
-            return View(new RoleManagementVM
+            return PartialView("_RoleManagementModal", new RoleManagementVM
             {
                 User = user,
                 Companies = companies,
@@ -71,7 +79,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             }
 
             unitOfWork.Save();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true });
         }
 
         #region API CALLS

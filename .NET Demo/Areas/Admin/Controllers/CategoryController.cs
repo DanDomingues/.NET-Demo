@@ -33,7 +33,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
             var category = Find(id, out var c) ? c : new Category();
-            return PartialView("_CategoryUpsertModal", category);
+            return PartialView("_UpsertModal", category);
         }
 
         public IActionResult Delete(int? id) => DeleteInternal(id);

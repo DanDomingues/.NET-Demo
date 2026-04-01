@@ -4,7 +4,7 @@
     const modalElement = document.getElementById(`${key}Modal`);
     const modalContent = document.getElementById(`${key}ModalContent`);
     const modal = new bootstrap.Modal(modalElement);
-    const action = host.dataset.action ?? "Upsert";
+    const action = host.dataset.action;
     const area = host.dataset.area ?? "Admin";
     const controller = host.dataset.controller ?? key;
     const urlBase = `/${area}/${controller}/${action}`;
