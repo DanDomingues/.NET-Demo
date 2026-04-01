@@ -20,12 +20,14 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var categories = Repo.GetAll(includeProperties: DefaultIncludeProperties);
-            var VMs = categories.Select(c => new CategoryViewModel
-            {
-                Category = c,
-                ProductCount = unitOfWork.ProductRepository.GetAll(p => p.CategoryId == c.Id).Count()
-
-            });    
+            var VMs = categories
+                .Select(c => new CategoryViewModel
+                {
+                    Category = c,
+                    ProductCount = unitOfWork.ProductRepository.GetAll(p => p.CategoryId == c.Id).Count()
+                })
+                .OrderBy(c => c.Category.DisplayOrder)
+                .ThenBy(c => c.ProductCount);
             return View(VMs);
         }
 

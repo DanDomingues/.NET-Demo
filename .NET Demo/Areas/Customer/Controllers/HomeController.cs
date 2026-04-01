@@ -17,7 +17,7 @@ namespace ASP.NET_Debut.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            var categories = unitOfWork.CategoryRepository.GetAll();
+            var categories = unitOfWork.CategoryRepository.GetAll().OrderBy(c => c.DisplayOrder);
             var products = unitOfWork.ProductRepository.GetAll(includeProperties: ProductIncludeProperties);
             var vm = new ProductsHomeViewModel
             {

@@ -17,8 +17,8 @@ namespace Demo.Models
         public DateOnly PaymentDueDate { get; set; }
         public double OrderTotal { get; set; }
 
-        public string? OrderStatus { get; set; }
-        public string? PaymentStatus { get; set; }
+        public string? OrderStatus { get; set; } = null!;
+        public string? PaymentStatus { get; set; } = null!;
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
 
