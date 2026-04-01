@@ -5,7 +5,6 @@ using Demo.Models.ViewModels;
 using Demo.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Debut.Areas.Admin.Controllers
 {
@@ -31,18 +30,29 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(VMs);
         }
 
-        public IActionResult Upsert(int? id) => UpsertInternal(id);
+        public IActionResult Upsert(int? id)
+        {
+            var category = Find(id, out var c) ? c : new Category();
+            return PartialView("_CategoryUpsertModal", category);
+        }
+
         public IActionResult Delete(int? id) => DeleteInternal(id);
 
         [HttpPost]
         public IActionResult Upsert(Category model)
         {
-            if(CheckForDuplicatesByName(model))
+            if (CheckForDuplicatesByName(model))
             {
                 return View(model);
             }
 
-            return UpsertInternalOnPost(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            UpdateRepo(model, Repo.AddOrUpdate);
+            return Json(new { success = true });
         }
 
         //TODO-1: Rename API Delete to a different name to avoid conflict with this Delete action

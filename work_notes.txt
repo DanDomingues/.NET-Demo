@@ -11,7 +11,10 @@ Main checklist to publish
 
 Work points: Website
     - On create product, Category is labeled as CategoryId
-    - Possibly create 
+    - Implement modals to Category and Role upsert
+    - Develop Company pages to perform CRUD model
+    - Define project to seed new items to DB
+    - Seed new products into file
  
 Done
     - On role edit, have company editing for both company and employee roles
@@ -45,8 +48,7 @@ Done
     - On details page, the tag is not visible, being rendered over white text [DONE]
     - Restore shopping cart to being rendered
     - Other managerial inputs (products, categoeries) are not visible
+    - Have an "empty cart" view instead of rendering the base as is
 
 Extensions
-    - Have an "empty cart" view instead of rendering the base as is
     - Use google sign
-    - Alternatively, have A/B buttons for these two actions (adding products to cart with no user logged in)

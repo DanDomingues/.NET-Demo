@@ -17,11 +17,13 @@
 				<div class="row pb-2">
 					<h2 class="text-primary">@(isNew ? "Create" : "Edit") Category</h2>
 				</div>
+
 				<div class="form-floating py-2 col-6">
 					<input asp-for="Name" class="form-control border-0 shadow" />
 					<label asp-for="Name" class="ms-2"></label>
 					<span asp-validation-for="Name" class="text-danger"></span>
 				</div>
+				
 				<div class="form-floating py-2 col-6">
 					<input asp-for="DisplayOrder" class="form-control border-0 shadow" />
 					<label asp-for="DisplayOrder" class="ms-2"></label>
