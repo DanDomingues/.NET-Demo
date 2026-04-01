@@ -32,7 +32,7 @@
 
         if (!response.ok) 
         {
-            throw new Error("Unable to load the category form.");
+            throw new Error(`Unable to load the ${key} form.`);
         }
 
         modalContent.innerHTML = await response.text();
@@ -61,7 +61,7 @@
 
     document.addEventListener("submit", async (event) => 
     {
-        const form = event.target.closest(`#${key}UpsertForm`);
+        const form = event.target.closest(`#${key}Form`);
         if (!form) 
         {
             return;
