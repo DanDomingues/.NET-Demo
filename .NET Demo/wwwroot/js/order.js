@@ -1,32 +1,26 @@
-﻿var dataTable;
+var dataTable;
 
-$(document).ready(function () 
+$(document).ready(function ()
 {
     var url = new URLSearchParams(window.location.search);
     var userFilter = url.get("filter");
     var statusFilter = url.get("status") ?? "all";
-    loadDataTable({ status: statusFilter, filter: userFilter});
+    loadDataTable({ status: statusFilter, filter: userFilter });
 });
 
 function loadDataTable(options) {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/customer/order/getallby?status=' + options.status + '&filter=' + options.filter },
-        "columns":[
+        "columns": [
             { data: 'id' },
             { data: 'fullName' },
             { data: 'phoneNumber' },
             { data: 'applicationUser.email' },
             { data: 'orderDate', render: renderDateTime },
             { data: 'orderStatus' },
-            { data: 'orderTotal' },
-            {
-                data: 'id',
-                "render": function (data) {
-                    return `<div class="m-75 btn-group" role="group">
-                                <a href="/customer/order/details?id=${data}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i></a>
-                            </div>`
-                }
-            }
+            { data: 'paymentStatus' },
+            { data: 'orderTotal', render: renderCurrency },
+            { data: 'id', render: renderButtons },
         ]
     });
 }
@@ -40,4 +34,19 @@ function renderDateTime(data) {
     var minute = date.getMinutes().toString().padStart(2, '0');
     var second = date.getSeconds().toString().padStart(2, '0');
     return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
+}
+
+function renderCurrency(data) {
+    var usdCurrencyFormatter = new Intl.NumberFormat('en-US', 
+    {
+        style: 'currency',
+        currency: 'USD'
+    });
+    return usdCurrencyFormatter.format(Number(data));
+}
+
+function renderButtons(data) {
+    return `<div class="m-75 btn-group" role="group">
+                <a href="/customer/order/details?id=${data}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i></a>
+            </div>`;
 }
