@@ -31,30 +31,27 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return View(VMs);
         }
 
-        public IActionResult Create() => CreateInternal();
-        public IActionResult Edit(int? id) => EditInternal(id);
+        public IActionResult Upsert(int? id) => UpsertInternal(id);
         public IActionResult Delete(int? id) => DeleteInternal(id);
 
         [HttpPost]
-        public IActionResult Create(Category model)
-        {
-            if(CheckForDuplicatesByName(model))
-            {
-                return View();
-            }
-
-            return CreateInternalOnPost(model);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Category model)
+        public IActionResult Upsert(Category model)
         {
             if(CheckForDuplicatesByName(model))
             {
                 return View(model);
             }
 
-            return EditInternalOnPost(model);
+            return UpsertInternalOnPost(model);
+        }
+
+        //TODO-1: Rename API Delete to a different name to avoid conflict with this Delete action
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            return Find(id, out var category, track: true)
+                ? DeleteInternalOnPost(category)
+                : RedirectToAction(nameof(Index));
         }
     }
 }

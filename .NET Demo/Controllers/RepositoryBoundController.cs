@@ -31,7 +31,7 @@ namespace ASP.NET_Debut.Controllers
             return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 
-        private bool Find(int? id, out TModel output, bool track = false)
+        protected bool Find(int? id, out TModel output, bool track = false)
         {
             if (id == null || id == 0)
             {
