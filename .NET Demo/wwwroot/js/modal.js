@@ -7,7 +7,7 @@
     const action = host.dataset.action ?? "Upsert";
     const area = host.dataset.area ?? "Admin";
     const controller = host.dataset.controller ?? key;
-    const urlBase = `@Url.Action("${action}", "${controller}", new { Area = "${area}" })`;
+    const urlBase = `/${area}/${controller}/${action}`;
 
     const parseValidation = (scope) => {
         const forms = scope.querySelectorAll("form");
