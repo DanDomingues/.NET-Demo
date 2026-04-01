@@ -4,7 +4,10 @@
     const modalElement = document.getElementById(`${key}Modal`);
     const modalContent = document.getElementById(`${key}ModalContent`);
     const modal = new bootstrap.Modal(modalElement);
-    const urlBase = host.dataset.upsertUrl;
+    const action = host.dataset.action ?? "Upsert";
+    const area = host.dataset.area ?? "Admin";
+    const controller = host.dataset.controller ?? key;
+    const urlBase = `@Url.Action("${action}", "${controller}", new { Area = "${area}" })`;
 
     const parseValidation = (scope) => {
         const forms = scope.querySelectorAll("form");
