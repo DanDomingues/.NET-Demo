@@ -20,7 +20,7 @@ function loadDataTable() {
                 "render": function (data) {
                     return `<div class="m-75 btn-group" role="group">
                                 <a href="/admin/product/upsertVM?id=${data}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i> Edit</a>
-                                <a onClick=Delete('/admin/product/delete/${data}') class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i> Delete</a>
+                                <a onClick=Delete('/admin/product/deleteAt/${data}') class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i> Delete</a>
                                 </div>`
                 }
             }

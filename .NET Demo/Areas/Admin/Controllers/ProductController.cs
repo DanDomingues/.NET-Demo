@@ -131,7 +131,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         #region API Calls
         [HttpDelete]
-        public override IActionResult Delete(int id)
+        public override IActionResult DeleteAt(int id)
         {
             var obj = Repo.GetById(id);
             if (obj == null)
@@ -156,7 +156,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 unitOfWork.ProductImagesRepository.Remove(image);
             }
 
-            return base.Delete(id);
+            return base.DeleteAt(id);
         }
         #endregion
     }

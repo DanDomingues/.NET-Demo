@@ -55,7 +55,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return Json(new { success = true });
         }
 
-        //TODO-1: Rename API Delete to a different name to avoid conflict with this Delete action
         [HttpPost]
         public IActionResult Delete(int id)
         {

@@ -115,7 +115,7 @@ namespace ASP.NET_Debut.Controllers
         }
 
         [HttpDelete]
-        public virtual IActionResult Delete(int id)
+        public virtual IActionResult DeleteAt(int id)
         {
             var obj = Repo.GetById(id);
             if (obj == null)
