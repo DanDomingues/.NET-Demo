@@ -75,72 +75,37 @@ namespace Demo.Main.Areas.Admin.Controllers
 
         public IActionResult Move(int? id, Func<int, int> getNewIndex)
         {
-            var category = Find(id, out var c, track: true) ? c : throw new ArgumentException("Invalid id");
-            var categories = Repo.GetAll(track: false).OrderBy(c => c.DisplayOrder).ToList();
-            var inList = categories.FirstOrDefault(c => c.Id == category.Id);
-
-            if(inList == null)
+            void OnNewList(Category[] categories)
             {
-                return Json(new { success = false, message = "Not found in list" });
-            }
-
-            var index = categories.IndexOf(inList);
-            var newIndex = getNewIndex(index);
-
-            if(index < 0 || index >= categories.Count || newIndex < 0 || newIndex >= categories.Count)
-            {
-                return Json(new { success = false, message = "Invalid move operation" });
-            }
-
-            var categoriesDict = categories.ToDictionary(c => c.Id);
-            categories.RemoveAt(index);
-            categories.Insert(newIndex, category);
-
-            foreach (var local in categories)
-            {
-                var newDisplayOrder = categories.IndexOf(local);
-                if(newDisplayOrder != local.DisplayOrder)
+                var changed = false;
+                var asList = categories.ToList();
+                
+                for (int i = 0; i < categories.Length; i++)
                 {
-                    local.DisplayOrder = newDisplayOrder;
-                    Repo.Update(local);
+                    var newDisplayOrder = categories.ToList().IndexOf(categories[i]);
+                    if(newDisplayOrder != categories[i].DisplayOrder)
+                    {
+                        categories[i].DisplayOrder = newDisplayOrder;
+                        Repo.Update(categories[i]);
+                        changed = true;
+                    }
+                }
+
+                if(changed)
+                {
+                    unitOfWork.Save();
                 }
             }
 
-            unitOfWork.Save();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public TOut MoveInList<TModel, TKey, TOut>(
-            TModel element,
-            List<TModel> list,
-            Func<int, int> getNewIndex,
-            Func<TModel, TModel, bool> compare,
-            Func<TModel, TKey> getKey,
-            Action<TModel[]> onNewList,
-            Func<TOut> onSuccess,
-            Func<string, TOut> onFail
-            ) where TKey : IComparable
-        {
-            var inList = list.FirstOrDefault(e => compare(e, element));
-
-            if(inList == null)
-            {
-                return onFail("Element not present in list");
-            }
-
-            var index = list.IndexOf(inList);
-            var newIndex = getNewIndex(index);
-
-            if(index < 0 || index >= list.Count || newIndex < 0 || newIndex >= list.Count)
-            {
-                return onFail("Invalid move operation");
-            }
-
-            var categoriesDict = list.ToDictionary(c => getKey(c));
-            list.RemoveAt(index);
-            list.Insert(newIndex, element);
-            onNewList([.. list]);
-            return onSuccess();
+            return GenericUtility.MoveInList<Category, int, IActionResult>(
+                element: Find(id, out var c, track: false) ? c : null,
+                list: [.. Repo.GetAll(track: false).OrderBy(c => c.DisplayOrder)],
+                compare: (c1, c2) => c1.Id.Equals(c2.Id),
+                getKey: c => c.Id,
+                getNewIndex: getNewIndex,
+                onSuccess: () => RedirectToAction(nameof(Index)),
+                onFail: message => Json(new { success = false, message }),
+                onNewList: OnNewList);
         }
     }
 }
