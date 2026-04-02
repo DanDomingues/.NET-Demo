@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess.IRepository;
 using Demo.Main.Controllers;
+using Demo.Main.Controllers.Modules;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
@@ -12,8 +13,16 @@ namespace Demo.Main.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]
-    public class ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : RepositoryBoundController<Product, IProductRepository>(unitOfWork)
-    {        
+    public class ProductController : RepositoryBoundController<Product, IProductRepository>
+    {
+        private readonly IWebHostEnvironment webHostEnvironment;
+
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment) : base(unitOfWork)
+        {
+            this.webHostEnvironment = webHostEnvironment;
+            Modules["Upsert"] = new RepoControllerUpsertModule<Product, IProductRepository>(this);
+        }
+
         protected override IProductRepository Repo => unitOfWork.ProductRepository;
         protected override string DefaultFeedbackName => "Product";
         protected override string? DefaultIncludeProperties => "Category";

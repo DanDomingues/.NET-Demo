@@ -2,7 +2,7 @@ using Demo.DataAccess.IRepository;
 using Demo.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo.Main.Controllers.RepoControllerModules
+namespace Demo.Main.Controllers.Modules
 {
     public abstract class RepositoryControllerModule<TModel, TRepo>
         where TModel : class, IModelBase, new()

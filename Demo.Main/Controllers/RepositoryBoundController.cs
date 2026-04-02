@@ -6,7 +6,7 @@ using Demo.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using Demo.Main.Controllers.RepoControllerModules;
+using Demo.Main.Controllers.Modules;
 
 namespace Demo.Main.Controllers
 {
@@ -34,10 +34,6 @@ namespace Demo.Main.Controllers
             Modules = new()
             {
                 { "Index", new RepoControllerIndexModule<TModel, TRepo>(this, DefaultIncludeProperties) },
-                { "Upsert", new RepoControllerUpsertModule<TModel, TRepo>(this) },
-                { "Delete", new RepoControllerDeleteModule<TModel, TRepo>(this) },
-                { "Create", new RepoControllerCreateModule<TModel, TRepo>(this) },
-                { "Edit", new RepoControllerEditModule<TModel, TRepo>(this) }
             };
         }
 

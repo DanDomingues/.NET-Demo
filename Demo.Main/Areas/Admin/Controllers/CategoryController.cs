@@ -1,5 +1,6 @@
 ﻿using Demo.DataAccess.IRepository;
 using Demo.Main.Controllers;
+using Demo.Main.Controllers.Modules;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
@@ -10,8 +11,13 @@ namespace Demo.Main.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]
-    public class CategoryController(IUnitOfWork unitOfWork) : RepositoryBoundController<Category, ICategoryRepository>(unitOfWork)
+    public class CategoryController : RepositoryBoundController<Category, ICategoryRepository>
     {
+        public CategoryController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        {
+            Modules["Delete"] = new RepoControllerDeleteModule<Category, ICategoryRepository>(this);
+        }
+
         protected override ICategoryRepository Repo => unitOfWork.CategoryRepository;
 
         protected override string DefaultFeedbackName => "Category";
