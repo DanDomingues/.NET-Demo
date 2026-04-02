@@ -6,17 +6,37 @@ using Demo.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using ASP.NET_Debut.Controllers.RepoControllerModules;
 
 namespace ASP.NET_Debut.Controllers
 {
-    public abstract partial class RepositoryBoundController<TModel, TRepo>(IUnitOfWork unitOfWork) : Controller
+    public abstract class RepositoryBoundController<TModel, TRepo> : Controller, IRepoControllerModuleContainer<TModel, TRepo>
         where TModel : class, IModelBase, new()
         where TRepo : IRepository<TModel>
     {
-        protected IUnitOfWork unitOfWork = unitOfWork;
+        protected IUnitOfWork unitOfWork;
         protected abstract TRepo Repo { get; }
         protected abstract string DefaultFeedbackName { get; }
         protected virtual string? DefaultIncludeProperties => null;
+
+        TRepo IRepoControllerModuleContainer<TModel, TRepo>.Repo => Repo;
+        Controller IRepoControllerModuleContainer<TModel, TRepo>.AsController => this;
+
+
+        protected readonly Dictionary<string, RepositoryControllerModule<TModel, TRepo>> Modules;
+
+        public RepositoryBoundController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+            Modules = new()
+            {
+                { "Index", new RepoControllerIndexModule<TModel, TRepo>(this, DefaultIncludeProperties) },
+                { "Upsert", new RepoControllerUpsertModule<TModel, TRepo>(this) },
+                { "Delete", new RepoControllerDeleteModule<TModel, TRepo>(this) },
+                { "Create", new RepoControllerCreateModule<TModel, TRepo>(this) },
+                { "Edit", new RepoControllerEditModule<TModel, TRepo>(this) }
+            };
+        }
 
         protected IActionResult UpdateRepo(
             TModel obj, 
@@ -31,7 +51,10 @@ namespace ASP.NET_Debut.Controllers
             return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 
-        protected bool Find(int? id, out TModel output, bool track = false)
+        protected bool Find(
+            int? id, 
+            out TModel output, 
+            bool track = false)
         {
             if (id == null || id == 0)
             {
@@ -100,5 +123,80 @@ namespace ASP.NET_Debut.Controllers
         {
             return true;
         }
+
+        bool IRepoControllerModuleContainer<TModel, TRepo>.Find(
+            int? id, 
+            out TModel output, 
+            bool track)
+        {
+            return Find(id, out output, track);
+        }
+
+        IActionResult IRepoControllerModuleContainer<TModel, TRepo>.UpdateRepo(
+            TModel obj, Action<TModel> action, 
+            string feedback, string redirection, 
+            object? redirectionArgs)
+        {
+            return UpdateRepo(obj, action, feedback, redirection, redirectionArgs);
+        }
+
+        bool IRepoControllerModuleContainer<TModel, TRepo>.ValidateForUpsert(TModel model)
+        {
+            return ValidateForUpsert(model);
+        }
+
+        #region APICalls
+        [HttpGet]
+        public virtual IActionResult GetAll()
+        {
+            var all = Repo.GetAll(includeProperties: DefaultIncludeProperties);
+            return Json(new { data = all });
+        }
+
+        [HttpDelete]
+        public virtual IActionResult DeleteAt(int id)
+        {
+            var obj = Repo.GetById(id);
+            if (obj == null)
+            {
+                return Json(new 
+                { 
+                    success = false, 
+                    message = "Error while deleting" 
+                });
+            }
+
+            Repo.Remove(obj);
+            unitOfWork.Save();
+
+            return Json(new 
+            { 
+                success = true, 
+                message = "Delete Successful" 
+            });
+        }
+        #endregion
+    }
+
+    public interface IRepoControllerModuleContainer<TModel, TRepo>
+        where TModel : class, IModelBase, new()
+        where TRepo : IRepository<TModel>
+    {
+        TRepo Repo { get; }
+        Controller AsController { get; }
+
+        IActionResult UpdateRepo(
+            TModel obj,
+            Action<TModel> action,
+            string feedback = "success",
+            string redirection = "Index",
+            object? redirectionArgs = null);
+
+        bool Find(
+            int? id, 
+            out TModel output, 
+            bool track = false);
+
+        bool ValidateForUpsert(TModel model);
     }
 }

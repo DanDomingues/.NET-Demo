@@ -23,7 +23,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected override string DefaultFeedbackName => "User";
         protected override string? DefaultIncludeProperties => "Company";
 
-        public IActionResult Index() => IndexInternal();
+        public IActionResult Index() => Modules["Index"].Get();
 
         [HttpGet]
         public IActionResult ManageRole(string id)
@@ -52,7 +52,6 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             });
         }
 
-        //TODO-3: Rename to UpdateRole
         [HttpPost] 
         public IActionResult ManageRole(ManageRoleVM vm)
         {   

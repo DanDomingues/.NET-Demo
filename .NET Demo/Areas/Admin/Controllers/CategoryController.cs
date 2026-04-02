@@ -36,7 +36,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return PartialView("_UpsertModal", category);
         }
 
-        public IActionResult Delete(int? id) => DeleteInternal(id);
+        public IActionResult Delete(int? id) => Modules["Delete"].GetWithId(id);
 
         [HttpPost]
         public IActionResult Upsert(Category model)
@@ -59,7 +59,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             return Find(id, out var category, track: true)
-                ? DeleteInternalOnPost(category)
+                ? Modules["Delete"].PostWithId(id)
                 : RedirectToAction(nameof(Index));
         }
     }

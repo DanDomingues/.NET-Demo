@@ -69,7 +69,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 unitOfWork.Save();
             }
         
-            return UpsertInternalOnPost(vm.Product);
+            return Modules["Upsert"].Post(vm.Product);
         }
 
         private void AddProductImages(Product product, List<IFormFile> files)

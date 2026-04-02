@@ -14,13 +14,13 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         protected override ICompanyRepository Repo => unitOfWork.CompanyRepository;
         protected override string DefaultFeedbackName => "Company";
 
-        public IActionResult Index() => IndexInternal();
-        public IActionResult Upsert(int? id) => UpsertInternal(id);
+        public IActionResult Index() => Modules["Index"].Get();
+        public IActionResult Upsert(int? id) => Modules["Upsert"].GetWithId(id);
 
         [HttpPost]
         public IActionResult Upsert(Company upsert)
         {
-            return UpsertInternalOnPost(upsert);
+            return Modules["Upsert"].Post(upsert);
         }
     }
 }
