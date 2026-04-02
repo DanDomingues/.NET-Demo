@@ -32,6 +32,8 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             return base.ValidateForUpsert(model) && !CheckForDuplicatesByName(model);
         }
 
+        public IActionResult Index() => Modules["Index"].Get(); 
+
         public IActionResult Upsert(int? id)
         {
             var vm = new ProductVM
@@ -151,9 +153,12 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
                 Directory.Delete(productPath, true);
             }
 
-            foreach (var image in obj.Images)
+            if(obj.Images != null && obj.Images.Count > 0)
             {
-                unitOfWork.ProductImagesRepository.Remove(image);
+                foreach (var image in obj.Images)
+                {
+                    unitOfWork.ProductImagesRepository.Remove(image);
+                }                
             }
 
             return base.DeleteAt(id);

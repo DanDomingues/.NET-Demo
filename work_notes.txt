@@ -16,6 +16,10 @@ Work points: Website
     - Have change order buttons in the category page
     - Trim controller http modules after validation
     - Validate all actions in main flow
+    - Rename most of the namespaces referring the .NET Demo folder
+
+Found issues
+    - Back to orders using incomplete path, throwing errors
 
 Portfolio Prep Stage
     - Define project to seed new items to DB
