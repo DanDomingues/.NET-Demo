@@ -57,12 +57,10 @@
                             </div>
                         </td>
                         <td>
-                            <a asp-action="MoveDown" asp-route-id="@vm.Category.Id"
-                            class=@($"btn btn-secondary mx-2 js-category-move-down {GetDownArrowStyle(vm.Category)}")>
+                            <a asp-action="MoveDown" asp-route-id="@vm.Category.Id" class=@($"btn btn-secondary mx-2 {GetDownArrowStyle(vm.Category)}")>
                                 <i class="bi bi-arrow-down"></i>
                             </a>
-                            <a asp-action="MoveUp" asp-route-id="@vm.Category.Id" 
-                            class=@($"btn btn-secondary mx-2 js-category-move-up {GetUpArrowStyle(vm.Category)}")>
+                            <a asp-action="MoveUp" asp-route-id="@vm.Category.Id" class=@($"btn btn-secondary mx-2 {GetUpArrowStyle(vm.Category)}")>
                                 <i class="bi bi-arrow-up"></i>
                             </a>
                         </td>
