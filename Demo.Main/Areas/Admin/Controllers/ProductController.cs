@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Demo.Main.Areas.Admin.Controllers
 {
@@ -138,6 +139,34 @@ namespace Demo.Main.Areas.Admin.Controllers
 
             this.AddOperationFeedback("Image Deleted Successfully");            
             return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
+        }
+
+        public IActionResult MoveImageUp(int? prodId, int? imageId) => Move(prodId, imageId, i => i - 1);
+        
+        public IActionResult MoveImageDown(int? prodId, int? imageId) => Move(prodId, imageId, i => i + 1);
+
+        public IActionResult Move(int? prodId, int? imageId, Func<int, int> getNewIndex)
+        {
+            var product = Repo.GetById(prodId, includeProperties: "Images", track: false);
+            var image = unitOfWork.ProductImagesRepository.GetById(imageId, track: false);
+
+            void OnNewList(ProductImage[] images)
+            {
+                var asList = images.ToList();
+                product.Images = asList;
+                Repo.Update(product);
+                unitOfWork.Save();
+            }
+
+            return GenericUtility.MoveInList<ProductImage, int, IActionResult>(
+                element: image,
+                list: [.. product.Images],
+                compare: (c1, c2) => c1.Id.Equals(c2.Id),
+                getKey: c => c.Id,
+                getNewIndex: getNewIndex,
+                onSuccess: () => RedirectToAction(nameof(Upsert), new { id = prodId.ToString() }),
+                onFail: message => Json(new { success = false, message }),
+                onNewList: OnNewList);
         }
 
         #region API Calls

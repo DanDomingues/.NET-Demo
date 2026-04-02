@@ -1,4 +1,17 @@
 ﻿@model ProductVM
+@{
+	@*TODO: Possibly unify implementation with Category Index*@
+	var enabled = "";
+    var disabled = "disabled";
+    string GetUpArrowStyle(ProductImage element)
+    {
+        return element.Id == Model.Product.Images?.First()?.Id ? disabled : enabled;
+    }
+    string GetDownArrowStyle(ProductImage element)
+    {
+        return element.Id == Model.Product.Images?.Last()?.Id ? disabled : enabled;
+    }
+}
 
 <div class="card shadow border-0 my-4">
 	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
@@ -76,20 +89,28 @@
 					</div>
 				</div>
 
-				<div class="col-2">
-					@if(Model.Product.Images != null)
-					{
-						foreach(var image in Model.Product.Images)
+				@if(Model.Product.Images != null)
+				{
+					<div class="col-2 gap-3">
+						@foreach(var image in Model.Product.Images)
 						{
 							<div class="mb-3">
 								<img src="@image.Url" width=100% style="border:1px solid #bbb9b9"/>
 								<a asp-action="DeleteImage" class="btn btn-danger d-block mx-auto mt-1" style="width:90%;" asp-route-id="@image.Id">
-									<i class="bi bi-trash-fill"></i>Delete
+									<i class="bi bi-trash-fill"></i>
+								</a>
+								<a asp-action="MoveImageDown" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
+								class=@($"btn btn-secondary mx-2 js-category-move-down {GetDownArrowStyle(image)}")>
+									<i class="bi bi-arrow-down"></i>
+								</a>
+								<a asp-action="MoveImageUp" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id" 
+								class=@($"btn btn-secondary mx-2 js-category-move-up {GetUpArrowStyle(image)}")>
+									<i class="bi bi-arrow-up"></i>
 								</a>
 							</div>
-						}
-					}
-				</div>
+							}
+					</div>
+				}
 			</div>
 		</form>
 	</div>
