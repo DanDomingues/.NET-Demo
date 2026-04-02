@@ -92,7 +92,7 @@
 				@if(Model.Product.Images != null)
 				{
 					<div class="col-2 gap-3">
-						@foreach(var image in Model.Product.Images)
+						@foreach(var image in Model.Product.Images.OrderBy(i => i.DisplayOrder))
 						{
 							<div class="mb-3">
 								<img src="@image.Url" width=100% style="border:1px solid #bbb9b9"/>

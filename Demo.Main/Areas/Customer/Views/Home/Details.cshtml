@@ -1,5 +1,8 @@
 ﻿@model ShoppingCartItemVM
+@{
+	var images = Model.Product.Images.OrderBy(i => i.DisplayOrder);
 
+}
 <form method="post">
 
 	<input hidden asp-for="ProductId" />
@@ -30,9 +33,9 @@
 							<div id="carouselExample" class="carousel slide">
 								@*Carousel implementation. For repeated usage, this should be isolated in a partial*@
 								<div class="carousel-inner">
-									@foreach(var image in Model.Product.Images)
+									@foreach(var image in images)
 									{
-										var activeClass = image == Model.Product.Images.First() ? "active" : "";
+										var activeClass = image.Id == images.First().Id ? "active" : "";
 										<div class="carousel-item @activeClass">
 											<img src="@image.Url" class="d-block w-100" alt="...">
 										</div>

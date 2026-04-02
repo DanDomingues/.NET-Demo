@@ -5,9 +5,9 @@ namespace Demo.Models
 {
     public class ProductImage : IModelBase
     {
-        public int Id { get; set; }
-        [Required]
-        public string Url { get; set; }
+        [Required] public int Id { get; set; }
+        [Required] public string Url { get; set; }
+        public int DisplayOrder { get; set; } = 0;
 
         //External
         [ForeignKey("ProductId")]

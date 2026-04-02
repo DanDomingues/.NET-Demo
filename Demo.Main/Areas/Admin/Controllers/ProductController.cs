@@ -114,6 +114,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 {
                     Url = $@"\{productPath}\{fileName}",
                     ProductId = product.Id,
+                    DisplayOrder = product.Images.Count,
                 };
 
                 product.Images ??= [];
@@ -152,9 +153,14 @@ namespace Demo.Main.Areas.Admin.Controllers
 
             void OnNewList(ProductImage[] images)
             {
-                var asList = images.ToList();
-                product.Images = asList;
-                Repo.Update(product);
+                for (int i = 0; i < images.Length; i++)
+                {
+                    if(i != images[i].DisplayOrder)
+                    {
+                        images[i].DisplayOrder = i;
+                        unitOfWork.ProductImagesRepository.Update(images[i]);
+                    }
+                }
                 unitOfWork.Save();
             }
 

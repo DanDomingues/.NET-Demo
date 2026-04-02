@@ -77,24 +77,16 @@ namespace Demo.Main.Areas.Admin.Controllers
         {
             void OnNewList(Category[] categories)
             {
-                var changed = false;
-                var asList = categories.ToList();
-                
                 for (int i = 0; i < categories.Length; i++)
                 {
-                    var newDisplayOrder = categories.ToList().IndexOf(categories[i]);
-                    if(newDisplayOrder != categories[i].DisplayOrder)
+                    if(categories[i].DisplayOrder != i)
                     {
-                        categories[i].DisplayOrder = newDisplayOrder;
+                        categories[i].DisplayOrder = i;
                         Repo.Update(categories[i]);
-                        changed = true;
                     }
                 }
 
-                if(changed)
-                {
-                    unitOfWork.Save();
-                }
+                unitOfWork.Save();
             }
 
             return GenericUtility.MoveInList<Category, int, IActionResult>(
