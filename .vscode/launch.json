@@ -1,16 +1,21 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
-            "name": "C#: Demo",
-            "type": "dotnet",
+            "name": "Launch Demo.Main",
+            "type": "coreclr",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Demo.Main/Demo.csproj"
+            "preLaunchTask": "build Demo.Main",
+            "program": "${workspaceFolder}/Demo.Main/bin/Debug/net8.0/Demo.dll",
+            "cwd": "${workspaceFolder}/Demo.Main",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            }
         }
-
     ]
 }
