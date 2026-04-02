@@ -6,9 +6,9 @@ using Demo.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using ASP.NET_Debut.Controllers.RepoControllerModules;
+using Demo.Main.Controllers.RepoControllerModules;
 
-namespace ASP.NET_Debut.Controllers
+namespace Demo.Main.Controllers
 {
     public abstract class RepositoryBoundController<TModel, TRepo> : Controller, IRepoControllerModuleContainer<TModel, TRepo>
         where TModel : class, IModelBase, new()

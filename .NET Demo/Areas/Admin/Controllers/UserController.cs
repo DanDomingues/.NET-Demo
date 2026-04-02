@@ -1,6 +1,6 @@
 using Demo.DataAccess;
 using Demo.DataAccess.IRepository;
-using ASP.NET_Debut.Controllers;
+using Demo.Main.Controllers;
 using Demo.Models;
 using Demo.Models.ViewModels;
 using Demo.Utility;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ASP.NET_Debut.Areas.Admin.Controllers
+namespace Demo.Main.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UserController(

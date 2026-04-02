@@ -15,7 +15,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace ASP.NET_Debut.Areas.Identity.Pages.Account
+namespace Demo.Main.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel

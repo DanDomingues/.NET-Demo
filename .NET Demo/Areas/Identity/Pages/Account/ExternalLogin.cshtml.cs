@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Demo.Models;
 
-namespace ASP.NET_Debut.Areas.Identity.Pages.Account
+namespace Demo.Main.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel

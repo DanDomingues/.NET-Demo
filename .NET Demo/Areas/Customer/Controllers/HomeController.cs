@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace ASP.NET_Debut.Areas.Customer.Controllers
+namespace Demo.Main.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class HomeController(IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider

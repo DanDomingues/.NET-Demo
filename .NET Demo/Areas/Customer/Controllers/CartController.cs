@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
-using ASP.NET_Debut.Controllers;
+using Demo.Main.Controllers;
 
-namespace ASP.NET_Debut.Areas.Customer.Controllers
+namespace Demo.Main.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork), IUnitOfWorkProvider

@@ -10,22 +10,19 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - Develop Company pages to perform CRUD model
-    - Add change order buttons in the edit product page
-    - Improve styling for read only components
-    - Have change order buttons in the category page
     - Trim controller http modules after validation
-    - Validate all actions in main flow
     - Rename most of the namespaces referring the .NET Demo folder
-
-Found issues
-    - Back to orders using incomplete path, throwing errors
+    - Improve styling for read only components
+    - Add change order buttons in the edit product page
+    - Have change order buttons in the category page
+    - Develop Company pages to perform CRUD model
 
 Portfolio Prep Stage
     - Define project to seed new items to DB
     - Seed new products into file
  
 Done
+    - Validate all actions in main flow
     - Implement modals to Category and Role upsert
     - On create product, Category is labeled as CategoryId
     - On role edit, have company editing for both company and employee roles

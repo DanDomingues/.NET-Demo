@@ -1,7 +1,7 @@
 using Demo.DataAccess.IRepository;
 using Demo.Models;
 
-namespace ASP.NET_Debut.Controllers.RepoControllerModules
+namespace Demo.Main.Controllers.RepoControllerModules
 {
     public class RepoControllerUpsertModule<TModel, TRepo> : RepositoryControllerModule<TModel, TRepo>
         where TModel : class, IModelBase, new()
