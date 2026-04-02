@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "ASP.NET_Debut": {
+    "Demo": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
