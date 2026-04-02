@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Demo.Models
 {
-    public class ProductImage : IModelBase
+    public class ProductImage : ModelBase, IOrderableModel
     {
-        [Required] public int Id { get; set; }
         [Required] public string Url { get; set; }
         public int DisplayOrder { get; set; } = 0;
 

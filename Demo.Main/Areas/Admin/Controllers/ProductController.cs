@@ -1,4 +1,5 @@
-﻿using Demo.DataAccess.IRepository;
+﻿using Demo.DataAccess;
+using Demo.DataAccess.IRepository;
 using Demo.Main.Controllers;
 using Demo.Main.Controllers.Modules;
 using Demo.Models;
@@ -142,39 +143,26 @@ namespace Demo.Main.Areas.Admin.Controllers
             return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
         }
 
-        public IActionResult MoveImageUp(int? prodId, int? imageId) => Move(prodId, imageId, i => i - 1);
+        public IActionResult MoveImageUp(int? prodId, int? imageId) => MoveImage(prodId, imageId, i => i - 1);
         
-        public IActionResult MoveImageDown(int? prodId, int? imageId) => Move(prodId, imageId, i => i + 1);
+        public IActionResult MoveImageDown(int? prodId, int? imageId) => MoveImage(prodId, imageId, i => i + 1);
 
-        public IActionResult Move(int? prodId, int? imageId, Func<int, int> getNewIndex)
+        public IActionResult MoveImage(int? prodId, int? imageId, Func<int, int> getNewIndex)
         {
             var productImages = unitOfWork.ProductImagesRepository
                 .GetAll(i => i.ProductId.Equals(prodId), track: false)
                 .OrderBy(i => i.DisplayOrder);
+
             var image = productImages.FirstOrDefault(i => i.Id.Equals(imageId));
 
-            void OnNewList(ProductImage[] images)
-            {
-                for (int i = 0; i < images.Length; i++)
-                {
-                    if(i != images[i].DisplayOrder)
-                    {
-                        images[i].DisplayOrder = i;
-                        unitOfWork.ProductImagesRepository.Update(images[i]);
-                    }
-                }
-                unitOfWork.Save();
-            }
-
-            return GenericUtility.MoveInList<ProductImage, int, IActionResult>(
+            return DataUtility.MoveInList<ProductImage, int, IActionResult>(
+                unitOfWork: unitOfWork,
+                repo: unitOfWork.ProductImagesRepository,
                 element: image,
                 list: [.. productImages],
-                compare: (c1, c2) => c1.Id.Equals(c2.Id),
-                getKey: c => c.Id,
                 getNewIndex: getNewIndex,
                 onSuccess: () => RedirectToAction(nameof(Upsert), new { id = prodId.ToString() }),
-                onFail: message => Json(new { success = false, message }),
-                onNewList: OnNewList);
+                onFail: message => Json(new { success = false, message }));
         }
 
         #region API Calls

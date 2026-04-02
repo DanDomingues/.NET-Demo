@@ -1,4 +1,5 @@
-﻿using Demo.DataAccess.IRepository;
+﻿using Demo.DataAccess;
+using Demo.DataAccess.IRepository;
 using Demo.Main.Controllers;
 using Demo.Main.Controllers.Modules;
 using Demo.Models;
@@ -75,29 +76,14 @@ namespace Demo.Main.Areas.Admin.Controllers
 
         public IActionResult Move(int? id, Func<int, int> getNewIndex)
         {
-            void OnNewList(Category[] categories)
-            {
-                for (int i = 0; i < categories.Length; i++)
-                {
-                    if(categories[i].DisplayOrder != i)
-                    {
-                        categories[i].DisplayOrder = i;
-                        Repo.Update(categories[i]);
-                    }
-                }
-
-                unitOfWork.Save();
-            }
-
-            return GenericUtility.MoveInList<Category, int, IActionResult>(
+            return DataUtility.MoveInList<Category, int, IActionResult>(
+                unitOfWork: unitOfWork,
+                repo: Repo,
                 element: Find(id, out var c, track: false) ? c : null,
                 list: [.. Repo.GetAll(track: false).OrderBy(c => c.DisplayOrder)],
-                compare: (c1, c2) => c1.Id.Equals(c2.Id),
-                getKey: c => c.Id,
                 getNewIndex: getNewIndex,
                 onSuccess: () => RedirectToAction(nameof(Index)),
-                onFail: message => Json(new { success = false, message }),
-                onNewList: OnNewList);
+                onFail: message => Json(new { success = false, message }));
         }
     }
 }
