@@ -44,7 +44,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         }
 
         throw new InvalidOperationException(
-            "Could not find ConnectionStrings:DefaultConnection. Set the ConnectionStrings__DefaultConnection environment variable or ensure .NET Demo/appsettings.json exists.");
+            "Could not find ConnectionStrings:DefaultConnection. Set the ConnectionStrings__DefaultConnection environment variable or ensure Demo.Main/appsettings.json exists.");
     }
 
     private static IEnumerable<string> GetCandidateAppSettingsPaths()
@@ -52,8 +52,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         var currentDirectory = Directory.GetCurrentDirectory();
 
         yield return Path.Combine(currentDirectory, "appsettings.json");
-        yield return Path.Combine(currentDirectory, ".NET Demo", "appsettings.json");
-        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", ".NET Demo", "appsettings.json"));
-        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", ".NET Demo", "appsettings.json"));
+        yield return Path.Combine(currentDirectory, "Demo.Main", "appsettings.json");
+        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "Demo.Main", "appsettings.json"));
+        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", "Demo.Main", "appsettings.json"));
     }
 }
