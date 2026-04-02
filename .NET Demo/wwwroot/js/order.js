@@ -20,7 +20,7 @@ function loadDataTable(options) {
             { data: 'orderStatus' },
             { data: 'paymentStatus' },
             { data: 'orderTotal', render: renderCurrency },
-            { data: 'id', render: renderButtons },
+            { data: 'id', render: function (data) { return renderButtons(data, options.filter) } },
         ]
     });
 }
@@ -45,8 +45,8 @@ function renderCurrency(data) {
     return usdCurrencyFormatter.format(Number(data));
 }
 
-function renderButtons(data) {
+function renderButtons(id, filter) {
     return `<div class="m-75 btn-group" role="group">
-                <a href="/customer/order/details?id=${data}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i></a>
+                <a href="/customer/order/details?id=${id}&filter=${filter}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i></a>
             </div>`;
 }
