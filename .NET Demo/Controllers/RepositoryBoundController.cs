@@ -28,6 +28,9 @@ namespace ASP.NET_Debut.Controllers
         public RepositoryBoundController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+            //TODO-1: After functioning is validated, create appropriate modules on each class
+            //Very innocous at this point, as these are simply action holders
+            //Therefore, more of an engineering principle refactor than a necessity
             Modules = new()
             {
                 { "Index", new RepoControllerIndexModule<TModel, TRepo>(this, DefaultIncludeProperties) },

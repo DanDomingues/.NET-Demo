@@ -10,13 +10,20 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - On create product, Category is labeled as CategoryId
-    - Implement modals to Category and Role upsert
     - Develop Company pages to perform CRUD model
+    - Add change order buttons in the edit product page
+    - Improve styling for read only components
+    - Have change order buttons in the category page
+    - Trim controller http modules after validation
+    - Validate all actions in main flow
+
+Portfolio Prep Stage
     - Define project to seed new items to DB
     - Seed new products into file
  
 Done
+    - Implement modals to Category and Role upsert
+    - On create product, Category is labeled as CategoryId
     - On role edit, have company editing for both company and employee roles
     - Same thing for user registration
     - When a user either opens the cart or their orders and they're not logged in, redirect to login page
