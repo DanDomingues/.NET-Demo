@@ -26,7 +26,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
         public IActionResult Index() => IndexInternal();
 
         [HttpGet]
-        public IActionResult RoleManagement(string id)
+        public IActionResult ManageRole(string id)
         {
             var user = Repo
                 .GetFirstOrDefault(u => u.Id == id);
@@ -44,7 +44,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
             var roles = rm.Roles
                 .Select(r => new SelectListItem(r.Name, r.Name));
                 
-            return PartialView("_RoleManagementModal", new RoleManagementVM
+            return PartialView("_ManageRoleModal", new ManageRoleVM
             {
                 User = user,
                 Companies = companies,
@@ -54,7 +54,7 @@ namespace ASP.NET_Debut.Areas.Admin.Controllers
 
         //TODO-3: Rename to UpdateRole
         [HttpPost] 
-        public IActionResult RoleManagement(RoleManagementVM vm)
+        public IActionResult ManageRole(ManageRoleVM vm)
         {   
             //First we retrieve the user from DB to compare and update   
             var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));

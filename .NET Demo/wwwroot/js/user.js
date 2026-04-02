@@ -39,7 +39,7 @@ function loadDataTable()
             <a onClick=ToggleLock('${data.id}') class="btn btn-${tag} text-white" style="cursor: pointer; width: 120px;">
                 <i class="bi bi-unlock-fill"></i>${label}
             </a>
-            <button type="button" class="btn btn-outline-warning js-roleManagement-modal-trigger" data-id="${data.id}" style="cursor: pointer; width: 120px;">
+            <button type="button" class="btn btn-outline-warning js-manageRole-modal-trigger" data-id="${data.id}" style="cursor: pointer; width: 120px;">
                 <i class="bi bi-pencil-square"></i>Edit Role
             </button>
         </div>

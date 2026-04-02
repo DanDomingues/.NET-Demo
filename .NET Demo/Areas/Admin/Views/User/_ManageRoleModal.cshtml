@@ -1,5 +1,5 @@
 @using Demo.Utility
-@model RoleManagementVM
+@model ManageRoleVM
 @{
     var companyStyle = Model.User.Role?.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE) == true ?
         "display:block" :
@@ -7,11 +7,11 @@
 }
 
 <div class="modal-header">
-    <h2 class="modal-title fs-5" id="roleManagementModalLabel">Manage User Role</h2>
+    <h2 class="modal-title fs-5" id="manageRoleModalLabel">Manage User Role</h2>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<form id="roleManagementForm" method="post" asp-action="RoleManagement" asp-controller="User" asp-area="Admin">
+<form id="manageRoleForm" method="post" asp-action="ManageRole" asp-controller="User" asp-area="Admin">
 
     <input asp-for="User.Id" type="hidden" />
 
