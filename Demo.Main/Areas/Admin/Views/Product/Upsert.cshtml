@@ -3,13 +3,16 @@
 	@*TODO: Possibly unify implementation with Category Index*@
 	var enabled = "";
     var disabled = "disabled";
+	var images = Model.Product.Images.OrderBy(i => i.DisplayOrder);
+	
+
     string GetUpArrowStyle(ProductImage element)
     {
-        return element.Id == Model.Product.Images?.First()?.Id ? disabled : enabled;
+        return element.Id == images?.First()?.Id ? disabled : enabled;
     }
     string GetDownArrowStyle(ProductImage element)
     {
-        return element.Id == Model.Product.Images?.Last()?.Id ? disabled : enabled;
+        return element.Id == images?.Last()?.Id ? disabled : enabled;
     }
 }
 
@@ -89,10 +92,10 @@
 					</div>
 				</div>
 
-				@if(Model.Product.Images != null)
+				@if(images != null)
 				{
 					<div class="col-2 gap-3">
-						@foreach(var image in Model.Product.Images.OrderBy(i => i.DisplayOrder))
+						@foreach(var image in images.OrderBy(i => i.DisplayOrder))
 						{
 							<div class="mb-3">
 								<img src="@image.Url" width=100% style="border:1px solid #bbb9b9"/>

@@ -148,8 +148,10 @@ namespace Demo.Main.Areas.Admin.Controllers
 
         public IActionResult Move(int? prodId, int? imageId, Func<int, int> getNewIndex)
         {
-            var product = Repo.GetById(prodId, includeProperties: "Images", track: false);
-            var image = unitOfWork.ProductImagesRepository.GetById(imageId, track: false);
+            var productImages = unitOfWork.ProductImagesRepository
+                .GetAll(i => i.ProductId.Equals(prodId), track: false)
+                .OrderBy(i => i.DisplayOrder);
+            var image = productImages.FirstOrDefault(i => i.Id.Equals(imageId));
 
             void OnNewList(ProductImage[] images)
             {
@@ -166,7 +168,7 @@ namespace Demo.Main.Areas.Admin.Controllers
 
             return GenericUtility.MoveInList<ProductImage, int, IActionResult>(
                 element: image,
-                list: [.. product.Images],
+                list: [.. productImages],
                 compare: (c1, c2) => c1.Id.Equals(c2.Id),
                 getKey: c => c.Id,
                 getNewIndex: getNewIndex,
