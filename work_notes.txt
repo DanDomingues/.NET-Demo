@@ -10,8 +10,6 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - Trim controller http modules after validation
-    - Improve styling for read only components
     - Add change order buttons in the edit product page
     - Have change order buttons in the category page
     - Develop Company pages to perform CRUD model
@@ -21,6 +19,8 @@ Portfolio Prep Stage
     - Seed new products into file
  
 Done
+    - Improve styling for read only components
+    - Trim controller http modules after validation
     - Rename most of the namespaces referring the .NET Demo folder
     - Validate all actions in main flow
     - Implement modals to Category and Role upsert

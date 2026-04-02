@@ -68,5 +68,79 @@ namespace Demo.Main.Areas.Admin.Controllers
                 ? Modules["Delete"].PostWithId(id)
                 : RedirectToAction(nameof(Index));
         }
+
+        public IActionResult MoveUp(int? id) => Move(id, i => i - 1);
+        
+        public IActionResult MoveDown(int? id) => Move(id, i => i + 1);
+
+        public IActionResult Move(int? id, Func<int, int> getNewIndex)
+        {
+            var category = Find(id, out var c, track: true) ? c : throw new ArgumentException("Invalid id");
+            var categories = Repo.GetAll(track: false).OrderBy(c => c.DisplayOrder).ToList();
+            var inList = categories.FirstOrDefault(c => c.Id == category.Id);
+
+            if(inList == null)
+            {
+                return Json(new { success = false, message = "Not found in list" });
+            }
+
+            var index = categories.IndexOf(inList);
+            var newIndex = getNewIndex(index);
+
+            if(index < 0 || index >= categories.Count || newIndex < 0 || newIndex >= categories.Count)
+            {
+                return Json(new { success = false, message = "Invalid move operation" });
+            }
+
+            var categoriesDict = categories.ToDictionary(c => c.Id);
+            categories.RemoveAt(index);
+            categories.Insert(newIndex, category);
+
+            foreach (var local in categories)
+            {
+                var newDisplayOrder = categories.IndexOf(local);
+                if(newDisplayOrder != local.DisplayOrder)
+                {
+                    local.DisplayOrder = newDisplayOrder;
+                    Repo.Update(local);
+                }
+            }
+
+            unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public TOut MoveInList<TModel, TKey, TOut>(
+            TModel element,
+            List<TModel> list,
+            Func<int, int> getNewIndex,
+            Func<TModel, TModel, bool> compare,
+            Func<TModel, TKey> getKey,
+            Action<TModel[]> onNewList,
+            Func<TOut> onSuccess,
+            Func<string, TOut> onFail
+            ) where TKey : IComparable
+        {
+            var inList = list.FirstOrDefault(e => compare(e, element));
+
+            if(inList == null)
+            {
+                return onFail("Element not present in list");
+            }
+
+            var index = list.IndexOf(inList);
+            var newIndex = getNewIndex(index);
+
+            if(index < 0 || index >= list.Count || newIndex < 0 || newIndex >= list.Count)
+            {
+                return onFail("Invalid move operation");
+            }
+
+            var categoriesDict = list.ToDictionary(c => getKey(c));
+            list.RemoveAt(index);
+            list.Insert(newIndex, element);
+            onNewList([.. list]);
+            return onSuccess();
+        }
     }
 }
