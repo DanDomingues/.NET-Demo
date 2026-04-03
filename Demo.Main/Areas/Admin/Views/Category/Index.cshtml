@@ -1,16 +1,5 @@
+@using Demo.Utility
 @model IEnumerable<CategoryViewModel>
-@{
-    var enabled = "";
-    var disabled = "disabled";
-    string GetUpArrowStyle(Category element)
-    {
-        return element.Id == Model.First().Category.Id ? disabled : enabled;
-    }
-    string GetDownArrowStyle(Category element)
-    {
-        return element.Id == Model.Last().Category.Id ? disabled : enabled;
-    }
-}
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
@@ -57,10 +46,12 @@
                             </div>
                         </td>
                         <td>
-                            <a asp-action="MoveDown" asp-route-id="@vm.Category.Id" class=@($"btn btn-secondary mx-2 {GetDownArrowStyle(vm.Category)}")>
+                            <a asp-action="MoveDown" asp-route-id="@vm.Category.Id" 
+                            class=@($"btn btn-secondary mx-2 {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, 1)}")>
                                 <i class="bi bi-arrow-down"></i>
                             </a>
-                            <a asp-action="MoveUp" asp-route-id="@vm.Category.Id" class=@($"btn btn-secondary mx-2 {GetUpArrowStyle(vm.Category)}")>
+                            <a asp-action="MoveUp" asp-route-id="@vm.Category.Id" 
+                            class=@($"btn btn-secondary mx-2 {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, -1)}")>
                                 <i class="bi bi-arrow-up"></i>
                             </a>
                         </td>

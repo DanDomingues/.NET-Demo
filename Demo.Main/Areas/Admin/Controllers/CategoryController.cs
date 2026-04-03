@@ -23,6 +23,11 @@ namespace Demo.Main.Areas.Admin.Controllers
 
         protected override string DefaultFeedbackName => "Category";
 
+        private int GetProductCount(Category category)
+        {
+            return unitOfWork.ProductRepository.GetAll(p => p.CategoryId == category.Id).Count();
+        }
+
         public IActionResult Index()
         {
             var categories = Repo.GetAll(includeProperties: DefaultIncludeProperties);
@@ -30,10 +35,11 @@ namespace Demo.Main.Areas.Admin.Controllers
                 .Select(c => new CategoryViewModel
                 {
                     Category = c,
-                    ProductCount = unitOfWork.ProductRepository.GetAll(p => p.CategoryId == c.Id).Count()
+                    ProductCount = GetProductCount(c)
                 })
                 .OrderBy(c => c.Category.DisplayOrder)
                 .ThenBy(c => c.ProductCount);
+
             return View(VMs);
         }
 
@@ -58,6 +64,11 @@ namespace Demo.Main.Areas.Admin.Controllers
                 return View(model);
             }
 
+            if(model.Id == 0)
+            {
+                model.DisplayOrder = Repo.GetAll(track: false).Count();
+            }
+
             UpdateRepo(model, Repo.AddOrUpdate);
             return Json(new { success = true });
         }
@@ -65,6 +76,16 @@ namespace Demo.Main.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            var deleted = Repo.GetById(id, track: false);
+            var others = Repo.GetAll(e => e.DisplayOrder > deleted.DisplayOrder, track: false);
+
+            foreach (var item in others)
+            {
+                item.DisplayOrder--;
+                Repo.Update(item);
+            }
+
+            //Base delete functionality will call unitOfWork.Save
             return Modules["Delete"].PostWithId(id);
         }
 

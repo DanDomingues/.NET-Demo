@@ -47,19 +47,19 @@ namespace Demo.Main.Areas.Admin.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            var vm = new ProductVM
-            {
-                Product = new Product(),
-                CategoryList = CategoryList
-            };
-
             if(id == null || id == 0)
             {
-                return View(vm);
+                throw new InvalidOperationException("Invalid ID");
             }
+            
+            var product = Repo.GetById(id, includeProperties: "Category,Images");
+            product.Images = [.. product.Images.OrderBy(i => i.DisplayOrder)];
 
-            vm.Product = Repo.GetById(id, includeProperties: "Category,Images");
-            return View(vm);
+            return View(new ProductVM
+            {
+                Product = product,
+                CategoryList = CategoryList
+            });
         }
 
         [HttpPost]

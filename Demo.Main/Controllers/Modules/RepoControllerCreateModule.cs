@@ -14,7 +14,6 @@ namespace Demo.Main.Controllers.Modules
             {
                 if(c.AsController.ModelState.IsValid)
                 {
-                    //TODO: Change structure to access given methods through an interface
                     return c.UpdateRepo(model, c.Repo.Add, feedback: "created");
                 }
                 return c.AsController.View();
