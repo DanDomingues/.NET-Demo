@@ -1,90 +1,112 @@
-﻿
 @model ShoppingCartVM
+@{
+    ViewData["Title"] = "Shopping Cart";
+    ViewData["BrandName"] = "Northstar Supply";
+    ViewData["BodyClass"] = "northstar-home northstar-cart-page";
+    ViewData["ShellClass"] = "northstar-shell flex-fill";
+    ViewData["NavClass"] = "northstar-nav";
+    ViewData["HeaderClass"] = "northstar-header";
+    ViewData["FooterClass"] = "northstar-footer";
+}
 
-<form method="post">
-	<br />
-	<div class="card shadow border-0">
-		<div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
-			<div class="row px-4">
-				<div class="col-6">
-					<h5 class="pt-2 text-white">Shopping Cart</h5>
-				</div>
-			</div>
-		</div>
-		@if(Model.ProductList.Count() == 0)
-		{
-			<div class="card-body">
-				<div class="row">
-					<div class="col-12 text-center py-5">
-						<h4 class="text-secondary">Your cart is empty</h4>
-						<a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary bg-gradient mt-4 fw-semibold text-uppercase">
-							<small>Start shopping</small>
-						</a>
-					</div>
-				</div>
-			</div>
-		}
-		else
-		{
-			<div>
-				<div class="card-body my-4">
-					<div class="col-md-2 offset-md-1">
-						<a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary text-uppercase mb-5 btn-sm"><small>Continue Shopping</small></a>
-					</div>
-					<div class="col-md-10 offset-md-1">
-						@foreach(var item in Model.ProductList)
-						{
-							<div class="row border-bottom pb-3">
-								<div class="d-none d-lg-block col-lg-1 text-center py-2">
-									<img src="@item.Product.ThumbnailUrl" class="rounded" width="100%"/>
-								</div>
-								<div class="col-12 col-lg-6 pt-md-3">
-									<h5 class="text-uppercase text-secondary"><strong>@item.Product.Title</strong></h5>
-									<p><small>@Html.Raw(item.Product.Description)</small></p>
-								</div>
-								<div class="col-12 col-lg-5 text-center row">
-									<div class="col-3 text-md-right pt-2 pt-md-4">
-										<h6 class="fw-semibold">
-											@item.Product.Price.FormatAsUSD()
-											<span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
-										</h6>
-									</div>
-								</div>
-							</div>
-							<div class="col-6 col-sm-4 col-lg-6 pt-2">
-								<div class="w-75 btn-group" role="group">
-									<a asp-action="add" asp-route-id="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
-										<i class="bi bi-plus-square"></i>
-									</a> &nbsp;
-									<a asp-action="reduce" asp-route-id="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
-										<i class="bi bi-dash-square"></i>
-									</a>
-									<a asp-action="remove" asp-route-id="@item.Id" class="btn brn-danger bg-gradient py-2">
-										<i class="bi bi-trash-fill"></i>
-									</a>
-								</div>
-							</div>
-						}
-					</div>
-				</div>
-				<div class="card-footer bg-white border-0 mb-3">
-					<div class="row">
-						<div class="col-md-4 offset-md-4">
-							<ul class="list-group mb-4">
-								<li class="d-flex justify-content-between align-items-center">
-									<h5 class="text-dark fw-semibold text-uppercase"> Total (USD)</h5>
-									<h4 class="text-dark fw-bolder">@Model.OrderHeader.OrderTotal.FormatAsUSD()</h4>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-2 offset-md-5">
-							<a asp-action="Summary" class="btn btn-primary border-0 bg-gradient w-100 py-2">Summary</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		}
-	</div>
+<form method="post" class="northstar-cart-form">
+    <section class="northstar-section northstar-cart-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-cart-header">
+                <div>
+                    <p class="northstar-eyebrow">Northstar Supply</p>
+                    <h1>Your cart</h1>
+                    <p class="northstar-cart-subtitle">Review your selections, adjust quantities, and continue to checkout using the existing order flow.</p>
+                </div>
+                <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-secondary">Continue shopping</a>
+            </div>
+
+            @if (!Model.ProductList.Any())
+            {
+                <div class="northstar-cart-empty">
+                    <h2>Your cart is empty</h2>
+                    <p>Start with a few practical essentials from the Northstar collection.</p>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-primary">Start shopping</a>
+                </div>
+            }
+            else
+            {
+                <div class="northstar-cart-layout">
+                    <div class="northstar-cart-items">
+                        @foreach (var item in Model.ProductList)
+                        {
+                            <article class="northstar-cart-item">
+                                <div class="northstar-cart-item-media">
+                                    <img src="@item.Product.ThumbnailUrl" alt="@item.Product.Title" />
+                                </div>
+
+                                <div class="northstar-cart-item-copy">
+                                    <div class="northstar-cart-item-head">
+                                        <div>
+                                            <p class="northstar-cart-item-category">@item.Product.Category?.Name</p>
+                                            <h2>@item.Product.Title</h2>
+                                        </div>
+                                        <div class="northstar-cart-item-pricing">
+                                            <span class="northstar-cart-item-price">@item.Product.Price100.FormatAsUSD()</span>
+                                            <span class="northstar-cart-item-full-price">@item.Product.Price.FormatAsUSD()</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="northstar-cart-item-description">
+                                        @Html.Raw(item.Product.Description)
+                                    </div>
+
+                                    <div class="northstar-cart-item-footer">
+                                        <div class="northstar-cart-quantity">
+                                            <span class="northstar-cart-quantity-label">Quantity</span>
+                                            <div class="northstar-cart-quantity-controls" role="group" aria-label="Adjust quantity for @item.Product.Title">
+                                                <a asp-action="Reduce" asp-route-id="@item.Id" class="northstar-cart-quantity-btn" aria-label="Decrease quantity for @item.Product.Title">
+                                                    <i class="bi bi-dash-lg"></i>
+                                                </a>
+                                                <span class="northstar-cart-quantity-value">@item.Count</span>
+                                                <a asp-action="Add" asp-route-id="@item.Id" class="northstar-cart-quantity-btn" aria-label="Increase quantity for @item.Product.Title">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="northstar-cart-item-actions">
+                                            <div class="northstar-cart-line-total">
+                                                <span class="northstar-cart-line-total-label">Line total</span>
+                                                <strong>@item.TotalCost.FormatAsUSD()</strong>
+                                            </div>
+                                            <a asp-action="Remove" asp-route-id="@item.Id" class="northstar-cart-remove-link" aria-label="Remove @item.Product.Title from cart">
+                                                <i class="bi bi-trash3"></i>
+                                                <span>Remove</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+
+                    <aside class="northstar-cart-summary">
+                        <div class="northstar-cart-summary-card">
+                            <p class="northstar-detail-summary-label">Order summary</p>
+                            <div class="northstar-cart-summary-row">
+                                <span>Items</span>
+                                <span>@Model.ProductList.Count()</span>
+                            </div>
+                            <div class="northstar-cart-summary-row">
+                                <span>Order total</span>
+                                <strong>@Model.OrderHeader.OrderTotal.FormatAsUSD()</strong>
+                            </div>
+
+                            <div class="northstar-cart-summary-note">
+                                Quantity updates, order summary, and checkout continue to use the existing server-side cart flow.
+                            </div>
+
+                            <a asp-action="Summary" class="northstar-btn northstar-btn-primary northstar-submit-btn">Continue to summary</a>
+                        </div>
+                    </aside>
+                </div>
+            }
+        </div>
+    </section>
 </form>

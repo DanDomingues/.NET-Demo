@@ -1,14 +1,39 @@
-﻿@model int
+@model int
+@{
+    ViewData["Title"] = "Order Confirmed";
+    ViewData["BrandName"] = "Northstar Supply";
+    ViewData["BodyClass"] = "northstar-home northstar-confirmation-page";
+    ViewData["ShellClass"] = "northstar-shell flex-fill";
+    ViewData["NavClass"] = "northstar-nav";
+    ViewData["HeaderClass"] = "northstar-header";
+    ViewData["FooterClass"] = "northstar-footer";
+}
 
-<div class="container row pt-4">
-	<div class="col-12 text-center">
-		<h1 class="text-primary text-center">Order Placed Successfully!</h1>
-		Your Order Number is : @Model <br /><br />
-		<img src="https://placehold.co/500x600/png" width="65%"/>
-	</div>
-	<div class="col-12 text-center" style="color:maroon">
-		<br />
-		Your order has been placed successfully!
-		<br />
-	</div>
-</div>
+<section class="northstar-section northstar-confirmation-section">
+    <div class="northstar-shell-inner">
+        <div class="northstar-confirmation-card">
+            <div class="northstar-confirmation-badge">
+                <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                <span>Confirmed</span>
+            </div>
+
+            <p class="northstar-eyebrow">Northstar Supply</p>
+            <h1>Order placed successfully</h1>
+            <p class="northstar-confirmation-lead">Your checkout is complete and your order is now in the system.</p>
+
+            <div class="northstar-confirmation-order">
+                <span class="northstar-detail-summary-label">Order number</span>
+                <strong>#@Model</strong>
+            </div>
+
+            <div class="northstar-confirmation-copy">
+                <p>We have recorded your order and the next step is fulfillment. You can review progress from your order history at any time.</p>
+            </div>
+
+            <div class="northstar-confirmation-actions">
+                <a asp-area="Customer" asp-controller="Order" asp-action="Index" asp-route-filter="user" class="northstar-btn northstar-btn-primary">View my orders</a>
+                <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-secondary">Return to storefront</a>
+            </div>
+        </div>
+    </div>
+</section>

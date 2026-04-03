@@ -1,128 +1,130 @@
-﻿@model ShoppingCartVM
+@model ShoppingCartVM
+@{
+    ViewData["Title"] = "Order Summary";
+    ViewData["BrandName"] = "Northstar Supply";
+    ViewData["BodyClass"] = "northstar-home northstar-summary-page";
+    ViewData["ShellClass"] = "northstar-shell flex-fill";
+    ViewData["NavClass"] = "northstar-nav";
+    ViewData["HeaderClass"] = "northstar-header";
+    ViewData["FooterClass"] = "northstar-footer";
 
-<form method="post">
+    var arrivalStart = DateTime.Now.AddDays(7).ToShortDateString();
+    var arrivalEnd = DateTime.Now.AddDays(14).ToShortDateString();
+}
 
-	<input hidden asp-for="ProductList" />
-	<input hidden asp-for="OrderHeader.ApplicationUserId" />
-	<input hidden asp-for="OrderHeader.OrderTotal" />
-	<input hidden asp-for="OrderHeader.Id" />
+<form method="post" class="northstar-summary-form">
+    <input hidden asp-for="ProductList" />
+    <input hidden asp-for="OrderHeader.ApplicationUserId" />
+    <input hidden asp-for="OrderHeader.OrderTotal" />
+    <input hidden asp-for="OrderHeader.Id" />
 
-	<br />
-	<div class="container">
-		<div class="card shadow border-0 my-4">
-			<div class="card-header bg-secondary bg-gradient text-light m-lg-0 py-4">
-				<div class="row px-4">
-					<div class="col-6">
-						<h5 class="pt-2 text-white">
-							Order Summary
-						</h5>
-					</div>
-					<div class="col-6 text-end">
-						<a asp-action="Index" class="btn btn-outline-danger btn-sm">Back to Cart</a>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="container rounded p-2">
-					<div class="row">
-						<div class="col-12 col-lg-6 pb-4">
-							<div class="row">
-								<h4 class="d-flex justify-content-between align-items-center mb-3">
-									<span class="text-info">Shipping Details:</span>
-								</h4>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Name</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.FullName" class="form-control" />
-									<span asp-validation-for="OrderHeader.FullName" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Phone Number</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.PhoneNumber" class="form-control" />
-									<span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Street Address</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.StreetAddress" class="form-control" />
-									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>City</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.City" class="form-control" />
-									<span asp-validation-for="OrderHeader.City" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>State</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.State" class="form-control" />
-									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Postal Code</label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.PostalCode" class="form-control" />
-									<span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 col-lg-5 offset-lg-1">
-							<h4 class="d-flex justify-content-between align-items-center mb-3">
-								<span class="text-info">Order Summary:</span>
-							</h4>
-							<ul class="list-group mb-3">
-								@foreach(var item in Model.ProductList)
-								{
-									<li class="list-group-item d-flex justify-content-between">
-										<div>
-											<h6 class="my-0">@item.Product.Title</h6>
-											<small class="text-muted">Quantity: @item.Count</small>
-										</div>
-										<span class="text-muted">@item.TotalCost.FormatAsUSD()</span>
-									</li>
-								}
-								<li class="list-group-item d-flex justify-content-between bg-light">
-									<small class="text-info">Total (USD)</small>
-									<strong class="text-info">@Model.OrderHeader.OrderTotal.FormatAsUSD()</strong>
-								</li>								
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card-footer">
-				<div class="row">
-					<div class="col-12 col-md-8 pt-2">
-						<p style="color:maroon; font-size:14px;">
-							Estimate arrival Date:
-							@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
-						</p>
-					</div>
-					<div class="col-12 col-md-4 pb-3">
-						<button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <section class="northstar-section northstar-summary-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-cart-header">
+                <div>
+                    <p class="northstar-eyebrow">Northstar Supply</p>
+                    <h1>Order summary</h1>
+                    <p class="northstar-cart-subtitle">Confirm delivery details and review your order before continuing to payment.</p>
+                </div>
+                <a asp-action="Index" class="northstar-btn northstar-btn-secondary">Back to cart</a>
+            </div>
+
+            <div class="northstar-summary-layout">
+                <section class="northstar-summary-details">
+                    <div class="northstar-summary-details-card">
+                        <div class="northstar-summary-section-head">
+                            <h2>Delivery details</h2>
+                            <p>We'll use this information for checkout, confirmation, and delivery routing.</p>
+                        </div>
+
+                        <div class="northstar-summary-fields">
+                            <div class="northstar-summary-field-grid">
+                                <div class="northstar-summary-field">
+                                    <label asp-for="OrderHeader.FirstName"></label>
+                                    <input asp-for="OrderHeader.FirstName" class="form-control northstar-input" />
+                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="northstar-summary-field">
+                                    <label asp-for="OrderHeader.LastName"></label>
+                                    <input asp-for="OrderHeader.LastName" class="form-control northstar-input" />
+                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="northstar-summary-field">
+                                <label asp-for="OrderHeader.PhoneNumber"></label>
+                                <input asp-for="OrderHeader.PhoneNumber" class="form-control northstar-input" />
+                                <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="northstar-summary-field">
+                                <label asp-for="OrderHeader.StreetAddress"></label>
+                                <input asp-for="OrderHeader.StreetAddress" class="form-control northstar-input" />
+                                <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="northstar-summary-field-grid northstar-summary-field-grid-tight">
+                                <div class="northstar-summary-field">
+                                    <label asp-for="OrderHeader.City"></label>
+                                    <input asp-for="OrderHeader.City" class="form-control northstar-input" />
+                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                </div>
+                                <div class="northstar-summary-field">
+                                    <label asp-for="OrderHeader.State"></label>
+                                    <input asp-for="OrderHeader.State" class="form-control northstar-input" />
+                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                </div>
+                                <div class="northstar-summary-field">
+                                    <label asp-for="OrderHeader.PostalCode"></label>
+                                    <input asp-for="OrderHeader.PostalCode" class="form-control northstar-input" />
+                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="northstar-summary-sidebar">
+                    <div class="northstar-summary-card">
+                        <div class="northstar-summary-section-head">
+                            <h2>Order review</h2>
+                            <p>@Model.ProductList.Count() items ready for checkout.</p>
+                        </div>
+
+                        <div class="northstar-summary-items">
+                            @foreach (var item in Model.ProductList)
+                            {
+                                <article class="northstar-summary-item">
+                                    <div>
+                                        <h3>@item.Product.Title</h3>
+                                        <p>Qty @item.Count</p>
+                                    </div>
+                                    <div class="northstar-summary-item-pricing">
+                                        <strong>@item.TotalCost.FormatAsUSD()</strong>
+                                        <span>@item.Product.Price100.FormatAsUSD() each</span>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+
+                        <div class="northstar-summary-total">
+                            <span>Total</span>
+                            <strong>@Model.OrderHeader.OrderTotal.FormatAsUSD()</strong>
+                        </div>
+
+                        <div class="northstar-summary-arrival">
+                            <span class="northstar-detail-summary-label">Estimated arrival</span>
+                            <p>@arrivalStart - @arrivalEnd</p>
+                        </div>
+
+                        <button type="submit" value="Place Order" class="northstar-btn northstar-btn-primary northstar-submit-btn">Continue to payment</button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
