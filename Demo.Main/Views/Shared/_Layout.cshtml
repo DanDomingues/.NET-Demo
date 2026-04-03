@@ -1,5 +1,13 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor contextAccessor
+@{
+    var bodyClass = ViewData["BodyClass"] as string ?? string.Empty;
+    var shellClass = ViewData["ShellClass"] as string ?? "container flex-fill";
+    var navClass = ViewData["NavClass"] as string ?? string.Empty;
+    var headerClass = ViewData["HeaderClass"] as string ?? string.Empty;
+    var footerClass = ViewData["FooterClass"] as string ?? string.Empty;
+    var brandName = ViewData["BrandName"] as string ?? ".NET Demo";
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,11 +22,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" />
 </head>
-<body class="d-flex flex-column min-vh-100">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+<body class="d-flex flex-column min-vh-100 @bodyClass">
+    <header class="@headerClass">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3 @navClass">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">.NET Demo</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@brandName</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -49,7 +57,7 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Register">Create User</a></li>
                                 </ul>
-                            </li>                            
+                            </li>
                         }
                         @if(User.Identity?.IsAuthenticated == true)
                         {
@@ -60,7 +68,6 @@
                             </li>
                         }
                     </ul>
-                    @*<div class="d-flex align-items-center border-start border-light ps-sm-2 ms-sm-2 mt-2 mt-sm-0">*@
                     <div class="d-flex align-items-center ps-sm-2 ms-sm-2 mt-2 mt-sm-0">
                         <partial name="_LoginPartial" />
                     </div>
@@ -68,16 +75,16 @@
             </div>
         </nav>
     </header>
-    <div class="container flex-fill">
+    <div class="@shellClass">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer bg-primary text-light mt-auto">
+    <footer class="border-top footer bg-primary text-light mt-auto @footerClass">
         <div class="container">
-            &copy; 2026 - .NET Demo <i class="bi bi-globe"></i> <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2026 - @brandName <i class="bi bi-globe"></i> <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 

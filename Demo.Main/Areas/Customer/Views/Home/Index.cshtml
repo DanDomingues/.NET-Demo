@@ -1,46 +1,170 @@
-﻿@model ProductsHomeViewModel
+@model ProductsHomeViewModel
+@{
+    ViewData["Title"] = "Northstar Supply";
+    ViewData["BrandName"] = "Northstar Supply";
+    ViewData["BodyClass"] = "northstar-home";
+    ViewData["ShellClass"] = "northstar-shell flex-fill";
+    ViewData["NavClass"] = "northstar-nav";
+    ViewData["HeaderClass"] = "northstar-header";
+    ViewData["FooterClass"] = "northstar-footer";
 
-<div class="row pb-3 product-grid">
-	@foreach(var group in Model.CategoryProducts)
-	{
-		@if(!group.Value.Any())
-		{
-			continue;
-		}
+    var productGroups = Model.CategoryProducts.Where(group => group.Value.Any()).ToList();
+}
 
-		<div class="col-12">
-			<h2 class="text-secondary text-uppercase border-bottom border-3 border-primary mb-4 pb-2">@Model.Categories[group.Key].Name</h2>
-		</div>
+<div class="northstar-page">
+    <section class="northstar-hero">
+        <div class="northstar-shell-inner">
+            <div class="northstar-hero-grid">
+                <div class="northstar-hero-copy">
+                    <p class="northstar-eyebrow">Northstar Supply</p>
+                    <h1>Tools for modern living</h1>
+                    <p class="northstar-lead">Curated essentials for work, home, travel, and everyday routines.</p>
+                    <div class="northstar-actions">
+                        <a href="#products" class="northstar-btn northstar-btn-primary">Shop Collection</a>
+                        <a href="#categories" class="northstar-btn northstar-btn-secondary">Browse Categories</a>
+                    </div>
+                    <dl class="northstar-hero-stats" aria-label="Store highlights">
+                        <div>
+                            <dt>Curated focus</dt>
+                            <dd>Workspace, travel, home, and everyday carry.</dd>
+                        </div>
+                        <div>
+                            <dt>Built to browse</dt>
+                            <dd>Clean product discovery with secure checkout already in place.</dd>
+                        </div>
+                    </dl>
+                </div>
+                <aside class="northstar-hero-panel" aria-label="Featured brand note">
+                    <p class="northstar-panel-label">This season</p>
+                    <h2>Calmer setups, smarter carry, better daily tools.</h2>
+                    <p>Northstar Supply brings together practical pieces that help routines feel lighter, tidier, and more considered.</p>
+                    <div class="northstar-panel-note">
+                        <span>Designed for steady daily use</span>
+                        <span>Premium feel without excess</span>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
 
-		<div class="col-12 mb-3 d-flex gap-3">
-			@foreach(var product in group.Value)
-			{
-				@*Card rendering*@
-				<div class="col-lg-3 col-sm-6 d-flex product-grid-item mx-2">
-					<div class="row p-1 w-100">
-						<div class="col-12 p-0">
-							<div class="card product-card border-0 shadow border-top border-5 rounded h-100 w-100">
-								<div class="product-card-image">
-									<img src="@product.ThumbnailUrl" class="card-img-top rounded" alt="@product.Title" />
-								</div>
-								<div class="pl-1 product-card-body d-flex flex-column flex-grow-1">
-									<p class="card-title h5 text-dark opacity-75 text-uppercase text-center product-card-title">@product.Title</p>
-									<p class="card-title text-warning text-center product-card-author">by <b>@product.Author</b></p>
-									<p class="text-dark text-opacity-75 text-center">List price: 
-										<span class="text-decoration-line-through">@product.Price.FormatAsUSD()</span>
-									</p>
-									<p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.FormatAsUSD()</span></p>
-									<div class="mt-auto">
-									<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary bg-gradient border-0 form-control">
-										Details
-									</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-		</div>
-	}
+    <section id="categories" class="northstar-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-section-heading">
+                <p class="northstar-eyebrow">Featured Categories</p>
+                <h2>Shop by everyday need</h2>
+                <p>Presentation-led collections that reinforce the Northstar storefront identity while your real product catalog remains server-rendered below.</p>
+            </div>
+            <div class="northstar-category-grid">
+                <article class="northstar-category-card">
+                    <span class="northstar-category-kicker">01</span>
+                    <h3>Workspace</h3>
+                    <p>Desk pieces and focused essentials for cleaner workdays.</p>
+                    <a href="#products" class="northstar-inline-link">View products</a>
+                </article>
+                <article class="northstar-category-card">
+                    <span class="northstar-category-kicker">02</span>
+                    <h3>Tech Accessories</h3>
+                    <p>Compact gear and accessories that fit modern routines.</p>
+                    <a href="#products" class="northstar-inline-link">View products</a>
+                </article>
+                <article class="northstar-category-card">
+                    <span class="northstar-category-kicker">03</span>
+                    <h3>Organization</h3>
+                    <p>Storage, order, and small systems that reduce clutter.</p>
+                    <a href="#products" class="northstar-inline-link">View products</a>
+                </article>
+                <article class="northstar-category-card">
+                    <span class="northstar-category-kicker">04</span>
+                    <h3>Travel</h3>
+                    <p>Portable picks for commutes, weekends, and on-the-go carry.</p>
+                    <a href="#products" class="northstar-inline-link">View products</a>
+                </article>
+                <article class="northstar-category-card">
+                    <span class="northstar-category-kicker">05</span>
+                    <h3>Home Essentials</h3>
+                    <p>Reliable products for daily maintenance and easy living.</p>
+                    <a href="#products" class="northstar-inline-link">View products</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="northstar-trust-strip" aria-label="Northstar Supply values">
+        <div class="northstar-shell-inner northstar-trust-grid">
+            <div>
+                <p class="northstar-trust-title">Curated Selection</p>
+                <p class="northstar-trust-copy">Practical products chosen for daily relevance.</p>
+            </div>
+            <div>
+                <p class="northstar-trust-title">Secure Checkout</p>
+                <p class="northstar-trust-copy">A real purchase flow backed by the existing store logic.</p>
+            </div>
+            <div>
+                <p class="northstar-trust-title">Fast Ordering</p>
+                <p class="northstar-trust-copy">Straightforward browsing, details, cart, and checkout paths.</p>
+            </div>
+            <div>
+                <p class="northstar-trust-title">Built for Everyday Use</p>
+                <p class="northstar-trust-copy">A product mix centered on dependable, repeatable routines.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="northstar-section northstar-products-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-section-heading northstar-section-heading-wide">
+                <div>
+                    <p class="northstar-eyebrow">Product Showcase</p>
+                    <h2>Browse the collection</h2>
+                </div>
+                <p class="northstar-section-aside">Your existing server-rendered product groups and detail links remain intact, now presented in a more polished storefront grid.</p>
+            </div>
+
+            @foreach (var group in productGroups)
+            {
+                <section class="northstar-product-group" aria-labelledby="category-@group.Key">
+                    <div class="northstar-group-heading">
+                        <h3 id="category-@group.Key">@Model.Categories[group.Key].Name</h3>
+                        <span>@group.Value.Count() items</span>
+                    </div>
+
+                    <div class="northstar-product-grid">
+                        @foreach (var product in group.Value)
+                        {
+                            <article class="northstar-product-card">
+                                <a asp-action="Details" asp-route-id="@product.Id" class="northstar-product-link" aria-label="View details for @product.Title">
+                                    <div class="northstar-product-image-wrap">
+                                        <img src="@product.ThumbnailUrl" class="northstar-product-image" alt="@product.Title" />
+                                    </div>
+                                    <div class="northstar-product-body">
+                                        <p class="northstar-product-category">@(product.Category?.Name ?? Model.Categories[group.Key].Name)</p>
+                                        <h4>@product.Title</h4>
+                                        <p class="northstar-product-meta">@product.Author</p>
+                                        <div class="northstar-product-pricing">
+                                            <span class="northstar-product-price">@product.Price100.FormatAsUSD()</span>
+                                            <span class="northstar-product-price-note">Standard price @product.Price.FormatAsUSD()</span>
+                                        </div>
+                                        <span class="northstar-product-cta">View product</span>
+                                    </div>
+                                </a>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    </section>
+
+    <section class="northstar-section northstar-promo-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-promo-card">
+                <div>
+                    <p class="northstar-eyebrow">Editorial Pick</p>
+                    <h2>Build a cleaner, calmer workspace.</h2>
+                </div>
+                <p>Thoughtful tools, a lighter desktop, and fewer distractions. Northstar Supply is designed around products that support steady focus instead of adding noise.</p>
+                <a href="#products" class="northstar-btn northstar-btn-primary">Explore the collection</a>
+            </div>
+        </div>
+    </section>
 </div>

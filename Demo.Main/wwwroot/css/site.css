@@ -122,3 +122,533 @@ body {
   border-color: #ced4da;
   box-shadow: none;
 }
+
+.northstar-home {
+  background: #f8f7f3;
+  color: #1b1d1f;
+}
+
+.northstar-home .navbar {
+  margin-bottom: 0;
+}
+
+.northstar-shell {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.northstar-shell-inner {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.northstar-home .northstar-nav.navbar,
+.northstar-home .northstar-footer {
+  background: rgba(34, 58, 94, 0.96) !important;
+  border-color: rgba(231, 227, 220, 0.16) !important;
+}
+
+.northstar-home .northstar-nav .navbar-brand,
+.northstar-home .northstar-nav .nav-link,
+.northstar-home .northstar-footer,
+.northstar-home .northstar-footer a {
+  color: #f8f7f3 !important;
+}
+
+.northstar-home .northstar-nav .nav-link {
+  opacity: 0.9;
+}
+
+.northstar-home .northstar-nav .nav-link:hover,
+.northstar-home .northstar-nav .nav-link:focus {
+  opacity: 1;
+}
+
+.northstar-home .northstar-nav .dropdown-menu {
+  border: 1px solid #e7e3dc;
+  border-radius: 16px;
+  box-shadow: 0 16px 35px rgba(27, 29, 31, 0.08);
+}
+
+.northstar-page {
+  padding-bottom: 4rem;
+}
+
+.northstar-section,
+.northstar-hero,
+.northstar-trust-strip {
+  padding: 1.5rem 0;
+}
+
+.northstar-hero {
+  padding-top: 1rem;
+}
+
+.northstar-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.95fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.northstar-hero-copy,
+.northstar-hero-panel,
+.northstar-category-card,
+.northstar-product-card,
+.northstar-promo-card {
+  background: #ffffff;
+  border: 1px solid #e7e3dc;
+  border-radius: 24px;
+  box-shadow: 0 14px 30px rgba(27, 29, 31, 0.04);
+}
+
+.northstar-hero-copy {
+  padding: clamp(2rem, 4vw, 4rem);
+  background:
+    radial-gradient(circle at top right, rgba(34, 58, 94, 0.08), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #fcfbf8 100%);
+}
+
+.northstar-eyebrow {
+  margin: 0 0 1rem;
+  color: #223a5e;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.northstar-hero-copy h1,
+.northstar-section-heading h2,
+.northstar-promo-card h2,
+.northstar-hero-panel h2 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.northstar-hero-copy h1 {
+  max-width: 11ch;
+  font-size: clamp(2.75rem, 6vw, 5rem);
+}
+
+.northstar-lead,
+.northstar-section-heading > p,
+.northstar-promo-card > p,
+.northstar-hero-panel > p,
+.northstar-section-aside {
+  color: #5f6670;
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.northstar-lead {
+  max-width: 40rem;
+  margin: 1.25rem 0 0;
+}
+
+.northstar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin: 2rem 0 2.5rem;
+}
+
+.northstar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.8rem 1.35rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.northstar-btn:hover,
+.northstar-btn:focus {
+  transform: translateY(-1px);
+}
+
+.northstar-btn-primary {
+  background: #223a5e;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(34, 58, 94, 0.18);
+}
+
+.northstar-btn-primary:hover,
+.northstar-btn-primary:focus {
+  background: #1a2c47;
+  color: #ffffff;
+}
+
+.northstar-btn-secondary {
+  background: #ffffff;
+  border-color: #d8d3cb;
+  color: #1b1d1f;
+}
+
+.northstar-btn-secondary:hover,
+.northstar-btn-secondary:focus {
+  border-color: #223a5e;
+  color: #223a5e;
+}
+
+.northstar-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.northstar-hero-stats div {
+  padding-top: 1rem;
+  border-top: 1px solid #ece7df;
+}
+
+.northstar-hero-stats dt {
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.northstar-hero-stats dd {
+  margin: 0;
+  color: #5f6670;
+  line-height: 1.6;
+}
+
+.northstar-hero-panel {
+  padding: 2rem;
+  background: linear-gradient(180deg, #223a5e 0%, #1a2c47 100%);
+  color: #f8f7f3;
+}
+
+.northstar-panel-label {
+  margin: 0 0 1rem;
+  opacity: 0.72;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+
+.northstar-hero-panel h2 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.08;
+}
+
+.northstar-hero-panel p {
+  margin-top: 1.1rem;
+  color: rgba(248, 247, 243, 0.82);
+}
+
+.northstar-panel-note {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(248, 247, 243, 0.18);
+}
+
+.northstar-panel-note span {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.northstar-panel-note span::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #f4d8a8;
+  content: "";
+}
+
+.northstar-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.75rem;
+}
+
+.northstar-section-heading h2,
+.northstar-promo-card h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.northstar-category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.northstar-category-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-height: 220px;
+  padding: 1.5rem;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.northstar-category-card:hover {
+  transform: translateY(-4px);
+  border-color: #d8d3cb;
+  box-shadow: 0 18px 34px rgba(27, 29, 31, 0.08);
+}
+
+.northstar-category-kicker {
+  color: #8a7f73;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.northstar-category-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.northstar-category-card p {
+  margin: 0;
+  color: #5f6670;
+  line-height: 1.65;
+}
+
+.northstar-inline-link,
+.northstar-product-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #223a5e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.northstar-inline-link::after,
+.northstar-product-cta::after {
+  content: "\2192";
+}
+
+.northstar-trust-strip {
+  border-top: 1px solid #e7e3dc;
+  border-bottom: 1px solid #e7e3dc;
+}
+
+.northstar-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.northstar-trust-grid > div {
+  padding: 0.3rem 0;
+}
+
+.northstar-trust-title {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+}
+
+.northstar-trust-copy {
+  margin: 0;
+  color: #5f6670;
+  line-height: 1.65;
+}
+
+.northstar-section-heading-wide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  align-items: end;
+}
+
+.northstar-products-section {
+  padding-top: 2.5rem;
+}
+
+.northstar-product-group + .northstar-product-group {
+  margin-top: 3rem;
+}
+
+.northstar-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.northstar-group-heading h3 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+}
+
+.northstar-group-heading span {
+  color: #5f6670;
+  font-size: 0.95rem;
+}
+
+.northstar-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+
+.northstar-product-card {
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.northstar-product-card:hover {
+  transform: translateY(-5px);
+  border-color: #d7d1c8;
+  box-shadow: 0 22px 40px rgba(27, 29, 31, 0.08);
+}
+
+.northstar-product-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.northstar-product-image-wrap {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f7f4ef 0%, #ece7df 100%);
+}
+
+.northstar-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.northstar-product-card:hover .northstar-product-image {
+  transform: scale(1.03);
+}
+
+.northstar-product-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.2rem 1.2rem 1.3rem;
+}
+
+.northstar-product-category {
+  margin: 0;
+  color: #223a5e;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.northstar-product-body h4 {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+
+.northstar-product-meta,
+.northstar-product-price-note {
+  margin: 0;
+  color: #5f6670;
+  line-height: 1.5;
+}
+
+.northstar-product-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+}
+
+.northstar-product-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.northstar-promo-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.northstar-promo-card > p {
+  margin: 0;
+}
+
+@media (max-width: 1199.98px) {
+  .northstar-category-grid,
+  .northstar-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991.98px) {
+  .northstar-hero-grid,
+  .northstar-section-heading-wide,
+  .northstar-promo-card,
+  .northstar-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .northstar-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .northstar-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .northstar-hero-copy h1 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .northstar-shell-inner {
+    width: min(100% - 1.25rem, 100%);
+  }
+
+  .northstar-page {
+    padding-bottom: 2.5rem;
+  }
+
+  .northstar-section,
+  .northstar-hero,
+  .northstar-trust-strip {
+    padding: 1rem 0;
+  }
+
+  .northstar-hero-copy,
+  .northstar-hero-panel,
+  .northstar-category-card,
+  .northstar-promo-card {
+    border-radius: 20px;
+  }
+
+  .northstar-hero-stats,
+  .northstar-category-grid,
+  .northstar-product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .northstar-group-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
