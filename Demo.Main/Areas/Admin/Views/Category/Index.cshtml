@@ -1,66 +1,89 @@
 @using Demo.Utility
 @model IEnumerable<CategoryViewModel>
+@{
+    ViewData["Title"] = "Categories";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-categories-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
+}
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Categories</h2>
+<section class="admin-section admin-categories-section">
+    <div class="admin-shell-inner">
+        <div class="admin-orders-header">
+            <div>
+                <p class="admin-eyebrow">Catalog Management</p>
+                <h1>Categories</h1>
+                <p class="admin-orders-subtitle">Manage storefront taxonomy, track how many products sit in each category, and adjust the display order used across the catalog.</p>
             </div>
-        </div>
-    </div>
-
-    <div class="card-body p-4">
-        <div class="row pb-3">
-            <div class="col-12 text-end">
-                <button type="button" class="btn btn-primary js-category-modal-trigger" data-id="0">
-                    Create new
-                </button>
-            </div>
+            <button type="button" class="admin-btn admin-btn-success js-category-modal-trigger" data-id="0">
+                <i class="bi bi-plus-lg"></i>
+                <span>Create category</span>
+            </button>
         </div>
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Category Name</th>
-                    <th>Products</th>
-                    <th>Display Order</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var vm in Model)
-                {
+        <div class="admin-panel admin-categories-table-panel">
+            <table class="table table-hover align-middle admin-categories-table">
+                <thead>
                     <tr>
-                        <td>@vm.Category.Name</td>
-                        <td>@vm.ProductCount</td>
-                        <td>@vm.Category.DisplayOrder</td>
-                        <td>
-                            <div class="m-75 btn-group" role="group">
-                                <button type="button" class="btn btn-primary mx-2 js-category-modal-trigger" data-id="@vm.Category.Id">
-                                    <i class="bi bi-feather"></i> Edit
-                                </button>
-                                <button type="button" class="btn btn-danger mx-2" onclick="submitDeleteForm('categoryDeleteForm', 'categoryDeleteId', @vm.Category.Id)">
-                                    <i class="bi bi-trash-fill"></i> Delete
-                                </button>
-                            </div>
-                        </td>
-                        <td>
-                            <a asp-action="MoveDown" asp-route-id="@vm.Category.Id" 
-                            class=@($"btn btn-secondary mx-2 {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, 1)}")>
-                                <i class="bi bi-arrow-down"></i>
-                            </a>
-                            <a asp-action="MoveUp" asp-route-id="@vm.Category.Id" 
-                            class=@($"btn btn-secondary mx-2 {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, -1)}")>
-                                <i class="bi bi-arrow-up"></i>
-                            </a>
-                        </td>
+                        <th>Category</th>
+                        <th>Products</th>
+                        <th>Display Order</th>
+                        <th>Actions</th>
+                        <th>Reorder</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var vm in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-categories-name-cell">
+                                    <strong>@vm.Category.Name</strong>
+                                    <span class="admin-status-badge is-neutral">Category</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="admin-categories-count">@vm.ProductCount</span>
+                            </td>
+                            <td>
+                                <span class="admin-categories-order">@vm.Category.DisplayOrder</span>
+                            </td>
+                            <td>
+                                <div class="admin-categories-actions" role="group" aria-label="Actions for @vm.Category.Name">
+                                    <button type="button" class="admin-btn admin-btn-secondary js-category-modal-trigger" data-id="@vm.Category.Id">
+                                        <i class="bi bi-pencil-square"></i>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button type="button" class="admin-btn admin-btn-danger" onclick="submitDeleteForm('categoryDeleteForm', 'categoryDeleteId', @vm.Category.Id)">
+                                        <i class="bi bi-trash3"></i>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="admin-categories-reorder" role="group" aria-label="Reorder @vm.Category.Name">
+                                    <a asp-action="MoveDown" asp-route-id="@vm.Category.Id"
+                                       class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, 1)}")"
+                                       aria-label="Move @vm.Category.Name down">
+                                        <i class="bi bi-arrow-down"></i>
+                                    </a>
+                                    <a asp-action="MoveUp" asp-route-id="@vm.Category.Id"
+                                       class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(vm, Model, c => c.Category.DisplayOrder, -1)}")"
+                                       aria-label="Move @vm.Category.Name up">
+                                        <i class="bi bi-arrow-up"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+</section>
 
 <form id="categoryDeleteForm" asp-area="Admin" asp-controller="Category" asp-action="Delete" method="post" class="d-none">
     <input type="hidden" id="categoryDeleteId" name="id" />

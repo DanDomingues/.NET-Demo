@@ -1941,3 +1941,122 @@ body {
     text-align: left;
   }
 }
+
+.admin-categories-section {
+  padding-top: 1.25rem;
+}
+
+.admin-categories-table-panel {
+  padding: 1rem;
+}
+
+.admin-categories-table {
+  margin-bottom: 0;
+}
+
+.admin-categories-table thead th {
+  border-bottom: 1px solid #dbe2ea;
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-categories-table tbody td {
+  border-color: #edf1f5;
+  vertical-align: middle;
+}
+
+.admin-categories-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-categories-name-cell strong {
+  font-size: 1rem;
+}
+
+.admin-categories-count,
+.admin-categories-order {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 10px;
+  background: #f6f8fb;
+  border: 1px solid #dbe2ea;
+  font-weight: 700;
+}
+
+.admin-categories-actions,
+.admin-categories-reorder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-reorder-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f6f8fb;
+  border: 1px solid #dbe2ea;
+  color: #223a5e;
+  text-decoration: none;
+}
+
+.admin-reorder-btn.disabled,
+.admin-reorder-btn[disabled] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.admin-categories-page .modal-dialog {
+  max-width: 560px;
+}
+
+.admin-categories-page .modal-content {
+  border: 1px solid #dde3ea;
+  border-radius: 20px;
+  box-shadow: 0 20px 48px rgba(16, 24, 40, 0.12);
+  overflow: hidden;
+}
+
+.admin-modal-header,
+.admin-modal-footer {
+  border-color: #e8edf3;
+  padding: 1.1rem 1.25rem;
+}
+
+.admin-modal-body {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.admin-modal-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-modal-field label {
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 767.98px) {
+  .admin-categories-name-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
