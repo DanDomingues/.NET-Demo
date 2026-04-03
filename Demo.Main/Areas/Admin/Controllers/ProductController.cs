@@ -43,7 +43,7 @@ namespace Demo.Main.Areas.Admin.Controllers
             return base.ValidateForUpsert(model) && !CheckForDuplicatesByName(model);
         }
 
-        public IActionResult Index() => Modules["Index"].Get(); 
+        public IActionResult Index() => View();
 
         public IActionResult Upsert(int? id)
         {
