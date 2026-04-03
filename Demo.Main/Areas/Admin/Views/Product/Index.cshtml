@@ -1,38 +1,45 @@
-﻿<div class="card shadow border-0 my-4">
+@{
+    ViewData["Title"] = "Products";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-products-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
+}
 
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Products</h2>
+<section class="admin-section admin-products-section">
+    <div class="admin-shell-inner">
+        <div class="admin-orders-header">
+            <div>
+                <p class="admin-eyebrow">Catalog Management</p>
+                <h1>Products</h1>
+                <p class="admin-orders-subtitle">Manage product records, pricing tiers, category assignments, and media assets used throughout the storefront.</p>
             </div>
+            <a asp-controller="Product" asp-action="Upsert" class="admin-btn admin-btn-success">
+                <i class="bi bi-plus-lg"></i>
+                <span>Create product</span>
+            </a>
+        </div>
+
+        <div class="admin-panel admin-products-table-panel">
+            <table id="tblData" class="table table-hover align-middle admin-products-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>ISBN</th>
+                        <th>Price</th>
+                        <th>Price50</th>
+                        <th>Price100</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
-
-    <div class="card-body p-4">
-        <div class="row pb-3">
-            <div class="col-12 text-end">
-                <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
-                    Create new Product
-                </a>
-            </div>
-        </div>
-
-        <table id="tblData" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>ISBN</th>
-                    <th>Price</th>
-                    <th>Price50</th>
-                    <th>Price100</th>
-                    <th>Author</th>
-                    <th>Category</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+</section>
 
 @section Scripts{
     <script src="~/js/product.js" asp-append-version="true"></script>

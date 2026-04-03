@@ -18,9 +18,9 @@ function loadDataTable() {
             {
                 data: 'id',
                 "render": function (data) {
-                    return `<div class="m-75 btn-group" role="group">
-                                <a href="/admin/product/upsert?id=${data}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i> Edit</a>
-                                <a onClick=Delete('/admin/product/deleteAt/${data}') class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i> Delete</a>
+                    return `<div class="admin-table-row-actions" role="group">
+                                <a href="/admin/product/upsert?id=${data}" class="admin-btn admin-btn-secondary"><i class="bi bi-pencil-square"></i><span>Edit</span></a>
+                                <a onClick=Delete('/admin/product/deleteAt/${data}') class="admin-btn admin-btn-danger"><i class="bi bi-trash3"></i><span>Delete</span></a>
                                 </div>`
                 }
             }
