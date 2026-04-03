@@ -1,37 +1,44 @@
-﻿<div class="card shadow border-0 my-4">
+@{
+    ViewData["Title"] = "Companies";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-companies-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
+}
 
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Company</h2>
+<section class="admin-section admin-companies-section">
+    <div class="admin-shell-inner">
+        <div class="admin-orders-header">
+            <div>
+                <p class="admin-eyebrow">Account Management</p>
+                <h1>Companies</h1>
+                <p class="admin-orders-subtitle">Maintain company accounts, billing addresses, and contact records used across staff and customer management workflows.</p>
             </div>
+            <a asp-controller="Company" asp-action="Upsert" class="admin-btn admin-btn-success">
+                <i class="bi bi-plus-lg"></i>
+                <span>Create company</span>
+            </a>
+        </div>
+
+        <div class="admin-panel admin-companies-table-panel">
+            <table id="tblData" class="table table-hover align-middle admin-companies-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Postal Code</th>
+                        <th>Phone Number</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
-
-    <div class="card-body p-4">
-        <div class="row pb-3">
-            <div class="col-12 text-end">
-                <a asp-controller="Company" asp-action="Upsert" class="btn btn-primary">
-                    Create new Company
-                </a>
-            </div>
-        </div>
-
-        <table id="tblData" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Postal Code</th>
-                    <th>Phone Number</th>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+</section>
 
 @section Scripts
 {

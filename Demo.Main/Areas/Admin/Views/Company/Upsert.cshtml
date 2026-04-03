@@ -1,90 +1,84 @@
-﻿@model Company
+@model Company
 @{
-	var actionLabel = Model.Id != 0 ? "Update" : "Create";
+    var isEdit = Model.Id != 0;
+    var actionLabel = isEdit ? "Update" : "Create";
+
+    ViewData["Title"] = $"{actionLabel} Company";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-company-upsert-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
 }
 
-<div class="card shadow border-0 my-4">
-	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
-		<div class="row">
-			<div class="col-12 text-center">
-				<h2 class="text-white py-2">@actionLabel Company</h2>
-			</div>
-		</div>
-	</div>
-	<div class="card-body p-4">
-		<form method="post" class="row" enctype="multipart/form-data">
-			<input asp-for="Id" hidden />
-			<div class="row">
-				<div class="col-12">
-					<div class="border p-3">
-						<div class="row pb-2">
-							<h2 class="text-primary">@actionLabel Company</h2>
-						</div>
-						<div class="form-floating py-2 col-12">
-							<input asp-for="Name" class="form-control border-0 shadow" />
-							<label asp-for="Name" class="ms-2"></label>
-							<span asp-validation-for="Name" class="text-danger"></span>
-						</div>
-						<div class="form-floating py-2 col-12">
-							<input asp-for="PhoneNumber" class="form-control border-0 shadow" />
-							<label asp-for="PhoneNumber" class="ms-2"></label>
-							<span asp-validation-for="PhoneNumber" class="text-danger"></span>
-						</div>
-						<div class="form-floating py-2 col-12">
-							<input asp-for="StreetAddress" class="form-control border-0 shadow" />
-							<label asp-for="StreetAddress" class="ms-2"></label>
-							<span asp-validation-for="StreetAddress" class="text-danger"></span>
-						</div>
-						<div class="form-floating py-2 col-12">
-							<input asp-for="City" class="form-control border-0 shadow" />							
-							<label asp-for="City" class="ms-2"></label>
-							<span asp-validation-for="City" class="text-danger"></span>
-						</div>
-						<div class="form-floating py-2 col-12">
-							<input asp-for="PostalCode" class="form-control border-0 shadow" />
-							<label asp-for="PostalCode" class="ms-2"></label>
-							<span asp-validation-for="PostalCode" class="text-danger"></span>
-						</div>
-						<div class="row">
-							<div class="col-6 col-md-3">
-								<button type="submit" class="btn btn-primary" style="width:150px">Submit</button>
-							</div>
-							<div class="col-6 col-md-3">
-								<a asp-controller="Company" asp-action="Index" class="btn btn-outline-primary">Back to List</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
+<section class="admin-section admin-company-upsert-section">
+    <div class="admin-shell-inner">
+        <div class="admin-order-detail-header">
+            <div>
+                <p class="admin-eyebrow">Account Management</p>
+                <h1>@actionLabel company</h1>
+                <p class="admin-orders-subtitle">Create or update company records used for internal account administration and order workflows.</p>
+            </div>
+            <a asp-controller="Company" asp-action="Index" class="admin-btn admin-btn-secondary">Back to list</a>
+        </div>
+
+        <div class="admin-panel admin-company-form-panel">
+            <form method="post" class="admin-company-form" enctype="multipart/form-data">
+                <input asp-for="Id" hidden />
+
+                <div class="admin-section-head">
+                    <h2>Company profile</h2>
+                    <p>Update the core record, contact number, and address information. Existing model binding and save behavior remain unchanged.</p>
+                </div>
+
+                <div class="admin-form-grid">
+                    <div class="admin-field-block">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control admin-input" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-field-block">
+                        <label asp-for="PhoneNumber"></label>
+                        <input asp-for="PhoneNumber" class="form-control admin-input" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-field-block">
+                        <label asp-for="StreetAddress"></label>
+                        <input asp-for="StreetAddress" class="form-control admin-input" />
+                        <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-field admin-field-third">
+                        <div class="admin-field-block">
+                            <label asp-for="City"></label>
+                            <input asp-for="City" class="form-control admin-input" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="admin-field-block">
+                            <label asp-for="State"></label>
+                            <input asp-for="State" class="form-control admin-input" />
+                            <span asp-validation-for="State" class="text-danger"></span>
+                        </div>
+                        <div class="admin-field-block">
+                            <label asp-for="PostalCode"></label>
+                            <input asp-for="PostalCode" class="form-control admin-input" />
+                            <span asp-validation-for="PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-company-form-actions">
+                    <button type="submit" class="admin-btn admin-btn-success">@actionLabel company</button>
+                    <a asp-controller="Company" asp-action="Index" class="admin-btn admin-btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
 @section Scripts{
-	<partial name="_ValidationScriptsPartial"/>
-	@*
-	@{
-	<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
-	<script>
-		tinymce.init({
-			selector: 'textarea',
-			plugins: [
-			// Core editing features
-			'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-			// Your account includes a free trial of TinyMCE premium features
-			// Try the most popular premium features until Jul 5, 2025:
-			'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
-			],
-			toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-			tinycomments_mode: 'embedded',
-			tinycomments_author: 'Author name',
-			mergetags_list: [
-			{ value: 'First.Name', title: 'First Name' },
-			{ value: 'Email', title: 'Email' },
-			],
-			ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-		});
-	</script>
-	}
-*@
+    <partial name="_ValidationScriptsPartial"/>
 }

@@ -2060,3 +2060,195 @@ body {
     align-items: flex-start;
   }
 }
+
+.admin-companies-section,
+.admin-company-upsert-section {
+  padding-top: 1.25rem;
+}
+
+.admin-companies-table-panel,
+.admin-company-form-panel {
+  padding: 1rem;
+}
+
+.admin-companies-table {
+  margin-bottom: 0;
+}
+
+.admin-companies-table thead th {
+  border-bottom: 1px solid #dbe2ea;
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-companies-table tbody td {
+  border-color: #edf1f5;
+  vertical-align: middle;
+}
+
+.admin-table-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-table-row-actions .admin-btn {
+  min-height: 38px;
+  padding: 0.55rem 0.8rem;
+}
+
+.admin-table-row-actions .admin-btn span,
+.admin-orders-header .admin-btn span,
+.admin-categories-actions .admin-btn span {
+  margin-left: 0.35rem;
+}
+
+.admin-company-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.admin-company-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-users-section {
+  padding-top: 1.25rem;
+}
+
+.admin-users-table-panel {
+  padding: 1rem;
+}
+
+.admin-users-table {
+  margin-bottom: 0;
+}
+
+.admin-users-table thead th {
+  border-bottom: 1px solid #dbe2ea;
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-users-table tbody td {
+  border-color: #edf1f5;
+  vertical-align: middle;
+}
+
+.admin-user-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  min-width: 140px;
+}
+
+.admin-user-actions .admin-btn {
+  justify-content: center;
+}
+
+.admin-user-actions .admin-btn span {
+  margin-left: 0.35rem;
+}
+
+.admin-users-page .modal-dialog {
+  max-width: 560px;
+}
+
+@media (max-width: 767.98px) {
+  .admin-user-actions {
+    min-width: 0;
+  }
+}
+
+.admin-products-section,
+.admin-product-upsert-section {
+  padding-top: 1.25rem;
+}
+
+.admin-products-table-panel,
+.admin-product-form-panel,
+.admin-product-images-panel {
+  padding: 1rem;
+}
+
+.admin-products-table {
+  margin-bottom: 0;
+}
+
+.admin-products-table thead th {
+  border-bottom: 1px solid #dbe2ea;
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-products-table tbody td {
+  border-color: #edf1f5;
+  vertical-align: middle;
+}
+
+.admin-product-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.admin-product-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.admin-textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.admin-product-images-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.admin-product-image-card {
+  border: 1px solid #e3e8ef;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fbfcfd;
+}
+
+.admin-product-image-preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  background: #eef2f6;
+}
+
+.admin-product-image-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.admin-product-image-actions .admin-btn {
+  min-height: 38px;
+  padding: 0.55rem 0.8rem;
+}
+
+@media (max-width: 1199.98px) {
+  .admin-product-layout {
+    grid-template-columns: 1fr;
+  }
+}
