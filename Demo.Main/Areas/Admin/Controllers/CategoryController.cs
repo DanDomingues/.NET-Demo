@@ -65,9 +65,7 @@ namespace Demo.Main.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            return Find(id, out var category, track: true)
-                ? Modules["Delete"].PostWithId(id)
-                : RedirectToAction(nameof(Index));
+            return Modules["Delete"].PostWithId(id);
         }
 
         public IActionResult MoveUp(int? id) => Move(id, i => i - 1);
