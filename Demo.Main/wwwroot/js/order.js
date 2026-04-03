@@ -46,7 +46,9 @@ function renderCurrency(data) {
 }
 
 function renderButtons(id, filter) {
+    var isAdmin = document.body.classList.contains('admin-ops');
+    var buttonClass = isAdmin ? 'admin-table-action' : 'northstar-table-action';
     return `<div class="m-75 btn-group" role="group">
-                <a href="/customer/order/details?id=${id}&filter=${filter}" class="btn btn-primary mx-2"><i class="bi bi-feather"></i></a>
+                <a href="/customer/order/details?id=${id}&filter=${filter}" class="${buttonClass}"><i class="bi bi-feather"></i></a>
             </div>`;
 }

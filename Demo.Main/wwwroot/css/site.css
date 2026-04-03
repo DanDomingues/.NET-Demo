@@ -1449,3 +1449,495 @@ body {
     border-radius: 22px;
   }
 }
+
+.admin-ops {
+  background: #f3f5f8;
+  color: #18212b;
+}
+
+.admin-shell {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+
+.admin-shell-inner {
+  width: min(1240px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.admin-ops .navbar {
+  margin-bottom: 0;
+}
+
+.admin-ops .admin-nav.navbar,
+.admin-ops .admin-footer {
+  background: #223a5e !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.admin-ops .admin-nav .navbar-brand,
+.admin-ops .admin-nav .nav-link,
+.admin-ops .admin-footer,
+.admin-ops .admin-footer a {
+  color: #f5f7fb !important;
+}
+
+.admin-section {
+  padding: 1.25rem 0 2rem;
+}
+
+.admin-panel {
+  background: #ffffff;
+  border: 1px solid #dde3ea;
+  border-radius: 18px;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.04);
+}
+
+.admin-eyebrow {
+  margin: 0 0 0.8rem;
+  color: #516173;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.admin-orders-header,
+.admin-order-detail-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-orders-header h1,
+.admin-order-detail-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.admin-orders-subtitle {
+  max-width: 46rem;
+  margin: 0.65rem 0 0;
+  color: #5c6977;
+  line-height: 1.7;
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.admin-btn:hover,
+.admin-btn:focus {
+  transform: translateY(-1px);
+}
+
+.admin-btn-secondary {
+  background: #ffffff;
+  border-color: #cfd7e3;
+  color: #1f2937;
+}
+
+.admin-btn-secondary:hover,
+.admin-btn-secondary:focus {
+  border-color: #223a5e;
+  color: #223a5e;
+}
+
+.admin-btn-success {
+  background: #223a5e;
+  color: #ffffff;
+}
+
+.admin-btn-success:hover,
+.admin-btn-success:focus {
+  background: #1a2c47;
+  color: #ffffff;
+}
+
+.admin-btn-warning {
+  background: #f7f1df;
+  border-color: #ead8a2;
+  color: #6a5311;
+}
+
+.admin-btn-danger {
+  background: #fff4f2;
+  border-color: #f1c7bf;
+  color: #9b3b31;
+}
+
+.admin-orders-filter-panel,
+.northstar-orders-filter-panel {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.admin-orders-filter-header h2,
+.northstar-orders-filter-header h2,
+.admin-section-head h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.admin-orders-filter-header p,
+.northstar-orders-filter-header p,
+.admin-section-head p {
+  margin: 0.35rem 0 0;
+  color: #5c6977;
+  line-height: 1.65;
+}
+
+.admin-filter-chips,
+.northstar-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.admin-filter-chip,
+.northstar-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.admin-filter-chip {
+  background: #f6f8fb;
+  border: 1px solid #d9e1eb;
+  color: #324255;
+}
+
+.admin-filter-chip.is-active {
+  background: #223a5e;
+  border-color: #223a5e;
+  color: #ffffff;
+}
+
+.northstar-filter-chip {
+  background: #ffffff;
+  border: 1px solid #d8d3cb;
+  color: #223a5e;
+}
+
+.northstar-filter-chip.is-active {
+  background: #223a5e;
+  border-color: #223a5e;
+  color: #ffffff;
+}
+
+.admin-table-panel,
+.northstar-orders-table-panel {
+  padding: 1rem;
+}
+
+.admin-ops table.dataTable,
+.northstar-orders-page table.dataTable {
+  margin-top: 0 !important;
+}
+
+.admin-ops table.dataTable thead th,
+.northstar-orders-page table.dataTable thead th {
+  border-bottom: 1px solid #dbe2ea !important;
+  color: #516173;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-ops table.dataTable tbody td,
+.northstar-orders-page table.dataTable tbody td {
+  border-color: #edf1f5 !important;
+  vertical-align: middle;
+}
+
+.admin-ops .dataTables_wrapper .dataTables_filter input,
+.admin-ops .dataTables_wrapper .dataTables_length select,
+.northstar-orders-page .dataTables_wrapper .dataTables_filter input,
+.northstar-orders-page .dataTables_wrapper .dataTables_length select {
+  border: 1px solid #d3dbe5;
+  border-radius: 10px;
+  padding: 0.4rem 0.65rem;
+  background: #ffffff;
+}
+
+.admin-table-action,
+.northstar-table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.admin-table-action {
+  background: #eef3f8;
+  border: 1px solid #d9e1eb;
+  color: #223a5e;
+}
+
+.northstar-table-action {
+  background: #223a5e;
+  border: 1px solid #223a5e;
+  color: #ffffff;
+}
+
+.admin-order-meta-strip,
+.northstar-order-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-order-meta-card,
+.northstar-order-meta-card {
+  padding: 1rem 1.1rem;
+}
+
+.admin-order-meta-card strong,
+.northstar-order-meta-card strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.1rem;
+}
+
+.admin-field-label {
+  color: #647182;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-status-badge,
+.northstar-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.admin-status-badge.is-success,
+.northstar-status-badge.is-success {
+  background: #edf8f0;
+  color: #23623b;
+}
+
+.admin-status-badge.is-warning,
+.northstar-status-badge.is-warning {
+  background: #fff7e8;
+  color: #8a5a12;
+}
+
+.admin-status-badge.is-danger,
+.northstar-status-badge.is-danger {
+  background: #fff1ef;
+  color: #a33f35;
+}
+
+.admin-status-badge.is-info,
+.northstar-status-badge.is-info {
+  background: #eef5ff;
+  color: #24548f;
+}
+
+.admin-status-badge.is-neutral,
+.northstar-status-badge.is-neutral {
+  background: #f2f4f7;
+  color: #485568;
+}
+
+.admin-order-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.admin-order-form-panel,
+.admin-order-summary-card,
+.admin-order-actions-panel {
+  padding: 1.25rem;
+}
+
+.admin-form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-field {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-field-half {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-field-third {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
+}
+
+.admin-field-block {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.admin-field-block label {
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-input {
+  min-height: 44px;
+  border-color: #d5dde7;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.admin-input:focus {
+  border-color: #223a5e;
+  box-shadow: 0 0 0 0.2rem rgba(34, 58, 94, 0.12);
+}
+
+.admin-input-readonly {
+  background: #f7f9fc;
+  color: #647182;
+}
+
+.admin-order-sidebar {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-order-items,
+.northstar-action-stack,
+.admin-action-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.admin-order-item {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #e9eef4;
+}
+
+.admin-order-item h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.admin-order-item p,
+.admin-order-item-pricing span {
+  margin: 0.25rem 0 0;
+  color: #647182;
+}
+
+.admin-order-item-pricing {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+}
+
+.admin-order-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dbe2ea;
+}
+
+.admin-order-total strong {
+  font-size: 1.35rem;
+}
+
+.northstar-orders-section,
+.northstar-order-detail-section {
+  padding-top: 1rem;
+}
+
+.northstar-order-detail-page .northstar-summary-layout {
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.8fr);
+}
+
+.northstar-order-cancel-btn {
+  border-color: #f1c7bf;
+  color: #8b3b35;
+}
+
+@media (max-width: 1199.98px) {
+  .admin-order-meta-strip,
+  .northstar-order-meta-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-order-detail-layout,
+  .northstar-order-detail-page .northstar-summary-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .admin-shell-inner {
+    width: min(100% - 1.25rem, 100%);
+  }
+
+  .admin-orders-header,
+  .admin-order-detail-header,
+  .admin-field-half,
+  .admin-field-third,
+  .admin-order-item,
+  .admin-order-meta-strip,
+  .northstar-order-meta-strip {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-panel,
+  .admin-order-summary-card,
+  .admin-order-actions-panel {
+    border-radius: 16px;
+  }
+
+  .admin-order-item-pricing {
+    justify-items: start;
+    text-align: left;
+  }
+}

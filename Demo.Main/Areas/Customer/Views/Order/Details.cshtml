@@ -1,178 +1,281 @@
-﻿@using Demo.Models.ViewModels
 @using Demo.Utility
 @model OrderVM
 
 @{
-	var filter = Context.Request.Query["filter"].ToString();
-	var formFieldPartial = "_FormField";
-	var sectionHeadingPartial = "_SectionHeading";
+    var filter = Context.Request.Query["filter"].ToString();
+    var isAdminDashboard = User.HasAdminRights();
+    var header = Model.Header;
 
-	var props = new Dictionary<string, string>
-	{
-		{ "firstName", Model.Header?.FirstName },
-		{ "lastName", Model.Header?.LastName },
-		{ "streetAddress", Model.Header?.StreetAddress },
-		{ "city", Model.Header?.City },
-		{ "state", Model.Header?.State },
-		{ "postalCode", Model.Header?.PostalCode },
-		{ "email", Model.Header?.ApplicationUser.Email },
-		{ "carrier", Model.Header?.Carrier },
-		{ "trackingNumber", Model.Header?.TrackingNumber },
-		{ "orderDate", Model.Header?.OrderDate.ToString() },
-		{ "shippingDate", Model.Header?.ShippingDate.ToString() },
-		{ "sessionId", Model.Header?.SessionId },
-		{ "paymentIntentId", Model.Header?.PaymentIntentId },
-		{ "paymentDueDate", Model.Header?.PaymentDueDate.ToString() },
-		{ "paymentDate", Model.Header?.PaymentDate.ToString() },
-		{ "paymentStatus", Model.Header?.PaymentStatus }
-	};
+    ViewData["Title"] = $"Order #{header?.Id}";
+    ViewData["BrandName"] = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
+    ViewData["BodyClass"] = isAdminDashboard ? "admin-ops admin-order-detail-page" : "northstar-home northstar-order-detail-page";
+    ViewData["ShellClass"] = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
+    ViewData["NavClass"] = isAdminDashboard ? "admin-nav" : "northstar-nav";
+    ViewData["HeaderClass"] = isAdminDashboard ? "admin-header" : "northstar-header";
+    ViewData["FooterClass"] = isAdminDashboard ? "admin-footer" : "northstar-footer";
+
+    string StatusClass(string? value) => value?.ToLowerInvariant() switch
+    {
+        "approved" => "is-success",
+        "processing" => "is-info",
+        "shipped" => "is-info",
+        "cancelled" => "is-danger",
+        "refunded" => "is-danger",
+        "pending" => "is-warning",
+        "approvedfordelayedpayment" => "is-warning",
+        _ => "is-neutral",
+    };
 }
 
 <form method="post">
-	<input asp-for="@Model.Header.Id" hidden />
-	<input asp-for="@Model.Header.ApplicationUserId" hidden />
-	
-	<br />
-	<div class="container">
-		<div class="card">
-			<div class="card-header bg-dark text-light ml-0">
-				<div class="container row">
-					<div class="col-12 d-none d-md-block col-md-6 pb-1">
-						<i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
-					</div>
-					<div class="col-12 col-md-4 offset-md-2 text-right">
-						<a asp-action="Index" asp-route-filter="@filter" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="container rounded p-2">
-					<div class="col-12 col-lg-6 pb-4">
-						<partial name="@sectionHeadingPartial" model=@("Pick-up Details") />
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.FirstName", props["firstName"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.LastName", props["lastName"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.StreetAddress", props["streetAddress"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.City", props["city"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.State", props["state"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PostalCode", props["postalCode"]))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ApplicationUser.Email", props["email"], isReadOnly: true))
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.OrderDate", props["orderDate"], isReadOnly: true))
-						
-						@if(Model.Header?.SessionId != null)
-						{
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDate", props["paymentDate"], isReadOnly: true))
-						}
-						else
-						{
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDueDate", props["paymentDueDate"], isReadOnly: true))
-						}
+    <input asp-for="Header.Id" hidden />
+    <input asp-for="Header.ApplicationUserId" hidden />
 
-						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentStatus", props["paymentStatus"], isReadOnly: true))
+    <section class="@(isAdminDashboard ? "admin-section admin-order-detail-section" : "northstar-section northstar-order-detail-section")">
+        <div class="@(isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner")">
+            <div class="@(isAdminDashboard ? "admin-order-detail-header" : "northstar-cart-header")">
+                <div>
+                    <p class="@(isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminDashboard ? "Order Operations" : "Northstar Supply")</p>
+                    <h1>@(isAdminDashboard ? "Order record" : "Order details")</h1>
+                    <p class="@(isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle")">
+                        @(isAdminDashboard
+                            ? "Review customer information, fulfillment data, and update operational fields when needed."
+                            : "Review order information, delivery details, and current fulfillment status.")
+                    </p>
+                </div>
+                <a asp-action="Index" asp-route-filter="@filter" class="@(isAdminDashboard ? "admin-btn admin-btn-secondary" : "northstar-btn northstar-btn-secondary")">Back to orders</a>
+            </div>
 
-						@if(User.HasAdminRights())
-						{
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.SessionId", props["sessionId"], isReadOnly: true))
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentIntentId", props["paymentIntentId"], isReadOnly: true))
-						}
-					</div>
+            <div class="@(isAdminDashboard ? "admin-order-meta-strip" : "northstar-order-meta-strip")">
+                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
+                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order number</span>
+                    <strong>#@header.Id</strong>
+                </div>
+                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
+                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order status</span>
+                    <span class="@(isAdminDashboard ? $"admin-status-badge {StatusClass(header.OrderStatus)}" : $"northstar-status-badge {StatusClass(header.OrderStatus)}")">@header.OrderStatus</span>
+                </div>
+                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
+                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Payment status</span>
+                    <span class="@(isAdminDashboard ? $"admin-status-badge {StatusClass(header.PaymentStatus)}" : $"northstar-status-badge {StatusClass(header.PaymentStatus)}")">@header.PaymentStatus</span>
+                </div>
+                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
+                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order total</span>
+                    <strong>@header.OrderTotal.FormatAsUSD()</strong>
+                </div>
+            </div>
 
-					@if(Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED))
-					{
-						<div class="col-12 col-lg-6 pb-4">
-							<partial name="@sectionHeadingPartial" model=@("Shipping") />
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.Carrier", props["carrier"], options: Model.Carriers))
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.TrackingNumber", props["trackingNumber"], isReadOnly: true))
-							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ShippingDate", props["shippingDate"], isReadOnly: true))
-						</div>
-					}
+            <div class="@(isAdminDashboard ? "admin-order-detail-layout" : "northstar-summary-layout")">
+                <section class="@(isAdminDashboard ? "admin-order-form-panel admin-panel" : "northstar-summary-details")">
+                    <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                        <h2>@(isAdminDashboard ? "Customer and fulfillment details" : "Order information")</h2>
+                        <p>
+                            @(isAdminDashboard
+                                ? "Editable operational fields remain available to staff. Customers see the same record in read-only form."
+                                : "Delivery and payment information for this order.")
+                        </p>
+                    </div>
 
-					<div class="col-12 col-lg-6 pb-4">
-						<partial name="@sectionHeadingPartial" model=@("Order Summary") />
+                    <div class="@(isAdminDashboard ? "admin-form-grid" : "northstar-summary-fields")">
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.FirstName"></label>
+                                <input asp-for="Header.FirstName" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.LastName"></label>
+                                <input asp-for="Header.LastName" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                        </div>
 
-						<label class="my-2">Order Status - @Model.Header?.OrderStatus</label>
-						<ul>
-							@foreach(var item in Model.Details) 
-							{
-								<li class="list-group-item bg-primary">
-									<div class="row-container">
-										<div class="col-8">
-											<h6 class="text-white">@item.Product.Title</h6>
-											<small class="text-white">Price : @item.Product.Price.FormatAsUSD()</small><br />
-											<small class="text-white">Quantity : @item.TotalCost.FormatAsUSD()</small>
-										</div>
-										<div class="col-4 text-end">
-											<h5 class="text-success">@item.TotalCost.FormatAsUSD()</h5>
-										</div>
-									</div>
-								</li>
-							}
-							<li class="list-group-item bg-primary">
-								<div class="row-container">
-									<div class="col-6">
-										<h5 class="text-white">TOTAL</h5>
-									</div>
-									<div class="col-6 text-end">
-										<h5 class="text-white">@Model.Header.OrderTotal.FormatAsUSD()</h5>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>					
-					<div>
-						@if(Model.Header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
-						{
-							<button asp-action="RequestPayment" class="btn btn-success form-control my-1">Pay Now</button>
-						}
+                        <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                            <label asp-for="Header.StreetAddress"></label>
+                            <input asp-for="Header.StreetAddress" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                        </div>
 
-						@if(User.HasAdminRights())
-						{
-							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
-							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
-							{
-								<button asp-action="StartProcess" class="btn btn-success form-control my-1">Process Order</button>
-							}
-							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
-							{
-								<button asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-success form-control my-1">Ship Order</button>
-							}
-						}
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-third" : "northstar-summary-field-grid northstar-summary-field-grid-tight")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.City"></label>
+                                <input asp-for="Header.City" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.State"></label>
+                                <input asp-for="Header.State" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.PostalCode"></label>
+                                <input asp-for="Header.PostalCode" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                        </div>
 
-						@if(!Model.Header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
-						{
-							<button asp-action="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.PhoneNumber"></label>
+                                <input asp-for="Header.PhoneNumber" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label for="Header_ApplicationUser_Email">Email</label>
+                                <input id="Header_ApplicationUser_Email" value="@header.ApplicationUser.Email" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                            </div>
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.OrderDate"></label>
+                                <input asp-for="Header.OrderDate" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                @if (header.SessionId != null)
+                                {
+                                    <label asp-for="Header.PaymentDate"></label>
+                                    <input asp-for="Header.PaymentDate" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                                }
+                                else
+                                {
+                                    <label asp-for="Header.PaymentDueDate"></label>
+                                    <input asp-for="Header.PaymentDueDate" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                                }
+                            </div>
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.PaymentStatus"></label>
+                                <input asp-for="Header.PaymentStatus" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.Carrier"></label>
+                                @if (isAdminDashboard)
+                                {
+                                    <select asp-for="Header.Carrier" asp-items="@(new SelectList(Model.Carriers))" class="form-select admin-input">
+                                        <option value="">Select carrier</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <input asp-for="Header.Carrier" class="form-control northstar-input form-control-readonly" readonly />
+                                }
+                            </div>
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.TrackingNumber"></label>
+                                <input asp-for="Header.TrackingNumber" class="@(isAdminDashboard ? "form-control admin-input" : "form-control northstar-input form-control-readonly")" readonly="@(!isAdminDashboard)" />
+                            </div>
+                            <div class="@(isAdminDashboard ? "admin-field-block" : "northstar-summary-field")">
+                                <label asp-for="Header.ShippingDate"></label>
+                                <input asp-for="Header.ShippingDate" class="@(isAdminDashboard ? "form-control admin-input admin-input-readonly" : "form-control northstar-input form-control-readonly")" readonly />
+                            </div>
+                        </div>
+
+                        @if (isAdminDashboard)
+                        {
+                            <div class="admin-field admin-field-half">
+                                <div class="admin-field-block">
+                                    <label asp-for="Header.SessionId"></label>
+                                    <input asp-for="Header.SessionId" class="form-control admin-input admin-input-readonly" readonly />
+                                </div>
+                                <div class="admin-field-block">
+                                    <label asp-for="Header.PaymentIntentId"></label>
+                                    <input asp-for="Header.PaymentIntentId" class="form-control admin-input admin-input-readonly" readonly />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+                <aside class="@(isAdminDashboard ? "admin-order-sidebar" : "northstar-summary-sidebar")">
+                    <div class="@(isAdminDashboard ? "admin-panel admin-order-summary-card" : "northstar-summary-card")">
+                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                            <h2>Order items</h2>
+                            <p>@Model.Details.Count() line items.</p>
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-order-items" : "northstar-summary-items")">
+                            @foreach (var item in Model.Details)
+                            {
+                                <article class="@(isAdminDashboard ? "admin-order-item" : "northstar-summary-item")">
+                                    <div>
+                                        <h3>@item.Product.Title</h3>
+                                        <p>Qty @item.Count</p>
+                                    </div>
+                                    <div class="@(isAdminDashboard ? "admin-order-item-pricing" : "northstar-summary-item-pricing")">
+                                        <strong>@item.TotalCost.FormatAsUSD()</strong>
+                                        <span>@item.Product.Price.FormatAsUSD() each</span>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-order-total" : "northstar-summary-total")">
+                            <span>Total</span>
+                            <strong>@header.OrderTotal.FormatAsUSD()</strong>
+                        </div>
+                    </div>
+
+                    <div class="@(isAdminDashboard ? "admin-panel admin-order-actions-panel" : "northstar-summary-card")">
+                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                            <h2>Actions</h2>
+                            <p>@(isAdminDashboard ? "Operational actions available for this order." : "Available actions for this order.")</p>
+                        </div>
+
+                        <div class="@(isAdminDashboard ? "admin-action-stack" : "northstar-action-stack")">
+                            @if (header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
+                            {
+                                <button asp-action="RequestPayment" class="@(isAdminDashboard ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn")">Pay Now</button>
+                            }
+
+                            @if (isAdminDashboard)
+                            {
+                                <button asp-action="UpdateDetails" class="admin-btn admin-btn-warning">Update Order Details</button>
+                                @if (header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
+                                {
+                                    <button asp-action="StartProcess" class="admin-btn admin-btn-success">Process Order</button>
+                                }
+                                @if (header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
+                                {
+                                    <button asp-action="ShipOrder" onclick="return validateInput()" class="admin-btn admin-btn-success">Ship Order</button>
+                                }
+                            }
+
+                            @if (!header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
+                            {
+                                <button asp-action="CancelOrder" class="@(isAdminDashboard ? "admin-btn admin-btn-danger" : "northstar-btn northstar-btn-secondary northstar-order-cancel-btn")">Cancel Order</button>
+                            }
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
 </form>
 
 @section Scripts
 {
-	<partial name="_ValidationScriptsPartial" />
-	<script>
-		function validateInput()
-		{
-			if(document.getElementById("Header_TrackingNumber").value == "")
-			{
-				Swal.fire({
-					icon: 'error',
-					title: 'error',
-					text = 'Tracking number invalid'
-				});
-				return false;
-			}
-			if(document.getElementById("Header_Carrier").value == "")
-			{
-				Swal.fire({
-					icon: 'error',
-					title: 'error',
-					text = 'Carrier invalid'
-				});
-				return false;
-			}
-			return true;
-		}
-	</script>
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput()
+        {
+            if(document.getElementById("Header_TrackingNumber").value == "")
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'error',
+                    text: 'Tracking number invalid'
+                });
+                return false;
+            }
+            if(document.getElementById("Header_Carrier").value == "")
+            {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'error',
+                    text: 'Carrier invalid'
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
 }

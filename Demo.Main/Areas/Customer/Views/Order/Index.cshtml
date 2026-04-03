@@ -1,60 +1,89 @@
-﻿@{
-	var status = Context.Request.Query["status"].ToString();
-	var filter = Context.Request.Query["filter"].ToString();
-	var defaultClass = "text-primary";
-	var classes = new Dictionary<string, (string, string)>
-	{
-		{ "paymentpending", (defaultClass, "Payment Pending") },
-		{ "approved", (defaultClass, "Approved") },
-		{ "inprocess", (defaultClass, "In Process") },
-		{ "shipped", (defaultClass, "Shipped") },
-		{ "completed", (defaultClass, "Completed") },
-		{ "all", (defaultClass, "All") },
-	};
+@{
+    var status = Context.Request.Query["status"].ToString();
+    var filter = Context.Request.Query["filter"].ToString();
+    var isAdminDashboard = filter == "all" && User.HasAdminRights();
+    var defaultClass = string.Empty;
+    var classes = new Dictionary<string, (string, string)>
+    {
+        { "paymentpending", (defaultClass, "Payment Pending") },
+        { "approved", (defaultClass, "Approved") },
+        { "inprocess", (defaultClass, "In Process") },
+        { "shipped", (defaultClass, "Shipped") },
+        { "completed", (defaultClass, "Completed") },
+        { "all", (defaultClass, "All") },
+    };
 
-	if(!string.IsNullOrEmpty(status))
-	{
-		classes[status] = ($"active {classes[status].Item1}", classes[status].Item2);
-	}
+    if (!string.IsNullOrEmpty(status) && classes.ContainsKey(status))
+    {
+        classes[status] = ("is-active", classes[status].Item2);
+    }
+    else
+    {
+        classes["all"] = ("is-active", classes["all"].Item2);
+    }
+
+    ViewData["Title"] = isAdminDashboard ? "Operations Orders" : "My Orders";
+    ViewData["BrandName"] = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
+    ViewData["BodyClass"] = isAdminDashboard ? "admin-ops admin-orders-page" : "northstar-home northstar-orders-page";
+    ViewData["ShellClass"] = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
+    ViewData["NavClass"] = isAdminDashboard ? "admin-nav" : "northstar-nav";
+    ViewData["HeaderClass"] = isAdminDashboard ? "admin-header" : "northstar-header";
+    ViewData["FooterClass"] = isAdminDashboard ? "admin-footer" : "northstar-footer";
 }
 
-<div class="card shadow border-0 my-4">
-	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
-		<div class="row">
-			<div class="col-12 text-center">
-				<h2 class="text-white py-2">Order List</h2>
-			</div>
-		</div>
-	</div>
-	<div class="card-body p-4">
-		<div class="d-flex justify-content-between pb-5 pt-2">
-			<span></span>
-			<ul class="list-group list-group-horizontal-sm">
-				@foreach(var item in classes)
-				{
-					<a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status=@item.Key asp-route-filter=@filter">
-						<li class="list-group-item @classes[item.Key].Item1">@classes[item.Key].Item2</li>
-					</a>
-				}
-			</ul>
-		</div>
-		<table id="tblData" class="table table-bordered table-striped" style="width:100%">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Phone Number</th>
-					<th>Email</th>
-					<th>Order Date</th>
-					<th>Order Status</th>
-					<th>Payment Status</th>
-					<th>Total</th>
-				</tr>
-			</thead>
-		</table>
-	</div>
-</div>
+<section class="@(isAdminDashboard ? "admin-section admin-orders-section" : "northstar-section northstar-orders-section")">
+    <div class="@(isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner")">
+        <div class="@(isAdminDashboard ? "admin-orders-header" : "northstar-cart-header")">
+            <div>
+                <p class="@(isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminDashboard ? "Operations Dashboard" : "Northstar Supply")</p>
+                <h1>@(isAdminDashboard ? "Order operations" : "Order history")</h1>
+                <p class="@(isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle")">
+                    @(isAdminDashboard
+                        ? "Monitor order states, payment progress, and fulfillment from a denser internal dashboard view."
+                        : "Track your order history and review current order statuses in one place.")
+                </p>
+            </div>
+        </div>
+
+        <div class="@(isAdminDashboard ? "admin-panel admin-orders-filter-panel" : "northstar-summary-card northstar-orders-filter-panel")">
+            <div class="@(isAdminDashboard ? "admin-orders-filter-header" : "northstar-orders-filter-header")">
+                <h2>Status filters</h2>
+                <p>@(isAdminDashboard ? "Filter the live order table by operational state." : "Narrow your order history by current status.")</p>
+            </div>
+            <div class="@(isAdminDashboard ? "admin-filter-chips" : "northstar-filter-chips")">
+                @foreach (var item in classes)
+                {
+                    <a class="@(isAdminDashboard ? $"admin-filter-chip {classes[item.Key].Item1}" : $"northstar-filter-chip {classes[item.Key].Item1}")"
+                       asp-controller="Order"
+                       asp-action="Index"
+                       asp-route-status="@item.Key"
+                       asp-route-filter="@filter">
+                        @classes[item.Key].Item2
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="@(isAdminDashboard ? "admin-panel admin-table-panel" : "northstar-summary-card northstar-orders-table-panel")">
+            <table id="tblData" class="table table-hover align-middle" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                        <th>Payment Status</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
-	<script src="~/js/order.js" asp-append-version="true"></script>
+    <script src="~/js/order.js" asp-append-version="true"></script>
 }
