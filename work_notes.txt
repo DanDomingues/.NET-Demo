@@ -10,10 +10,21 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - On create product, Category is labeled as CategoryId
-    - Possibly create 
+    - Add change order buttons in the edit product page
+    - Develop Company pages to perform CRUD model
+
+Portfolio Prep Stage
+    - Define project to seed new items to DB
+    - Seed new products into file
  
 Done
+    - Have change order buttons in the category page
+    - Improve styling for read only components
+    - Trim controller http modules after validation
+    - Rename most of the namespaces referring the .NET Demo folder
+    - Validate all actions in main flow
+    - Implement modals to Category and Role upsert
+    - On create product, Category is labeled as CategoryId
     - On role edit, have company editing for both company and employee roles
     - Same thing for user registration
     - When a user either opens the cart or their orders and they're not logged in, redirect to login page
@@ -45,8 +56,7 @@ Done
     - On details page, the tag is not visible, being rendered over white text [DONE]
     - Restore shopping cart to being rendered
     - Other managerial inputs (products, categoeries) are not visible
+    - Have an "empty cart" view instead of rendering the base as is
 
 Extensions
-    - Have an "empty cart" view instead of rendering the base as is
     - Use google sign
-    - Alternatively, have A/B buttons for these two actions (adding products to cart with no user logged in)

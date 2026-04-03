@@ -1,0 +1,178 @@
+﻿@using Demo.Models.ViewModels
+@using Demo.Utility
+@model OrderVM
+
+@{
+	var filter = Context.Request.Query["filter"].ToString();
+	var formFieldPartial = "_FormField";
+	var sectionHeadingPartial = "_SectionHeading";
+
+	var props = new Dictionary<string, string>
+	{
+		{ "firstName", Model.Header?.FirstName },
+		{ "lastName", Model.Header?.LastName },
+		{ "streetAddress", Model.Header?.StreetAddress },
+		{ "city", Model.Header?.City },
+		{ "state", Model.Header?.State },
+		{ "postalCode", Model.Header?.PostalCode },
+		{ "email", Model.Header?.ApplicationUser.Email },
+		{ "carrier", Model.Header?.Carrier },
+		{ "trackingNumber", Model.Header?.TrackingNumber },
+		{ "orderDate", Model.Header?.OrderDate.ToString() },
+		{ "shippingDate", Model.Header?.ShippingDate.ToString() },
+		{ "sessionId", Model.Header?.SessionId },
+		{ "paymentIntentId", Model.Header?.PaymentIntentId },
+		{ "paymentDueDate", Model.Header?.PaymentDueDate.ToString() },
+		{ "paymentDate", Model.Header?.PaymentDate.ToString() },
+		{ "paymentStatus", Model.Header?.PaymentStatus }
+	};
+}
+
+<form method="post">
+	<input asp-for="@Model.Header.Id" hidden />
+	<input asp-for="@Model.Header.ApplicationUserId" hidden />
+	
+	<br />
+	<div class="container">
+		<div class="card">
+			<div class="card-header bg-dark text-light ml-0">
+				<div class="container row">
+					<div class="col-12 d-none d-md-block col-md-6 pb-1">
+						<i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
+					</div>
+					<div class="col-12 col-md-4 offset-md-2 text-right">
+						<a asp-action="Index" asp-route-filter="@filter" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="container rounded p-2">
+					<div class="col-12 col-lg-6 pb-4">
+						<partial name="@sectionHeadingPartial" model=@("Pick-up Details") />
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.FirstName", props["firstName"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.LastName", props["lastName"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.StreetAddress", props["streetAddress"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.City", props["city"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.State", props["state"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PostalCode", props["postalCode"]))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ApplicationUser.Email", props["email"], isReadOnly: true))
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.OrderDate", props["orderDate"], isReadOnly: true))
+						
+						@if(Model.Header?.SessionId != null)
+						{
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDate", props["paymentDate"], isReadOnly: true))
+						}
+						else
+						{
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentDueDate", props["paymentDueDate"], isReadOnly: true))
+						}
+
+						@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentStatus", props["paymentStatus"], isReadOnly: true))
+
+						@if(User.HasAdminRights())
+						{
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.SessionId", props["sessionId"], isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.PaymentIntentId", props["paymentIntentId"], isReadOnly: true))
+						}
+					</div>
+
+					@if(Model.Header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED))
+					{
+						<div class="col-12 col-lg-6 pb-4">
+							<partial name="@sectionHeadingPartial" model=@("Shipping") />
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.Carrier", props["carrier"], options: Model.Carriers))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.TrackingNumber", props["trackingNumber"], isReadOnly: true))
+							@await Html.PartialAsync(formFieldPartial, new FormFieldModel("Header.ShippingDate", props["shippingDate"], isReadOnly: true))
+						</div>
+					}
+
+					<div class="col-12 col-lg-6 pb-4">
+						<partial name="@sectionHeadingPartial" model=@("Order Summary") />
+
+						<label class="my-2">Order Status - @Model.Header?.OrderStatus</label>
+						<ul>
+							@foreach(var item in Model.Details) 
+							{
+								<li class="list-group-item bg-primary">
+									<div class="row-container">
+										<div class="col-8">
+											<h6 class="text-white">@item.Product.Title</h6>
+											<small class="text-white">Price : @item.Product.Price.FormatAsUSD()</small><br />
+											<small class="text-white">Quantity : @item.TotalCost.FormatAsUSD()</small>
+										</div>
+										<div class="col-4 text-end">
+											<h5 class="text-success">@item.TotalCost.FormatAsUSD()</h5>
+										</div>
+									</div>
+								</li>
+							}
+							<li class="list-group-item bg-primary">
+								<div class="row-container">
+									<div class="col-6">
+										<h5 class="text-white">TOTAL</h5>
+									</div>
+									<div class="col-6 text-end">
+										<h5 class="text-white">@Model.Header.OrderTotal.FormatAsUSD()</h5>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>					
+					<div>
+						@if(Model.Header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
+						{
+							<button asp-action="RequestPayment" class="btn btn-success form-control my-1">Pay Now</button>
+						}
+
+						@if(User.HasAdminRights())
+						{
+							<button asp-action="UpdateDetails" class="btn btn-warning form-control my-1">Update Order Details</button>
+							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
+							{
+								<button asp-action="StartProcess" class="btn btn-success form-control my-1">Process Order</button>
+							}
+							@if(Model.Header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
+							{
+								<button asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-success form-control my-1">Ship Order</button>
+							}
+						}
+
+						@if(!Model.Header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
+						{
+							<button asp-action="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial" />
+	<script>
+		function validateInput()
+		{
+			if(document.getElementById("Header_TrackingNumber").value == "")
+			{
+				Swal.fire({
+					icon: 'error',
+					title: 'error',
+					text = 'Tracking number invalid'
+				});
+				return false;
+			}
+			if(document.getElementById("Header_Carrier").value == "")
+			{
+				Swal.fire({
+					icon: 'error',
+					title: 'error',
+					text = 'Carrier invalid'
+				});
+				return false;
+			}
+			return true;
+		}
+	</script>
+}

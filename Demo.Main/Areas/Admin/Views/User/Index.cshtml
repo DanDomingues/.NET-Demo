@@ -1,0 +1,35 @@
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Users</h2>
+            </div>
+        </div>
+    </div>
+    <table id="tblData" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Company</th>
+                <th>Role</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="modal fade" id="manageRoleModal" tabindex="-1" aria-labelledby="manageRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" id="manageRoleModalContent"></div>
+    </div>
+</div>
+
+<div id="modalHost" data-modal-key="manageRole" data-controller="User" data-action="ManageRole"></div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/user.js" asp-append-version="true"></script>
+    <script src="~/js/shared/modal.js" asp-append-version="true"></script>
+}

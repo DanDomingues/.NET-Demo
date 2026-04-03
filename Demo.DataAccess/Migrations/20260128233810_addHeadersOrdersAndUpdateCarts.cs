@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ASP.NET_Debut.Migrations
+namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
     public partial class addHeadersOrdersAndUpdateCarts : Migration

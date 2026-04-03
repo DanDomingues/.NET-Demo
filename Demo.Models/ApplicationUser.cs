@@ -12,7 +12,8 @@ namespace Demo.Models
 {
     public class ApplicationUser : IdentityUser, IModelBase
     {
-        [Required] public string Name { get; set; } = null!;
+        [Required] public string FirstName { get; set; } = null!;
+        [Required] public string LastName { get; set; } = null!;
         public string? StreetAddress { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
@@ -28,6 +29,8 @@ namespace Demo.Models
 
         [NotMapped]
         public bool Locked { get; set;}
+
+        public string FullName => $"{FirstName} {LastName}";
 
         int IModelBase.Id => int.Parse(Id);
     }

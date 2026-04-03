@@ -1,0 +1,46 @@
+﻿@model ProductsHomeViewModel
+
+<div class="row pb-3 product-grid">
+	@foreach(var group in Model.CategoryProducts)
+	{
+		@if(!group.Value.Any())
+		{
+			continue;
+		}
+
+		<div class="col-12">
+			<h2 class="text-secondary text-uppercase border-bottom border-3 border-primary mb-4 pb-2">@Model.Categories[group.Key].Name</h2>
+		</div>
+
+		<div class="col-12 mb-3 d-flex gap-3">
+			@foreach(var product in group.Value)
+			{
+				@*Card rendering*@
+				<div class="col-lg-3 col-sm-6 d-flex product-grid-item mx-2">
+					<div class="row p-1 w-100">
+						<div class="col-12 p-0">
+							<div class="card product-card border-0 shadow border-top border-5 rounded h-100 w-100">
+								<div class="product-card-image">
+									<img src="@product.ThumbnailUrl" class="card-img-top rounded" alt="@product.Title" />
+								</div>
+								<div class="pl-1 product-card-body d-flex flex-column flex-grow-1">
+									<p class="card-title h5 text-dark opacity-75 text-uppercase text-center product-card-title">@product.Title</p>
+									<p class="card-title text-warning text-center product-card-author">by <b>@product.Author</b></p>
+									<p class="text-dark text-opacity-75 text-center">List price: 
+										<span class="text-decoration-line-through">@product.Price.FormatAsUSD()</span>
+									</p>
+									<p class="text-dark text-opacity-75 text-center">As low as: <span>@product.Price100.FormatAsUSD()</span></p>
+									<div class="mt-auto">
+									<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary bg-gradient border-0 form-control">
+										Details
+									</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+</div>

@@ -38,6 +38,6 @@ namespace Demo.Models
         //public string? ImageUrl {  get; set; }
 
         public bool ImagesAreValid => Images != null && Images.Count > 0;
-        public string ThumbnailUrl => Images?.FirstOrDefault()?.Url ?? "https://placehold.co/500x600/png";
+        public string ThumbnailUrl => Images?.OrderBy(i => i.DisplayOrder)?.FirstOrDefault()?.Url ?? "https://placehold.co/500x600/png";
     }
 }

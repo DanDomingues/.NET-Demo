@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace ASP.NET_Debut.Migrations
+namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
     public partial class AddCompaniesSeed : Migration

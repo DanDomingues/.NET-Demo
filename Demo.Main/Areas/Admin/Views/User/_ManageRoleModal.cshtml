@@ -1,0 +1,44 @@
+@using Demo.Utility
+@model ManageRoleVM
+@{
+    var companyStyle = Model.User.Role?.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE) == true ?
+        "display:block" :
+        "display:none";
+}
+
+<div class="modal-header">
+    <h2 class="modal-title fs-5" id="manageRoleModalLabel">Manage User Role</h2>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form id="manageRoleForm" method="post" asp-action="ManageRole" asp-controller="User" asp-area="Admin">
+
+    <input asp-for="User.Id" type="hidden" />
+
+    <div class="modal-body">
+
+        <div class="form-floating mb-3">
+            <input asp-for="User.FullName" readonly class="form-control border-0 shadow" />
+            <label asp-for="User.FullName" class="ms-2"></label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <select asp-for="User.Role" asp-items="@Model.Roles" id="roleField" class="form-select"></select>
+            <label asp-for="User.Role" class="ms-2"></label>
+            <span asp-validation-for="User.Role" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3" id="companyField" style="@companyStyle">
+            <select asp-for="User.CompanyId" asp-items="@Model.Companies" class="form-select"></select>
+            <label asp-for="User.CompanyId" class="ms-2"></label>
+            <span asp-validation-for="User.CompanyId" class="text-danger"></span>
+        </div>
+
+        <div class="modal-footer">
+            <div class="row gap-2 flex-fill">
+                <button type="submit" class="btn btn-primary">Update Role</button>
+                <button type="button" class="btn btn-outline-primary border" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
