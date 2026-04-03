@@ -1,24 +1,39 @@
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">Users</h2>
+@{
+    ViewData["Title"] = "Users";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-users-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
+}
+
+<section class="admin-section admin-users-section">
+    <div class="admin-shell-inner">
+        <div class="admin-orders-header">
+            <div>
+                <p class="admin-eyebrow">User Administration</p>
+                <h1>Users</h1>
+                <p class="admin-orders-subtitle">Review user accounts, lock or unlock access, and manage role assignments and company associations from a single backoffice table.</p>
             </div>
         </div>
+
+        <div class="admin-panel admin-users-table-panel">
+            <table id="tblData" class="table table-hover align-middle admin-users-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
-    <table id="tblData" class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Company</th>
-                <th>Role</th>
-                <th></th>
-            </tr>
-        </thead>
-    </table>
-</div>
+</section>
 
 <div class="modal fade" id="manageRoleModal" tabindex="-1" aria-labelledby="manageRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

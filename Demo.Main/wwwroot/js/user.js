@@ -35,12 +35,12 @@ function loadDataTable()
     function renderBody(tag, label, data)
     {                
         return `
-        <div class="d-flex flex-column align-items-center gap-2 text-center">
-            <a onClick=ToggleLock('${data.id}') class="btn btn-${tag} text-white" style="cursor: pointer; width: 120px;">
-                <i class="bi bi-unlock-fill"></i>${label}
+        <div class="admin-user-actions">
+            <a onClick=ToggleLock('${data.id}') class="admin-btn ${data.locked == true ? 'admin-btn-success' : 'admin-btn-danger'}" style="cursor: pointer;">
+                <i class="bi ${data.locked == true ? 'bi-unlock-fill' : 'bi-lock-fill'}"></i><span>${label}</span>
             </a>
-            <button type="button" class="btn btn-outline-warning js-manageRole-modal-trigger" data-id="${data.id}" style="cursor: pointer; width: 120px;">
-                <i class="bi bi-pencil-square"></i>Edit Role
+            <button type="button" class="admin-btn admin-btn-secondary js-manageRole-modal-trigger" data-id="${data.id}" style="cursor: pointer;">
+                <i class="bi bi-pencil-square"></i><span>Edit role</span>
             </button>
         </div>
         `
