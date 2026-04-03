@@ -20,7 +20,7 @@ namespace Demo.Main.Areas.Admin.Controllers
             Modules["Upsert"] = new RepoControllerUpsertModule<Company, ICompanyRepository>(this);
         }
 
-        public IActionResult Index() => Modules["Index"].Get();
+        public IActionResult Index() => View();
         public IActionResult Upsert(int? id) => Modules["Upsert"].GetWithId(id);
 
         [HttpPost]
