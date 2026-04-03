@@ -147,6 +147,8 @@ namespace Demo.Main.Areas.Admin.Controllers
         
         public IActionResult MoveImageDown(int? prodId, int? imageId) => MoveImage(prodId, imageId, i => i + 1);
 
+        public IActionResult MoveImageToTop(int? prodId, int? imageId) => MoveImage(prodId, imageId, i => 0);
+
         public IActionResult MoveImage(int? prodId, int? imageId, Func<int, int> getNewIndex)
         {
             var productImages = unitOfWork.ProductImagesRepository
