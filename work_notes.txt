@@ -10,14 +10,17 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - Add change order buttons in the edit product page
-    - Develop Company pages to perform CRUD model
+    - Categories are hard coded in
+    - 
+
 
 Portfolio Prep Stage
     - Define project to seed new items to DB
     - Seed new products into file
  
 Done
+    - Develop Company pages to perform CRUD model
+    - Add change order buttons in the edit product page
     - Have change order buttons in the category page
     - Improve styling for read only components
     - Trim controller http modules after validation
