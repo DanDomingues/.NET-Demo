@@ -92,7 +92,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 return;
             }
             
-            var productPath = @$"images\products\product-{product.Name}";
+            var productPath = @$"images\products\{product.Name}";
             var wwwRootPath = webHostEnvironment.WebRootPath;
             var localDirectoryPath = Path.Combine(wwwRootPath, productPath);
             
@@ -103,7 +103,8 @@ namespace Demo.Main.Areas.Admin.Controllers
             
             foreach (var file in files)
             {
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";       
+                //var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";       
+                var fileName = file.FileName ?? Guid.NewGuid().ToString();
                 var filePath = Path.Combine(localDirectoryPath, fileName);
                 
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -115,7 +116,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 {
                     Url = $@"\{productPath}\{fileName}",
                     ProductId = product.Id,
-                    DisplayOrder = product.Images.Count,
+                    DisplayOrder = product.Images?.Count ?? 0,
                 };
 
                 product.Images ??= [];

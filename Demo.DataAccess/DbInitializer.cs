@@ -27,15 +27,10 @@ namespace Demo.DataAccess
 
             if(!rm.RoleExistsAsync(SD.ROLE_USER_ADMIN).GetAwaiter().GetResult())
             {
-                static void CreateRole(RoleManager<IdentityRole> manager, string role)
-                {
-                    manager.CreateAsync(new(role));
-                }
-
-                CreateRole(rm, SD.ROLE_USER_ADMIN);
-                CreateRole(rm, SD.ROLE_USER_COMPANY);
-                CreateRole(rm, SD.ROLE_USER_CUSTOMER);
-                CreateRole(rm, SD.ROLE_USER_EMPLOYEE);
+                rm.CreateAsync(new(SD.ROLE_USER_ADMIN)).GetAwaiter().GetResult();
+                rm.CreateAsync(new(SD.ROLE_USER_COMPANY)).GetAwaiter().GetResult();
+                rm.CreateAsync(new(SD.ROLE_USER_CUSTOMER)).GetAwaiter().GetResult();
+                rm.CreateAsync(new(SD.ROLE_USER_EMPLOYEE)).GetAwaiter().GetResult();
 
                 um.CreateAsync(new ApplicationUser
                 {
@@ -49,13 +44,14 @@ namespace Demo.DataAccess
                     PostalCode = "12345",
                     City = "New York"
                 },
-                "Admin123");
+                "Admin123*").GetAwaiter().GetResult();
 
                 var userInDb = 
                     db.ApplicationUsers.FirstOrDefault(u => u.UserName != null && u.UserName.Equals("admin@email.com")) 
                     ?? throw new InvalidOperationException("Admin user was not created successfully.");
                     
-                um.AddToRoleAsync(userInDb, SD.ROLE_USER_ADMIN);
+                um.AddToRoleAsync(userInDb, SD.ROLE_USER_ADMIN).GetAwaiter().GetResult();
+                var roles = um.GetRolesAsync(userInDb).GetAwaiter().GetResult();
             }
         }
     }
