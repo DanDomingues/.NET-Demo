@@ -1,115 +1,109 @@
-﻿@page
+@page
 @model RegisterModel
 @using Demo.Utility
+@{
+    var isAdminPortal = User.IsInRole(SD.ROLE_USER_ADMIN);
 
-<div class="card shadow border-0 mt-4">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h2 class="py-2 text-white">(@User.IsInRole(SD.ROLE_USER_ADMIN) ? "Register - ADMIN PORTAL" : "Register")</h2>
-        </div>
-    </div>
-    <div class="card-body p-4">
-        <div class="row pt-3">
-            <div class="col-md-12">
-                <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account</h3>
-                    @*<hr/>*@
-                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-3 col-md-12">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3, col-md-6">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.Password" class="ms-2 text-muted">Password</label>
+    ViewData["Title"] = "Register";
+    ViewData["BrandName"] = isAdminPortal ? "Northstar Ops" : "Northstar Supply";
+    ViewData["BodyClass"] = isAdminPortal ? "admin-ops admin-auth-page" : "northstar-home northstar-auth-page";
+    ViewData["ShellClass"] = isAdminPortal ? "admin-shell flex-fill" : "northstar-shell flex-fill";
+    ViewData["NavClass"] = isAdminPortal ? "admin-nav" : "northstar-nav";
+    ViewData["HeaderClass"] = isAdminPortal ? "admin-header" : "northstar-header";
+    ViewData["FooterClass"] = isAdminPortal ? "admin-footer" : "northstar-footer";
+}
+
+<section class="@(isAdminPortal ? "admin-section admin-auth-section" : "northstar-section northstar-auth-section")">
+    <div class="@(isAdminPortal ? "admin-shell-inner" : "northstar-shell-inner")">
+        <div class="@(isAdminPortal ? "admin-auth-card" : "northstar-auth-card")">
+            <div class="@(isAdminPortal ? "admin-auth-intro" : "northstar-auth-intro")">
+                <p class="@(isAdminPortal ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminPortal ? "User Administration" : "Northstar Supply")</p>
+                <h1>@(isAdminPortal ? "Create user account" : "Create your account")</h1>
+                <p class="@(isAdminPortal ? "admin-orders-subtitle" : "northstar-auth-copy")">
+                    @(isAdminPortal
+                        ? "Provision a new account with role and company assignment using the existing registration flow."
+                        : "Set up your Northstar account to shop, order, and manage your details.")
+                </p>
+            </div>
+
+            <form id="registerForm" class="@(isAdminPortal ? "admin-auth-form" : "northstar-auth-form northstar-auth-form-wide")" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                    <label asp-for="Input.Email" class="@(isAdminPortal ? "" : "northstar-auth-label")">Email</label>
+                    <input asp-for="Input.Email" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.Password" class="@(isAdminPortal ? "" : "northstar-auth-label")">Password</label>
+                        <input asp-for="Input.Password" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="new-password" aria-required="true" placeholder="Password" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.ConfirmPassword" class="@(isAdminPortal ? "" : "northstar-auth-label")">Confirm Password</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" />
-                        <label asp-for="Input.FirstName" class="ms-2 text-muted">First Name</label>
+                </div>
+
+                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.FirstName" class="@(isAdminPortal ? "" : "northstar-auth-label")">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.LastName" class="form-control" aria-required="true" />
-                        <label asp-for="Input.LastName" class="ms-2 text-muted">Last Name</label>
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.LastName" class="@(isAdminPortal ? "" : "northstar-auth-label")">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.City" class="form-control" aria-required="true" />
-                        <label asp-for="Input.City" class="ms-2 text-muted">City</label>
+                </div>
+
+                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.City" class="@(isAdminPortal ? "" : "northstar-auth-label")">City</label>
+                        <input asp-for="Input.City" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.State" class="form-control" aria-required="true" />
-                        <label asp-for="Input.State" class="ms-2 text-muted">State</label>
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.State" class="@(isAdminPortal ? "" : "northstar-auth-label")">State</label>
+                        <input asp-for="Input.State" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.PostalCode" class="form-control" aria-required="true" />
-                        <label asp-for="Input.PostalCode" class="ms-2 text-muted">Postal Code</label>
+                </div>
+
+                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.PostalCode" class="@(isAdminPortal ? "" : "northstar-auth-label")">Postal Code</label>
+                        <input asp-for="Input.PostalCode" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" />
-                        <label asp-for="Input.PhoneNumber" class="ms-2 text-muted">PhoneNumber</label>
+                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                        <label asp-for="Input.PhoneNumber" class="@(isAdminPortal ? "" : "northstar-auth-label")">Phone Number</label>
+                        <input asp-for="Input.PhoneNumber" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
                     </div>
-                    @if(!Defines.ROLE_SELECTION_LOCK_ACTIVE || User.IsInRole(SD.ROLE_USER_ADMIN))
-                    {
-                        <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                </div>
+
+                @if(!Defines.ROLE_SELECTION_LOCK_ACTIVE || User.IsInRole(SD.ROLE_USER_ADMIN))
+                {
+                    <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
+                        <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                            <label asp-for="Input.Role" class="@(isAdminPortal ? "" : "northstar-auth-label")">Role</label>
+                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select @(isAdminPortal ? "admin-input" : "northstar-input")">
                                 <option disabled selected>-Select Role-</option>
                             </select>
                         </div>
-                        <div class="form-floating mb-3 col-md-6">
-                            <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select" style="display:none">
+                        <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
+                            <label asp-for="Input.CompanyId" class="@(isAdminPortal ? "" : "northstar-auth-label")">Company</label>
+                            <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select @(isAdminPortal ? "admin-input" : "northstar-input")" style="display:none">
                                 <option disabled selected>-Select Company-</option>
                             </select>
                         </div>
-                    }
-                    <div class="col-12">
-                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                     </div>
-                </form>
-            </div>
-            @* External Login Providers *@
-            @*
-            <div class="col-md-12">
-                <section>
-                    <p class="divider-text d-flex pt-3">or</p>
-                    <h3>Use another service to register.</h3>
-                    @{
-                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                        {
-                            <div>
-                                <p>
-                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                        article
-                                        about setting up this ASP.NET application to support logging in via external services
-                                    </a>.
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                <div>
-                                    <p>
-                                        @foreach (var provider in Model.ExternalLogins!)
-                                        {
-                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                        }
-                                    </p>
-                                </div>
-                            </form>
-                        }
-                    }
-                </section>
-            </div>
-            *@
+                }
+
+                <button id="registerSubmit" type="submit" class="@(isAdminPortal ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn")">Register</button>
+            </form>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

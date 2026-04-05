@@ -2252,3 +2252,98 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.northstar-auth-section,
+.admin-auth-section {
+  padding-top: 1.5rem;
+}
+
+.northstar-auth-card,
+.admin-auth-card {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 24px;
+}
+
+.northstar-auth-card {
+  background:
+    radial-gradient(circle at top right, rgba(34, 58, 94, 0.08), transparent 32%),
+    #ffffff;
+  border: 1px solid #e7e3dc;
+  box-shadow: 0 14px 30px rgba(27, 29, 31, 0.04);
+}
+
+.admin-auth-card {
+  background: #ffffff;
+  border: 1px solid #dde3ea;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.04);
+}
+
+.northstar-auth-intro h1,
+.admin-auth-intro h1 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.northstar-auth-intro h1 {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+}
+
+.admin-auth-intro h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.northstar-auth-copy {
+  max-width: 34rem;
+  margin: 0.75rem 0 0;
+  color: #5f6670;
+  line-height: 1.7;
+}
+
+.northstar-auth-form,
+.admin-auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.northstar-auth-form-wide {
+  grid-template-columns: 1fr;
+}
+
+.northstar-auth-label {
+  color: #5f6670;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.northstar-auth-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #5f6670;
+  font-weight: 500;
+}
+
+.northstar-auth-helper {
+  margin: 0;
+  color: #5f6670;
+}
+
+.northstar-auth-helper a {
+  color: #223a5e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 767.98px) {
+  .northstar-auth-card,
+  .admin-auth-card {
+    border-radius: 20px;
+  }
+}
