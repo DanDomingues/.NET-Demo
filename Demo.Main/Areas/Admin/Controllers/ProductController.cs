@@ -72,12 +72,20 @@ namespace Demo.Main.Areas.Admin.Controllers
                 return View(vm);
             }
 
+
             //For our product to have an assigned ID, upset to DB must come first
             Repo.AddOrUpdate(vm.Product);
             unitOfWork.Save();
 
             if (files != null && files.Count > 0)
             {
+                FetchProductImages(vm.Product);
+
+                if(CheckForImageDuplicates(vm.Product.Images, files))
+                {                    
+                    return View(vm);
+                }
+
                 AddProductImages(vm.Product, files);
                 unitOfWork.Save();
             }
@@ -90,18 +98,56 @@ namespace Demo.Main.Areas.Admin.Controllers
         {
             if (files != null && files.Count > 0)
             {
-                var imagesFromRepo = unitOfWork.ProductImagesRepository.GetAll(
-                    i => i.ProductId.Equals(vm.Product.Id), 
-                    track: false);
+                FetchProductImages(vm.Product);
 
-                //For assigning display order, the current images assigned to product must be fetched
-                vm.Product.Images = [.. imagesFromRepo.OrderBy(i => i.DisplayOrder)];
+                if(CheckForImageDuplicates(vm.Product.Images, files))
+                {                    
+                    return RedirectToAction(nameof(Upsert), new { id = vm.Product.Id.ToString() });
+                }
+
                 AddProductImages(vm.Product, files);
                 unitOfWork.Save();
-                this.AddOperationFeedback("Added Successfully", objName: "Images");            
+
+                this.AddSuccessFeedback("Added Successfully", objName: "Images");            
             }
 
             return RedirectToAction(nameof(Upsert), new { id = vm.Product.Id.ToString() });
+        }
+
+        private void FetchProductImages(Product product)
+        {
+            product.Images = [.. unitOfWork.ProductImagesRepository.GetAll(
+                i => i.ProductId.Equals(product.Id), 
+                track: false)];
+        }
+
+        private bool CheckForImageDuplicates(IEnumerable<ProductImage> images, List<IFormFile> files, bool showFeedback = true)
+        {
+            var existingFileNames = images
+                .Select(i => i.Url)
+                .Select(Path.GetFileName)
+                .ToList();
+
+            var existing = files
+                .Select(f => f.FileName)
+                .Where(existingFileNames.Contains)
+                .ToList();
+
+            if(!showFeedback)
+            {
+                return existing.Count > 0;
+            }
+
+            if(existing.Count == 1)
+            {
+                this.AddErrorFeedback("already exists in Product", existing.First());
+            }
+            else if(existing.Count > 1)
+            {
+                this.AddErrorFeedback("already exist in Product", $"{existing.First()} and {existing.Count - 1} more");
+            }
+
+            return existing.Count > 0;
         }
 
         private void AddProductImages(Product product, List<IFormFile> files)
@@ -161,7 +207,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 unitOfWork.Save();
             }
 
-            this.AddOperationFeedback("Deleted Successfully", objName: "Image");            
+            this.AddSuccessFeedback("Deleted Successfully", objName: "Image");            
             return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
         }
 
