@@ -8,7 +8,11 @@
     ViewData["HeaderClass"] = "northstar-header";
     ViewData["FooterClass"] = "northstar-footer";
 
-    var productGroups = Model.CategoryProducts.Where(group => group.Value.Any()).ToList();
+    var productGroups = Model.CategoryProducts
+        .Where(group => group.Value.Any())
+        .ToList();
+
+    var categories = Model.Categories.Values.Take(5).ToList();
 }
 
 <div class="northstar-page">
@@ -55,36 +59,15 @@
                 <p>Presentation-led collections that reinforce the Northstar storefront identity while your real product catalog remains server-rendered below.</p>
             </div>
             <div class="northstar-category-grid">
-                <article class="northstar-category-card">
-                    <span class="northstar-category-kicker">01</span>
-                    <h3>Workspace</h3>
-                    <p>Desk pieces and focused essentials for cleaner workdays.</p>
-                    <a href="#products" class="northstar-inline-link">View products</a>
-                </article>
-                <article class="northstar-category-card">
-                    <span class="northstar-category-kicker">02</span>
-                    <h3>Tech Accessories</h3>
-                    <p>Compact gear and accessories that fit modern routines.</p>
-                    <a href="#products" class="northstar-inline-link">View products</a>
-                </article>
-                <article class="northstar-category-card">
-                    <span class="northstar-category-kicker">03</span>
-                    <h3>Organization</h3>
-                    <p>Storage, order, and small systems that reduce clutter.</p>
-                    <a href="#products" class="northstar-inline-link">View products</a>
-                </article>
-                <article class="northstar-category-card">
-                    <span class="northstar-category-kicker">04</span>
-                    <h3>Travel</h3>
-                    <p>Portable picks for commutes, weekends, and on-the-go carry.</p>
-                    <a href="#products" class="northstar-inline-link">View products</a>
-                </article>
-                <article class="northstar-category-card">
-                    <span class="northstar-category-kicker">05</span>
-                    <h3>Home Essentials</h3>
-                    <p>Reliable products for daily maintenance and easy living.</p>
-                    <a href="#products" class="northstar-inline-link">View products</a>
-                </article>
+                @foreach(var category in categories)
+                {
+                    <article class="northstar-category-card">
+                        <span class="northstar-category-kicker">@((categories.IndexOf(category) + 1).ToString("00"))</span>
+                        <h3>@category.Name</h3>
+                        <p>@category.Description</p>
+                        <a href="#category-@category.Id" class="northstar-inline-link">View products</a>
+                    </article>
+                }
             </div>
         </div>
     </section>
@@ -122,7 +105,7 @@
 
             @foreach (var group in productGroups)
             {
-                <section class="northstar-product-group" aria-labelledby="category-@group.Key">
+                <section class="northstar-product-group" aria-labelledby="category-@group.Key" id="category-@group.Key">
                     <div class="northstar-group-heading">
                         <h3 id="category-@group.Key">@Model.Categories[group.Key].Name</h3>
                         <span>@group.Value.Count() items</span>
