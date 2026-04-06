@@ -26,7 +26,7 @@ builder.Services
     .AddDefaultTokenProviders();
 
 
-//Must be added after AddIdentity
+// Identity registers the cookie scheme; override its paths after AddIdentity.
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -42,7 +42,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-//Handles custom DI
+// Application services.
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
