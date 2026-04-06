@@ -1,180 +1,116 @@
-# .NET Demo
+# Northstar Supply
 
-ASP.NET Core 8 MVC portfolio project that demonstrates a small e-commerce workflow with role-based administration, checkout, order management, and reusable CRUD infrastructure.
+Northstar Supply is a production-style ASP.NET MVC commerce demo built to showcase the kinds of application patterns, business workflows, and delivery standards I use in recent .NET work that cannot be shared publicly because of NDA coverage. The application combines a customer storefront, authenticated checkout flow, order lifecycle management, and an admin back office in a single public-facing repository designed to represent maintainable, real-world business application structure rather than a tutorial-only sample.
 
-The application combines a customer storefront with an admin back office. Customers can browse a seeded catalog, add items to a cart, place orders, and review their order history. Admin users can manage products, categories, companies, users, and orders from a separate area of the application.
+This repository focuses on the engineering value behind a polished commerce application: separated customer and admin concerns, database-backed catalog and order workflows, role-aware access control, seeded demo content, and payment integration through Stripe test mode.
 
-## Project Highlights
+## Preview
 
-- Customer storefront with product catalog, category grouping, product detail pages, cart flow, and order history
-- Role-based access model for `Admin`, `Employee`, `Company`, and `Customer`
-- Admin tooling for category, company, product, and user management
-- Order lifecycle support for pending, approved, processing, shipped, cancelled, refunded, and rejected states
+![Northstar Supply storefront hero](docs/screenshots/northstar-home-hero.png)
+
+_Replace with a finalized lead screenshot once the portfolio image set is exported._
+
+## Key Features
+
+- Customer-facing storefront with category-based product browsing and product detail pages
+- Shopping cart flow with quantity management and session-backed cart state
 - Stripe Checkout integration for card payments in test mode
-- Delayed-payment flow for company accounts
-- Seeded catalog, company data, roles, and initial admin user
-- Reusable repository, unit-of-work, and controller-module patterns to reduce CRUD duplication
-
-## Feature Overview
-
-### Customer Experience
-
-- Browse products from the home page, grouped by category
-- View product details and add products to the shopping cart
-- Maintain cart state through session-backed cart count updates
-- Submit order details during checkout
-- Complete payment through Stripe Checkout for standard users
-- Place approved-but-delayed-payment orders for company accounts
-- Review personal order history and order details
-
-### Admin Experience
-
-- Manage categories, including display ordering controls
-- Create and maintain companies used by company and employee accounts
-- Create, edit, and delete products
-- Upload product images, prevent duplicate filenames, and reorder image display priority
-- Review user accounts, assign roles, link users to companies, and toggle account lock state
-- Review all orders and move orders through operational states such as processing and shipping
-- Update tracking and carrier information
-- Cancel orders and trigger Stripe refunds for paid orders
-
-## Architecture
-
-The solution is split into focused projects:
-
-- `Demo.Main`
-  ASP.NET Core MVC application, Razor views, Identity UI, front-end assets, and controllers
-- `Demo.DataAccess`
-  Entity Framework Core context, migrations, repositories, unit of work, initialization, and Stripe helpers
-- `Demo.Models`
-  Domain models and view models
-- `Demo.Utility`
-  Shared constants, extension helpers, feedback utilities, and demo email sender
-
-### Notable Design Choices
-
-- Repository + Unit of Work pattern
-  Data access is encapsulated behind repository interfaces and coordinated through a unit-of-work implementation.
-- Reusable controller modules
-  Shared CRUD behavior is centralized through `RepositoryBoundController` and controller module classes instead of being repeated in each controller.
-- ASP.NET Core Areas
-  The app separates customer and admin concerns through `Customer`, `Admin`, and `Identity` areas.
-- Startup seeding
-  The application applies pending migrations on startup and seeds roles, an admin account, catalog data, companies, and product images.
+- Order confirmation, order history, and order detail views for signed-in users
+- Role-based application flows for `Admin`, `Employee`, `Company`, and `Customer`
+- Delayed-payment path for company-backed accounts
+- Admin CRUD workflows for products, categories, companies, and user accounts
+- Product image management, including upload, duplicate detection, and display-order controls
+- Seeded catalog, category, company, role, and initial admin data for local demo setup
 
 ## Tech Stack
 
-### Backend
-
-- ASP.NET Core 8 MVC
+- .NET 8
+- ASP.NET Core MVC
 - Razor Views and Razor Pages
+- Entity Framework Core with SQL Server
 - ASP.NET Core Identity
-- Entity Framework Core
-- SQL Server
 - Stripe.net
-
-### Frontend
-
 - Bootstrap 5
 - jQuery
-- DataTables
-- SweetAlert2
-- Toastr
-- TinyMCE
-- Bootstrap Icons
 
-## Domain Model
+## Application Overview
 
-The main entities in the project are:
+Northstar Supply is organized as a multi-project solution with a conventional MVC web front end and separate data, model, and utility layers:
 
-- `ApplicationUser`
-  Extended Identity user with profile fields, role-aware UI behavior, and optional company association
-- `Category`
-  Product grouping with sortable display order
-- `Product`
-  Catalog item with tiered pricing, category relation, and image collection
-- `ProductImage`
-  Product gallery image with explicit display ordering
-- `Company`
-  Organization record used for company and employee accounts
-- `ShoppingCartItem`
-  User-owned cart item with quantity and computed total cost
-- `OrderHeader`
-  Order-level customer, shipping, payment, and fulfillment data
-- `OrderItemDetails`
-  Line-item snapshot for purchased products
+- `Demo.Main` hosts the ASP.NET Core MVC application, Razor views, area-based controllers, static assets, and Identity UI.
+- `Demo.DataAccess` contains the EF Core `DbContext`, migrations, seeding, repository implementations, unit-of-work coordination, and Stripe checkout helpers.
+- `Demo.Models` defines the domain entities and view models used across storefront, cart, order, and admin workflows.
+- `Demo.Utility` holds shared constants, role/status definitions, controller helpers, and the sample email sender used by Identity.
 
-## Repository Structure
+From an application architecture perspective, the repository separates customer-facing and admin-facing concerns through ASP.NET Core Areas (`Customer`, `Admin`, and `Identity`). Persistence is handled with EF Core against SQL Server, while authentication and authorization are handled with ASP.NET Core Identity and role checks across storefront, order, and admin paths. The application seeds catalog content directly through the `DbContext` model configuration, then creates roles and an initial admin account during startup initialization.
 
-```text
-.NET Demo/
-├── Demo.Main/          Web application, controllers, views, wwwroot
-├── Demo.DataAccess/    EF Core context, migrations, repositories, seeding
-├── Demo.Models/        Domain models and view models
-├── Demo.Utility/       Shared constants and helper utilities
-└── README.md
-```
+## Why This Project Exists
 
-## Configuration Notes
+Much of my recent .NET work is under NDA, so I built this public demo to showcase the kinds of technologies, workflows, and application structures I typically work with. The goal is not to present a fictional client deployment, but to provide a credible, reviewable example of how I approach business application architecture, feature delivery, and code organization in a public repository.
 
-### Database
+## Screenshots
 
-- The default local configuration targets SQL Server with trusted connection support.
-- The `ApplicationDbContextFactory` exists so EF Core design-time commands work even though the `DbContext` lives in a separate project.
+### Storefront Home
 
-### Payments
+![Storefront home](docs/screenshots/storefront-home.png)
 
-- Stripe is wired for Checkout-based payment flow
-- The app expects test credentials for local development
-- Company users follow a delayed-payment path instead of immediate card checkout
+### Product Details
 
-### Email
+![Product details](docs/screenshots/product-details.png)
 
-- The app includes a required `IEmailSender` implementation for Identity integration
-- Email sending is intentionally disabled because this project is positioned as a demo, not a production email workflow
+### Shopping Cart
 
-## Example Workflows
+![Shopping cart](docs/screenshots/shopping-cart.png)
 
-### Customer Flow
+### Order History
 
-1. Browse products on the storefront
-2. Open a product detail page
-3. Add the product to cart
-4. Review the order summary
-5. Submit shipping details
-6. Complete payment through Stripe or use delayed payment through a company account
-7. Revisit order history and order detail pages
+![Order history](docs/screenshots/order-history.png)
 
-### Admin Flow
+### Admin Product Management
 
-1. Sign in as admin
-2. Open the `Manage` navigation menu
-3. Maintain categories, products, companies, and users
-4. Assign company relationships and roles to users
-5. Review incoming orders
-6. Update order details, set carrier data, process shipments, or cancel/refund orders
+![Admin product management](docs/screenshots/admin-products.png)
 
-## Current Limitations
+### Admin Create or Edit Flow
 
-This project is intentionally demo-oriented. A production hardening pass would still include:
+![Admin upsert flow](docs/screenshots/admin-upsert.png)
 
-- moving all secrets out of tracked configuration
-- adding automated test coverage
-- improving validation and error handling across flows
-- replacing the no-op email sender with a real provider
-- adding deployment-specific configuration and health monitoring
-- documenting screenshots, recorded walkthroughs, and hosted demo links
+_All screenshot paths above are placeholders until the final portfolio image set is committed._
 
-## Build Status
+## Running Locally
 
-The project currently builds successfully with:
+### Prerequisites
+
+- .NET 8 SDK
+- SQL Server or SQL Server LocalDB
+
+### Setup
+
+1. Clone the repository.
+2. Open the solution at `Demo.Main/Demo.sln`.
+3. Configure a valid SQL Server connection string in `Demo.Main/appsettings.json` under `ConnectionStrings:DefaultConnection`, or provide it through the `ConnectionStrings__DefaultConnection` environment variable.
+4. Configure Stripe test keys under the `Stripe` section in `Demo.Main/appsettings.json`. For a cleaner local setup, move these into user secrets or environment variables.
+5. Apply migrations:
 
 ```powershell
-dotnet build Demo.Main\Demo.csproj
+dotnet ef database update --project Demo.DataAccess --startup-project Demo.Main
 ```
 
-There are existing compiler warnings in the solution, primarily around nullable reference types and a few legacy migration naming issues, but the application builds and runs.
+6. Run the web app:
 
-## License
+```powershell
+dotnet run --project Demo.Main
+```
 
-No license file is currently included in the repository. Add one before public distribution if you want to define reuse terms explicitly.
+The app applies pending migrations on startup and runs database initialization that creates roles and a default admin account if they do not already exist.
+
+## Demo Notes
+
+- The catalog, categories, companies, product images, roles, and an initial admin user are seeded for local demo use.
+- Stripe is wired for test-mode checkout and should be exercised with test credentials only.
+- Identity email sending is stubbed with a no-op `IEmailSender` implementation, so email-dependent flows are not configured for real delivery in this demo.
+
+## Future Improvements
+
+- Add automated test coverage around storefront, checkout, and admin workflows
+- Expand catalog filtering and search capabilities
+- Publish a hosted demo environment and finalized screenshot set
