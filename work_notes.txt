@@ -10,30 +10,32 @@ Main checklist to publish
 7. Take the azure service off, but keep it hooked on
 
 Work points: Website
-    - Categories are hard coded in the main page
+    - Product models have artifacts from initial project
     - Stripe has issues getting to order confirmation
-    - Register screen updates field, but not company label
-    - Change images to have a dedicated update button
-    - Have duplicate image detection as well
+    - Remove committed in keys (stripe and others) and move them to an ignored file
 
 Portfolio Prep Stage
-    - Cleanup project for remaining issues
+    - Create personal notes file and save outside of the main folder
     - Prepare dossier to share with PO for edits
-    - Remove temp files and notes before mergint with prod
+    - Remove temp files and notes before merging with prod
     - Do UI pass through based off PO's notes
     - Rename repository prior to sharing
-    - Removed unused css and js
-    - Cleanup educational comments
-    - Create personal notes file and save outside of the main folder
-    - Remove committed in keys (stripe and others) and move them to an ignored file
     - Generate professional tier README for repo
+
+Media generation
     - Record all screens in screenshots
     - Record flow in video format
     - Prepare SNS post draft with video attachment
     - Integrate to CV as a big project
-    - Product models have artifacts from initial project
 
 Done
+    - Cleanup educational comments
+    - Removed unused css and js
+    - Cleanup project for remaining issues
+    - Have duplicate image detection as well
+    - Change images to have a dedicated update button
+    - Register screen updates field, but not company label
+    - Categories are hard coded in the main page
     - Seed new products into file
     - Define project to seed new items to DB
     - Develop Company pages to perform CRUD model
