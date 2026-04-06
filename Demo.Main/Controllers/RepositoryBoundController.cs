@@ -43,7 +43,7 @@ namespace Demo.Main.Controllers
         {
             action(obj);
             unitOfWork.Save();
-            this.AddOperationFeedback(feedback, objName: DefaultFeedbackName);
+            this.AddSuccessFeedback(feedback, objName: DefaultFeedbackName);
             return redirectionArgs != null ? RedirectToAction(redirection, redirectionArgs) : RedirectToAction(redirection);
         }
 

@@ -220,7 +220,7 @@ namespace Demo.Main.Areas.Identity.Pages.Account
                     {
                         if(User.IsInRole(SD.ROLE_USER_ADMIN))
                         {
-                            ControllerUtility.AddOperationFeedback(TempData, "created", objName: "New User");
+                            ControllerUtility.AddSuccessFeedback(TempData, "created", objName: "New User");
                         }
                         else
                         {

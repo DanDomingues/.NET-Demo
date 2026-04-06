@@ -96,7 +96,7 @@ namespace Demo.Main.Areas.Customer.Controllers
             header.Carrier = vm.Header.Carrier ?? header.Carrier;
             header.OrderStatus = SD.ORDER_STATUS_PROCESSING;
             header.TrackingNumber = Guid.NewGuid().ToString();
-            this.AddOperationFeedback("Order Details Changed Sucessfully");
+            this.AddSuccessFeedback("Order Details Changed Sucessfully");
             unitOfWork.Save();         
 
             return UpdateRepo(

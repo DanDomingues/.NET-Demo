@@ -8,17 +8,34 @@ namespace Demo.Utility
         public static void AddOperationFeedback(
             this ITempDataDictionary tempData,
             string actionName,
-            string? objName = "Object")
+            string? objName = "Object",
+            string feedbackKey = "success")
         {
-            tempData["success"] = $"{objName} {actionName} successfully";
+            tempData[feedbackKey] = $"{objName} {actionName}";
         }
 
-        public static void AddOperationFeedback(
+        public static void AddSuccessFeedback(
+            this ITempDataDictionary tempData,
+            string actionName,
+            string? objName = "Object")
+        {
+            AddOperationFeedback(tempData, $"{actionName} successfuly", objName: objName, feedbackKey: "success");
+        }
+
+        public static void AddSuccessFeedback(
             this Controller controller,
             string actionName,
             string? objName = "Object")
         {
-            AddOperationFeedback(controller.TempData, actionName, objName: objName);
+            AddSuccessFeedback(controller.TempData, actionName, objName: objName);
+        }
+
+        public static void AddErrorFeedback(
+            this Controller controller,
+            string actionName,
+            string? objName = "Object")
+        {
+            AddOperationFeedback(controller.TempData, actionName, objName: objName, feedbackKey: "error");
         }
 
         public static IActionResult RedirectToLogin(this Controller controller)
