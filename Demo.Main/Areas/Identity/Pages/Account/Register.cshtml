@@ -3,6 +3,23 @@
 @using Demo.Utility
 @{
     var isAdminPortal = User.IsInRole(SD.ROLE_USER_ADMIN);
+    var sectionClass = isAdminPortal ? "admin-section admin-auth-section" : "northstar-section northstar-auth-section";
+    var shellInnerClass = isAdminPortal ? "admin-shell-inner" : "northstar-shell-inner";
+    var authCardClass = isAdminPortal ? "admin-auth-card" : "northstar-auth-card";
+    var authIntroClass = isAdminPortal ? "admin-auth-intro" : "northstar-auth-intro";
+    var eyebrowClass = isAdminPortal ? "admin-eyebrow" : "northstar-eyebrow";
+    var eyebrowText = isAdminPortal ? "User Administration" : "Northstar Supply";
+    var headingText = isAdminPortal ? "Create user account" : "Create your account";
+    var subtitleClass = isAdminPortal ? "admin-orders-subtitle" : "northstar-auth-copy";
+    var subtitleText = isAdminPortal
+        ? "Provision a new account with role and company assignment using the existing registration flow."
+        : "Set up your Northstar account to shop, order, and manage your details.";
+    var formClass = isAdminPortal ? "admin-auth-form" : "northstar-auth-form northstar-auth-form-wide";
+    var fieldGridClass = isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid";
+    var fieldBlockClass = isAdminPortal ? "admin-field-block" : "northstar-summary-field";
+    var labelClass = isAdminPortal ? "" : "northstar-auth-label";
+    var inputClass = isAdminPortal ? "admin-input" : "northstar-input";
+    var submitButtonClass = isAdminPortal ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn";
 
     ViewData["Title"] = "Register";
     ViewData["BrandName"] = isAdminPortal ? "Northstar Ops" : "Northstar Supply";
@@ -13,93 +30,91 @@
     ViewData["FooterClass"] = isAdminPortal ? "admin-footer" : "northstar-footer";
 }
 
-<section class="@(isAdminPortal ? "admin-section admin-auth-section" : "northstar-section northstar-auth-section")">
-    <div class="@(isAdminPortal ? "admin-shell-inner" : "northstar-shell-inner")">
-        <div class="@(isAdminPortal ? "admin-auth-card" : "northstar-auth-card")">
-            <div class="@(isAdminPortal ? "admin-auth-intro" : "northstar-auth-intro")">
-                <p class="@(isAdminPortal ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminPortal ? "User Administration" : "Northstar Supply")</p>
-                <h1>@(isAdminPortal ? "Create user account" : "Create your account")</h1>
-                <p class="@(isAdminPortal ? "admin-orders-subtitle" : "northstar-auth-copy")">
-                    @(isAdminPortal
-                        ? "Provision a new account with role and company assignment using the existing registration flow."
-                        : "Set up your Northstar account to shop, order, and manage your details.")
+<section class="@sectionClass">
+    <div class="@shellInnerClass">
+        <div class="@authCardClass">
+            <div class="@authIntroClass">
+                <p class="@eyebrowClass">@eyebrowText</p>
+                <h1>@headingText</h1>
+                <p class="@subtitleClass">
+                    @subtitleText
                 </p>
             </div>
 
-            <form id="registerForm" class="@(isAdminPortal ? "admin-auth-form" : "northstar-auth-form northstar-auth-form-wide")" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <form id="registerForm" class="@formClass" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-                <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                    <label asp-for="Input.Email" class="@(isAdminPortal ? "" : "northstar-auth-label")">Email</label>
-                    <input asp-for="Input.Email" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <div class="@fieldBlockClass">
+                    <label asp-for="Input.Email" class="@labelClass">Email</label>
+                    <input asp-for="Input.Email" class="form-control @inputClass" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
 
-                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.Password" class="@(isAdminPortal ? "" : "northstar-auth-label")">Password</label>
-                        <input asp-for="Input.Password" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                <div class="@fieldGridClass">
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.Password" class="@labelClass">Password</label>
+                        <input asp-for="Input.Password" class="form-control @inputClass" autocomplete="new-password" aria-required="true" placeholder="Password" />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.ConfirmPassword" class="@(isAdminPortal ? "" : "northstar-auth-label")">Confirm Password</label>
-                        <input asp-for="Input.ConfirmPassword" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.ConfirmPassword" class="@labelClass">Confirm Password</label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control @inputClass" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.FirstName" class="@(isAdminPortal ? "" : "northstar-auth-label")">First Name</label>
-                        <input asp-for="Input.FirstName" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
+                <div class="@fieldGridClass">
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.FirstName" class="@labelClass">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control @inputClass" aria-required="true" />
                     </div>
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.LastName" class="@(isAdminPortal ? "" : "northstar-auth-label")">Last Name</label>
-                        <input asp-for="Input.LastName" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
-                    </div>
-                </div>
-
-                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.City" class="@(isAdminPortal ? "" : "northstar-auth-label")">City</label>
-                        <input asp-for="Input.City" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
-                    </div>
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.State" class="@(isAdminPortal ? "" : "northstar-auth-label")">State</label>
-                        <input asp-for="Input.State" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.LastName" class="@labelClass">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control @inputClass" aria-required="true" />
                     </div>
                 </div>
 
-                <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.PostalCode" class="@(isAdminPortal ? "" : "northstar-auth-label")">Postal Code</label>
-                        <input asp-for="Input.PostalCode" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
+                <div class="@fieldGridClass">
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.City" class="@labelClass">City</label>
+                        <input asp-for="Input.City" class="form-control @inputClass" aria-required="true" />
                     </div>
-                    <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                        <label asp-for="Input.PhoneNumber" class="@(isAdminPortal ? "" : "northstar-auth-label")">Phone Number</label>
-                        <input asp-for="Input.PhoneNumber" class="form-control @(isAdminPortal ? "admin-input" : "northstar-input")" aria-required="true" />
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.State" class="@labelClass">State</label>
+                        <input asp-for="Input.State" class="form-control @inputClass" aria-required="true" />
+                    </div>
+                </div>
+
+                <div class="@fieldGridClass">
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.PostalCode" class="@labelClass">Postal Code</label>
+                        <input asp-for="Input.PostalCode" class="form-control @inputClass" aria-required="true" />
+                    </div>
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.PhoneNumber" class="@labelClass">Phone Number</label>
+                        <input asp-for="Input.PhoneNumber" class="form-control @inputClass" aria-required="true" />
                     </div>
                 </div>
 
                 @if(!Defines.ROLE_SELECTION_LOCK_ACTIVE || User.IsInRole(SD.ROLE_USER_ADMIN))
                 {
-                    <div class="@(isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid")">
-                        <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                            <label asp-for="Input.Role" class="@(isAdminPortal ? "" : "northstar-auth-label")">Role</label>
-                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select @(isAdminPortal ? "admin-input" : "northstar-input")">
+                    <div class="@fieldGridClass">
+                        <div class="@fieldBlockClass">
+                            <label asp-for="Input.Role" class="@labelClass">Role</label>
+                            <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select @inputClass">
                                 <option disabled selected>-Select Role-</option>
                             </select>
                         </div>
-                        <div class="@(isAdminPortal ? "admin-field-block" : "northstar-summary-field")">
-                            <label asp-for="Input.CompanyId" class="@(isAdminPortal ? "" : "northstar-auth-label")">Company</label>
-                            <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select @(isAdminPortal ? "admin-input" : "northstar-input")" style="display:none">
+                        <div class="@fieldBlockClass" id="CompanyIdInput" style="display:none">
+                            <label asp-for="Input.CompanyId" class="@labelClass">Company</label>
+                            <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select @inputClass">
                                 <option disabled selected>-Select Company-</option>
                             </select>
                         </div>
                     </div>
                 }
 
-                <button id="registerSubmit" type="submit" class="@(isAdminPortal ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn")">Register</button>
+                <button id="registerSubmit" type="submit" class="@submitButtonClass">Register</button>
             </form>
         </div>
     </div>
@@ -108,15 +123,13 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        $(document).ready(function(){
-            $('#Input_Role').change(function(){
-                var selection = $('#Input_Role Option:Selected').text();
-                if(selection == 'Company' || selection == 'Employee'){
-                    $('#Input_CompanyId').show();
-                }
-                else{
-                    $('#Input_CompanyId').hide();
-                }
+        $(document).ready(function()
+        {
+            $('#Input_Role').change(function()
+            {
+                const selection = $('#Input_Role Option:Selected').text();
+                const shouldShowCompany = selection === 'Company' || selection === 'Employee';
+                $('#CompanyIdInput').toggle(shouldShowCompany);
             })
         })
     </script>
