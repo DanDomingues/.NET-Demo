@@ -23,11 +23,8 @@ namespace Demo.Models
         [Required, Display(Name = "Regular price"), Range(1, 1000)]
         public double Price { get; set; }
 
-        [Required, Display(Name = "Price for 50+"), Range(1, 1000)]
-        public double Price50 { get; set; }
-
-        [Required, Display(Name = "Price for 100+"), Range(1, 1000)]
-        public double Price100 { get; set; }
+        [Required, Range(1, 1000)]
+        public double DiscountPrice { get; set; }
         
         [Required] public int CategoryId { get; set; }
         

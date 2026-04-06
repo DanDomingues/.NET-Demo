@@ -11,8 +11,7 @@ function loadDataTable() {
             { data: 'title' },
             { data: 'isbn' },
             { data: 'price' },
-            { data: 'price50' },
-            { data: 'price100' },
+            { data: 'discountedPrice' },
             { data: 'author' },
             { data: 'category.name' },
             {

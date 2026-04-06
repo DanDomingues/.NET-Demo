@@ -60,7 +60,7 @@
 
                         <div class="northstar-detail-price-block">
                             <div class="northstar-detail-price-row">
-                                <span class="northstar-detail-price">@Model.Product.Price100.FormatAsUSD()</span>
+                                <span class="northstar-detail-price">@Model.Product.DiscountPrice.FormatAsUSD()</span>
                                 <span class="northstar-detail-price-caption">Discounted price</span>
                             </div>
                             <p class="northstar-detail-full-price">Full price <span>@Model.Product.Price.FormatAsUSD()</span></p>
@@ -88,7 +88,7 @@
                                 <p class="northstar-detail-summary-label">Order summary</p>
                                 <div class="northstar-detail-summary-row">
                                     <span>Discounted price</span>
-                                    <strong>@Model.Product.Price100.FormatAsUSD()</strong>
+                                    <strong>@Model.Product.DiscountPrice.FormatAsUSD()</strong>
                                 </div>
                                 <div class="northstar-detail-summary-row northstar-detail-summary-muted">
                                     <span>Full price</span>

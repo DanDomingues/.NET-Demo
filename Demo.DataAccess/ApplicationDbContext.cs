@@ -46,7 +46,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-WS-001",
                     Description = "Elevated aluminum monitor stand designed to create a cleaner desk setup and improve everyday screen ergonomics.",
                     Price = 89,
-                    Price100 = 79,
+                    DiscountPrice = 79,
                     CategoryId = 1,
                 },
                 new Product
@@ -57,7 +57,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-WS-002",
                     Description = "Minimal LED desk lamp with an adjustable neck and warm ambient lighting for focused work sessions.",
                     Price = 79,
-                    Price100 = 69,
+                    DiscountPrice = 69,
                     CategoryId = 1,
                 },
                 new Product
@@ -68,7 +68,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-WS-003",
                     Description = "Soft-touch desk mat that anchors keyboards, mice, and notebooks while adding a refined layer to the workspace.",
                     Price = 35,
-                    Price100 = 29,
+                    DiscountPrice = 29,
                     CategoryId = 1,
                 },
                 new Product
@@ -79,7 +79,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-WS-004",
                     Description = "Foldable laptop riser built for better posture, cleaner airflow, and flexible work-from-home setups.",
                     Price = 59,
-                    Price100 = 52,
+                    DiscountPrice = 52,
                     CategoryId = 1,
                 },
                 new Product
@@ -90,7 +90,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TA-001",
                     Description = "Slim wireless keyboard with a clean layout and quiet typing feel, designed for modern desk setups.",
                     Price = 99,
-                    Price100 = 89,
+                    DiscountPrice = 89,
                     CategoryId = 2,
                 },
                 new Product
@@ -101,7 +101,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TA-002",
                     Description = "Compact wireless mouse with an ergonomic silhouette and smooth tracking for daily productivity.",
                     Price = 49,
-                    Price100 = 43,
+                    DiscountPrice = 43,
                     CategoryId = 2,
                 },
                 new Product
@@ -112,7 +112,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TA-003",
                     Description = "Multi-port USB-C hub that expands laptop connectivity with a sleek footprint for travel or desk use.",
                     Price = 69,
-                    Price100 = 61,
+                    DiscountPrice = 61,
                     CategoryId = 2,
                 },
                 new Product
@@ -123,7 +123,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TA-004",
                     Description = "Streamlined charging station for phones, earbuds, and accessories, built to reduce cable clutter.",
                     Price = 79,
-                    Price100 = 69,
+                    DiscountPrice = 69,
                     CategoryId = 2,
                 },
                 new Product
@@ -134,7 +134,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-OR-001",
                     Description = "Set of collapsible storage boxes that helps keep shelves, closets, and work areas visually organized.",
                     Price = 39,
-                    Price100 = 33,
+                    DiscountPrice = 33,
                     CategoryId = 3,
                 },
                 new Product
@@ -145,7 +145,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-OR-002",
                     Description = "Modular drawer organizer designed for office supplies, personal accessories, and small everyday items.",
                     Price = 29,
-                    Price100 = 25,
+                    DiscountPrice = 25,
                     CategoryId = 3,
                 },
                 new Product
@@ -156,7 +156,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-OR-003",
                     Description = "Layered document tray with a clean silhouette for sorting paperwork, notebooks, and incoming mail.",
                     Price = 34,
-                    Price100 = 28,
+                    DiscountPrice = 28,
                     CategoryId = 3,
                 },
                 new Product
@@ -167,7 +167,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-OR-004",
                     Description = "Simple wall-mounted hook rack for entryways, offices, and utility spaces that need practical storage.",
                     Price = 32,
-                    Price100 = 26,
+                    DiscountPrice = 26,
                     CategoryId = 3,
                 },
                 new Product
@@ -178,7 +178,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TR-001",
                     Description = "Daily carry backpack with a streamlined profile, laptop compartment, and versatile storage for commuting.",
                     Price = 129,
-                    Price100 = 115,
+                    DiscountPrice = 115,
                     CategoryId = 4,
                 },
                 new Product
@@ -189,7 +189,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TR-002",
                     Description = "Protective laptop sleeve with a minimalist exterior and soft inner lining for daily transport.",
                     Price = 45,
-                    Price100 = 39,
+                    DiscountPrice = 39,
                     CategoryId = 4,
                 },
                 new Product
@@ -200,7 +200,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TR-003",
                     Description = "Compact organizer pouch for chargers, passports, toiletries, and other travel essentials.",
                     Price = 28,
-                    Price100 = 24,
+                    DiscountPrice = 24,
                     CategoryId = 4,
                 },
                 new Product
@@ -211,7 +211,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-TR-004",
                     Description = "Insulated stainless steel bottle that keeps drinks at the right temperature through commutes and day trips.",
                     Price = 33,
-                    Price100 = 27,
+                    DiscountPrice = 27,
                     CategoryId = 4,
                 },
                 new Product
@@ -222,7 +222,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-HE-001",
                     Description = "Soft ambient table lamp created to bring warmth and calm lighting into bedrooms, living rooms, and reading corners.",
                     Price = 74,
-                    Price100 = 64,
+                    DiscountPrice = 64,
                     CategoryId = 5,
                 },
                 new Product
@@ -233,7 +233,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-HE-002",
                     Description = "Everyday catch-all tray for keys, wallets, candles, and small essentials that tend to gather around the home.",
                     Price = 26,
-                    Price100 = 22,
+                    DiscountPrice = 22,
                     CategoryId = 5,
                 },
                 new Product
@@ -244,7 +244,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-HE-003",
                     Description = "Textured throw blanket designed to add warmth, softness, and a lived-in feel to sofas and beds.",
                     Price = 49,
-                    Price100 = 43,
+                    DiscountPrice = 43,
                     CategoryId = 5,
                 },
                 new Product
@@ -255,7 +255,7 @@ namespace Demo.DataAccess
                     ISBN = "NSS-HE-004",
                     Description = "Subtle reed diffuser with a clean vessel and balanced fragrance profile for calm interior spaces.",
                     Price = 31,
-                    Price100 = 26,
+                    DiscountPrice = 26,
                     CategoryId = 5,
                 }
             );
