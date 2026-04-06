@@ -39,8 +39,7 @@ namespace Demo.DataAccess
             
             Response.Headers.Append("Location", session.Url);
 
-            //We update the session id so that it can be found on confirmation validation
-            //As the payment is still to be made, there's no value or need to update it yet
+            // Persist the checkout session ID so the order can be reconciled after Stripe redirects back.
             unitOfWork.OrderHeaderRepository.UpdateSessionID(dto.headerId, session.Id);
             unitOfWork.Save();
             

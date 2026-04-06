@@ -35,7 +35,7 @@ namespace Demo.Main.Areas.Customer.Controllers
                 ApplicationUserId = userId,
                 OrderTotal = cartItems.Sum(e => e.TotalCost),
 
-                //Details fetching, can be overwritten later on
+                // Pre-fill checkout fields from the current user profile.
                 FirstName = appUser.FirstName ?? string.Empty,
                 LastName = appUser.LastName ?? string.Empty,
                 PhoneNumber = appUser.PhoneNumber ?? string.Empty,
@@ -45,7 +45,7 @@ namespace Demo.Main.Areas.Customer.Controllers
                 PostalCode = appUser.PostalCode ?? string.Empty,
             };
 
-            //NOTE: By adding a header to the DB, the id gets automatically assigned
+            // Save early so the order header has an ID before checkout continues.
             unitOfWork.OrderHeaderRepository.Add(header);
             unitOfWork.Save();
 
@@ -127,21 +127,19 @@ namespace Demo.Main.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult Summary(ShoppingCartVM vm)
         {
-            //View model received back from html cannot retain objects and structs, so re-fetching products and the user is necessary
-            //Luckly, all the editable properties are strings that come filled in the vm
+            // Rehydrate related data that is not preserved by form posting.
             vm.ProductList = Repo.GetAll(
                 e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
                 includeProperties: DefaultIncludeProperties);
 
-            //Header.ApplicationUser is bound by the matching KF, so we can't submit it with a value
-            //Alternatively, we can fetch and store the user in a local field and use it while we haven't added this header to it's repo yet
+            // Load the user separately because the navigation property is not posted back with the form.
             var appUser = unitOfWork.ApplicationUserRepository
                 .GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
 
-            //Order total needs to be recalculated as the products may have been changed in the view
+            // Recalculate totals from the current product data.
             vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
 
-            //For companies, we want to pre-approve the payment and proceed with the order, for users, payment preceeds order approval
+            // Company accounts are approved for delayed payment; other users must complete checkout first.
             var isCompanyUser = appUser.CompanyId.GetValueOrDefault() > 0;
             vm.OrderHeader.PaymentStatus = isCompanyUser ? SD.PAYMENT_STATUS_DELAYED : SD.PAYMENT_STATUS_PENDING;
             vm.OrderHeader.OrderStatus = isCompanyUser ? SD.ORDER_STATUS_APPROVED : SD.ORDER_STATUS_PENDING;

@@ -55,20 +55,20 @@ namespace Demo.Main.Areas.Admin.Controllers
         [HttpPost] 
         public IActionResult ManageRole(ManageRoleVM vm)
         {   
-            //First we retrieve the user from DB to compare and update   
+            // Load the persisted user so role and company changes are applied to the tracked entity.
             var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
 
-            //Then fetch role data and IDs from managers
+            // Resolve the current role before replacing it.
             var prevRoleName = um.GetRolesAsync(userFromDb).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;
 
-            //Finally the role is updated
+            // Replace the existing role assignment with the selected one.
             if(!string.IsNullOrEmpty(prevRoleName))
             {
                 um.RemoveFromRoleAsync(userFromDb, prevRoleName).GetAwaiter().GetResult();
             }
             um.AddToRoleAsync(userFromDb, vm.User.Role).GetAwaiter().GetResult();
 
-            //And if needed, a company is assigned/unassigned
+            // Company-backed roles require a company reference; other roles should not keep one.
             if(vm.User.Role.EqualsAny(SD.ROLE_USER_COMPANY, SD.ROLE_USER_EMPLOYEE))
             {
                 userFromDb.CompanyId = vm.User.CompanyId;                

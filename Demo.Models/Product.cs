@@ -35,8 +35,6 @@ namespace Demo.Models
         public Category Category { get; set; }
         
         [ValidateNever] public List<ProductImage> Images { get; set; }
-        //public string? ImageUrl {  get; set; }
-
         public bool ImagesAreValid => Images != null && Images.Count > 0;
         public string ThumbnailUrl => Images?.OrderBy(i => i.DisplayOrder)?.FirstOrDefault()?.Url ?? "https://placehold.co/500x600/png";
     }

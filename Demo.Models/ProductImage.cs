@@ -8,11 +8,9 @@ namespace Demo.Models
         [Required] public string Url { get; set; }
         public int DisplayOrder { get; set; } = 0;
 
-        //External
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
 
-        //Keys
         public int ProductId { get; set; }
     }
 }

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Demo.Utility
 {
-    //Placeholder for email sender, expected by Identity, but currently not implemented
+    // Implementation required by ASP.NET Core Identity.
+    // Email delivery is intentionally disabled for this sample application.
     public class EmailSender : IEmailSender
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)

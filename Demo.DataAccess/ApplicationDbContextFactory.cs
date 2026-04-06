@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Demo.DataAccess;
 
-//Stock class to allow for DB operations through a separate project
+// Enables EF Core design-time commands when the startup project differs from the DbContext project.
 public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     public ApplicationDbContext CreateDbContext(string[] args)

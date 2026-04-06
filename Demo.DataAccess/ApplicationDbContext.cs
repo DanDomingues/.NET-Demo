@@ -15,9 +15,8 @@ namespace Demo.DataAccess
         public DbSet<OrderItemDetails> OrderItems { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
 
-        // Seeds content
-        // DBInitializer seeds roles and the initial admin account
-        // This is more about products, companies and categories
+        // Seed catalog and company data here.
+        // Roles and the initial admin account are created by DbInitializer.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
