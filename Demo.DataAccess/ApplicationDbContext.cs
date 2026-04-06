@@ -260,6 +260,80 @@ namespace Demo.DataAccess
                     CategoryId = 5,
                 }
             );
+
+            modelBuilder.Entity<ProductImage>().HasData(
+                new ProductImage { Id = 1, ProductId = 1, DisplayOrder = 0, Url = @"\images\products\arc_monitor_stand\arc_monitor_stand_01.png" },
+                new ProductImage { Id = 2, ProductId = 1, DisplayOrder = 1, Url = @"\images\products\arc_monitor_stand\arc_monitor_stand_02.png" },
+                new ProductImage { Id = 3, ProductId = 1, DisplayOrder = 2, Url = @"\images\products\arc_monitor_stand\arc_monitor_stand_03.png" },
+                new ProductImage { Id = 4, ProductId = 1, DisplayOrder = 3, Url = @"\images\products\arc_monitor_stand\arc_monitor_stand_04.png" },
+
+                new ProductImage { Id = 5, ProductId = 2, DisplayOrder = 0, Url = @"\images\products\ridge_desk_lamp\ridge_desk_lamp_01.png" },
+                new ProductImage { Id = 6, ProductId = 2, DisplayOrder = 1, Url = @"\images\products\ridge_desk_lamp\ridge_desk_lamp_02.png" },
+                new ProductImage { Id = 7, ProductId = 2, DisplayOrder = 2, Url = @"\images\products\ridge_desk_lamp\ridge_desk_lamp_03.png" },
+                new ProductImage { Id = 8, ProductId = 2, DisplayOrder = 3, Url = @"\images\products\ridge_desk_lamp\ridge_desk_lamp_04.png" },
+
+                new ProductImage { Id = 9, ProductId = 3, DisplayOrder = 0, Url = @"\images\products\atlas_desk_mat\atlas_desk_mat_01.png" },
+                new ProductImage { Id = 10, ProductId = 3, DisplayOrder = 1, Url = @"\images\products\atlas_desk_mat\atlas_desk_mat_02.png" },
+
+                new ProductImage { Id = 11, ProductId = 4, DisplayOrder = 0, Url = @"\images\products\pivot_laptop_riser\pivot_laptop_riser_01.png" },
+                new ProductImage { Id = 12, ProductId = 4, DisplayOrder = 1, Url = @"\images\products\pivot_laptop_riser\pivot_laptop_riser_02.png" },
+
+                new ProductImage { Id = 13, ProductId = 5, DisplayOrder = 0, Url = @"\images\products\harbor_wireless_keyboard\harbor_wireless_keyboard_01.png" },
+                new ProductImage { Id = 14, ProductId = 5, DisplayOrder = 1, Url = @"\images\products\harbor_wireless_keyboard\harbor_wireless_keyboard_02.png" },
+                new ProductImage { Id = 15, ProductId = 5, DisplayOrder = 2, Url = @"\images\products\harbor_wireless_keyboard\harbor_wireless_keyboard_03.png" },
+                new ProductImage { Id = 16, ProductId = 5, DisplayOrder = 3, Url = @"\images\products\harbor_wireless_keyboard\harbor_wireless_keyboard_04.png" },
+
+                new ProductImage { Id = 17, ProductId = 6, DisplayOrder = 0, Url = @"\images\products\harbor_wireless_mouse\harbor_wireless_mouse_01.png" },
+                new ProductImage { Id = 18, ProductId = 6, DisplayOrder = 1, Url = @"\images\products\harbor_wireless_mouse\harbor_wireless_mouse_02.png" },
+
+                new ProductImage { Id = 19, ProductId = 7, DisplayOrder = 0, Url = @"\images\products\signal_usb_c_hub\signal_usb_c_hub_01.png" },
+                new ProductImage { Id = 20, ProductId = 7, DisplayOrder = 1, Url = @"\images\products\signal_usb_c_hub\signal_usb_c_hub_02.png" },
+
+                new ProductImage { Id = 21, ProductId = 8, DisplayOrder = 0, Url = @"\images\products\dockline_charging_station\dockline_charging_station_01.png" },
+                new ProductImage { Id = 22, ProductId = 8, DisplayOrder = 1, Url = @"\images\products\dockline_charging_station\dockline_charging_station_02.png" },
+
+                new ProductImage { Id = 23, ProductId = 9, DisplayOrder = 0, Url = @"\images\products\fold_storage_box_set\fold_storage_box_set_01.png" },
+                new ProductImage { Id = 24, ProductId = 9, DisplayOrder = 1, Url = @"\images\products\fold_storage_box_set\fold_storage_box_set_02.png" },
+
+                new ProductImage { Id = 25, ProductId = 10, DisplayOrder = 0, Url = @"\images\products\grid_drawer_organizer\grid_drawer_organizer_01.png" },
+                new ProductImage { Id = 26, ProductId = 10, DisplayOrder = 1, Url = @"\images\products\grid_drawer_organizer\grid_drawer_organizer_02.png" },
+                new ProductImage { Id = 27, ProductId = 10, DisplayOrder = 2, Url = @"\images\products\grid_drawer_organizer\grid_drawer_organizer_03.png" },
+                new ProductImage { Id = 28, ProductId = 10, DisplayOrder = 3, Url = @"\images\products\grid_drawer_organizer\grid_drawer_organizer_04.png" },
+
+                new ProductImage { Id = 29, ProductId = 11, DisplayOrder = 0, Url = @"\images\products\stack_document_tray\stack_document_tray_01.png" },
+                new ProductImage { Id = 30, ProductId = 11, DisplayOrder = 1, Url = @"\images\products\stack_document_tray\stack_document_tray_02.png" },
+
+                new ProductImage { Id = 31, ProductId = 12, DisplayOrder = 0, Url = @"\images\products\rail_wall_hook_rack\rail_wall_hook_rack_01.png" },
+                new ProductImage { Id = 32, ProductId = 12, DisplayOrder = 1, Url = @"\images\products\rail_wall_hook_rack\rail_wall_hook_rack_02.png" },
+
+                new ProductImage { Id = 33, ProductId = 13, DisplayOrder = 0, Url = @"\images\products\transit_carry_backpack\transit_carry_backpack_01.png" },
+                new ProductImage { Id = 34, ProductId = 13, DisplayOrder = 1, Url = @"\images\products\transit_carry_backpack\transit_carry_backpack_02.png" },
+                new ProductImage { Id = 35, ProductId = 13, DisplayOrder = 2, Url = @"\images\products\transit_carry_backpack\transit_carry_backpack_03.png" },
+                new ProductImage { Id = 36, ProductId = 13, DisplayOrder = 3, Url = @"\images\products\transit_carry_backpack\transit_carry_backpack_04.png" },
+
+                new ProductImage { Id = 37, ProductId = 14, DisplayOrder = 0, Url = @"\images\products\harbor_laptop_sleeve\harbor_laptop_sleeve_01.png" },
+                new ProductImage { Id = 38, ProductId = 14, DisplayOrder = 1, Url = @"\images\products\harbor_laptop_sleeve\harbor_laptop_sleeve_02.png" },
+
+                new ProductImage { Id = 39, ProductId = 15, DisplayOrder = 0, Url = @"\images\products\roam_travel_pouch\roam_travel_pouch_01.png" },
+                new ProductImage { Id = 40, ProductId = 15, DisplayOrder = 1, Url = @"\images\products\roam_travel_pouch\roam_travel_pouch_02.png" },
+
+                new ProductImage { Id = 41, ProductId = 16, DisplayOrder = 0, Url = @"\images\products\summit_insulated_bottle\summit_insulated_bottle_01.png" },
+                new ProductImage { Id = 42, ProductId = 16, DisplayOrder = 1, Url = @"\images\products\summit_insulated_bottle\summit_insulated_bottle_02.png" },
+
+                new ProductImage { Id = 43, ProductId = 17, DisplayOrder = 0, Url = @"\images\products\vale_ambient_lamp\vale_ambient_lamp_01.png" },
+                new ProductImage { Id = 44, ProductId = 17, DisplayOrder = 1, Url = @"\images\products\vale_ambient_lamp\vale_ambient_lamp_02.png" },
+                new ProductImage { Id = 45, ProductId = 17, DisplayOrder = 2, Url = @"\images\products\vale_ambient_lamp\vale_ambient_lamp_03.png" },
+                new ProductImage { Id = 46, ProductId = 17, DisplayOrder = 3, Url = @"\images\products\vale_ambient_lamp\vale_ambient_lamp_04.png" },
+
+                new ProductImage { Id = 47, ProductId = 18, DisplayOrder = 0, Url = @"\images\products\hearth_utility_tray\hearth_utility_tray_01.png" },
+                new ProductImage { Id = 48, ProductId = 18, DisplayOrder = 1, Url = @"\images\products\hearth_utility_tray\hearth_utility_tray_02.png" },
+
+                new ProductImage { Id = 49, ProductId = 19, DisplayOrder = 0, Url = @"\images\products\drift_throw_blanket\drift_throw_blanket_01.png" },
+                new ProductImage { Id = 50, ProductId = 19, DisplayOrder = 1, Url = @"\images\products\drift_throw_blanket\drift_throw_blanket_02.png" },
+
+                new ProductImage { Id = 51, ProductId = 20, DisplayOrder = 0, Url = @"\images\products\grove_reed_diffuser\grove_reed_diffuser_01.png" },
+                new ProductImage { Id = 52, ProductId = 20, DisplayOrder = 1, Url = @"\images\products\grove_reed_diffuser\grove_reed_diffuser_02.png" }
+            );
         }
     }
 }
