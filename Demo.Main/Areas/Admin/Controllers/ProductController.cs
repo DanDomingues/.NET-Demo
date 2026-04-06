@@ -85,6 +85,25 @@ namespace Demo.Main.Areas.Admin.Controllers
             return Modules["Upsert"].Post(vm.Product);
         }
 
+        [HttpPost]
+        public IActionResult AddImages(ProductVM vm, List<IFormFile>? files)
+        {
+            if (files != null && files.Count > 0)
+            {
+                var imagesFromRepo = unitOfWork.ProductImagesRepository.GetAll(
+                    i => i.ProductId.Equals(vm.Product.Id), 
+                    track: false);
+
+                //For assigning display order, the current images assigned to product must be fetched
+                vm.Product.Images = [.. imagesFromRepo.OrderBy(i => i.DisplayOrder)];
+                AddProductImages(vm.Product, files);
+                unitOfWork.Save();
+                this.AddOperationFeedback("Added Successfully", objName: "Images");            
+            }
+
+            return RedirectToAction(nameof(Upsert), new { id = vm.Product.Id.ToString() });
+        }
+
         private void AddProductImages(Product product, List<IFormFile> files)
         {
             if(!ModelState.IsValid)
@@ -101,6 +120,8 @@ namespace Demo.Main.Areas.Admin.Controllers
                 Directory.CreateDirectory(localDirectoryPath);
             }
             
+            product.Images ??= [];
+
             foreach (var file in files)
             {
                 //var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";       
@@ -110,7 +131,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
-                }          
+                }                    
 
                 var image = new ProductImage
                 {
@@ -119,8 +140,8 @@ namespace Demo.Main.Areas.Admin.Controllers
                     DisplayOrder = product.Images?.Count ?? 0,
                 };
 
-                product.Images ??= [];
-                product.Images.Add(image);
+                //Despite not changing DB status, total image count is used to auto assign image display order
+                product.Images?.Add(image);
                 unitOfWork.ProductImagesRepository.Add(image);
             }
         }
@@ -140,7 +161,7 @@ namespace Demo.Main.Areas.Admin.Controllers
                 unitOfWork.Save();
             }
 
-            this.AddOperationFeedback("Image Deleted Successfully");            
+            this.AddOperationFeedback("Deleted Successfully", objName: "Image");            
             return RedirectToAction(nameof(Upsert), new { id = image?.ProductId });
         }
 

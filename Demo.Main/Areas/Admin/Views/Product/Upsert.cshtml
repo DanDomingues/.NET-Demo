@@ -94,6 +94,10 @@
 
                     <div class="admin-company-form-actions">
                         <button type="submit" class="admin-btn admin-btn-success">@actionLabel product</button>
+                        @if(isEdit)
+                        {
+                            <button type="submit" asp-action="AddImages" formnovalidate class="admin-btn admin-btn-success">Add images</button>
+                        }
                         <a asp-controller="Product" asp-action="Index" class="admin-btn admin-btn-secondary">Cancel</a>
                     </div>
                 </form>
