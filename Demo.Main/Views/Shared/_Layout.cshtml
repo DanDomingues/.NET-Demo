@@ -61,14 +61,11 @@
                         }
                     </ul>
                     <div class="d-flex align-items-center ps-sm-2 ms-sm-2 mt-2 mt-sm-0">
-                        @if(User.Identity?.IsAuthenticated == true)
-                        {
-                            <div class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                    @await Component.InvokeAsync("Cart")
-                                </a>
-                            </div>
-                        }
+                        <div class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                @await Component.InvokeAsync("Cart")
+                            </a>
+                        </div>
                         <partial name="_LoginPartial" />
                     </div>
                 </div>

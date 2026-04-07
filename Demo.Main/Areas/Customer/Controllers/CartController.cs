@@ -64,6 +64,10 @@ namespace Demo.Main.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            if(!User.TryGetId(out var _))
+            {
+                return this.RedirectToLogin();
+            }
             return View(BuildViewModel());
         }
 
