@@ -71,6 +71,14 @@ namespace Demo.Main.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
+            var products = unitOfWork.ProductRepository.GetAll(p => p.CategoryId == id, track: false);
+            
+            if(products.Any())
+            {
+                this.AddErrorFeedback("cannot be removed while there are associated products", "Category");
+                return RedirectToAction(nameof(Index));
+            }
+
             var deleted = Repo.GetById(id, track: false);
             var others = Repo.GetAll(e => e.DisplayOrder > deleted.DisplayOrder, track: false);
 

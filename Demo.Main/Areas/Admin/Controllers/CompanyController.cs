@@ -52,5 +52,18 @@ namespace Demo.Main.Areas.Admin.Controllers
 
             return base.GetAll();
         }
+
+        public override IActionResult DeleteAt(int id)
+        {
+            var employees = unitOfWork.ApplicationUserRepository.GetAll(u => u.CompanyId == id, track: false);
+
+            if(employees.Any())
+            {
+                this.AddErrorFeedback("cannot be removed while there are associated products", "Category");
+                return Json(new { success = false, message = "Error while deleting" });
+            }
+
+            return base.DeleteAt(id);
+        }
     }
 }
