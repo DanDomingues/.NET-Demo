@@ -19,19 +19,19 @@
             <div>
                 <p class="admin-eyebrow">Catalog Management</p>
                 <h1>@actionLabel product</h1>
-                <p class="admin-orders-subtitle">Maintain product content, pricing fields, category placement, and storefront image ordering from a single admin form.</p>
+                <p class="admin-orders-subtitle">Maintain product details alongside storefront media management from a single product dashboard.</p>
             </div>
             <a asp-controller="Product" asp-action="Index" class="admin-btn admin-btn-secondary">Back to list</a>
         </div>
 
         <div class="admin-product-layout">
             <div class="admin-panel admin-product-form-panel">
-                <form method="post" class="admin-product-form" enctype="multipart/form-data">
+                <form id="productUpsertForm" method="post" class="admin-product-form" enctype="multipart/form-data">
                     <input asp-for="Product.Id" hidden />
 
                     <div class="admin-section-head">
-                        <h2>Product record</h2>
-                        <p>All existing model binding and file upload behavior remains unchanged. This view only updates the admin presentation layer.</p>
+                        <h2>Details</h2>
+                        <p>Update the core product record, pricing, and category placement from the primary details workspace.</p>
                     </div>
 
                     <div class="admin-form-grid">
@@ -80,61 +80,87 @@
                                 </select>
                                 <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                             </div>
-                            <div class="admin-field-block">
-                                <label asp-for="Product.Images"></label>
-                                <input type="file" name="files" multiple accept="image/*" class="form-control admin-input" />
-                            </div>
+                            @if (!isEdit)
+                            {
+                                <div class="admin-field-block">
+                                    <label asp-for="Product.Images"></label>
+                                    <input type="file" name="files" multiple accept="image/*" class="form-control admin-input" />
+                                </div>
+                            }
                         </div>
                     </div>
 
                     <div class="admin-company-form-actions">
                         <button type="submit" class="admin-btn admin-btn-success">@actionLabel product</button>
-                        @if(isEdit)
-                        {
-                            <button type="submit" asp-action="AddImages" formnovalidate class="admin-btn admin-btn-success">Add images</button>
-                        }
                         <a asp-controller="Product" asp-action="Index" class="admin-btn admin-btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
 
-            @if (Model.Product.Images != null)
+            @if (isEdit)
             {
-                <aside class="admin-product-images-panel admin-panel">
-                    <div class="admin-section-head">
-                        <h2>Product media</h2>
-                        <p>Review uploaded images and manage display ordering using the existing image actions.</p>
+                <aside class="admin-product-media-stack">
+                    <div class="admin-panel admin-product-images-panel">
+                        <div class="admin-section-head mb-1">
+                            <h2>Add Media</h2>
+                            <p>Upload new product images without leaving the dashboard.</p>
+                        </div>
+
+                        <div class="admin-product-media-toolbar">
+                            <div class="admin-product-upload-field">
+                                <label asp-for="Product.Images">Attachments</label>
+                                <input type="file" name="files" form="productUpsertForm" multiple accept="image/*" class="form-control admin-input" />
+                            </div>
+                            <button type="submit" form="productUpsertForm" asp-action="AddImages" formnovalidate class="admin-btn admin-btn-success">Add images</button>
+                        </div>
                     </div>
 
-                    <div class="admin-product-images-grid">
-                        @foreach (var image in Model.Product.Images)
+                    <div class="admin-panel admin-product-images-panel">
+                        <div class="admin-section-head">
+                            <h2>Manage Media</h2>
+                            <p>Re-order and remove existing product images using the current media actions.</p>
+                        </div>
+
+                        @if (Model.Product.Images != null && Model.Product.Images.Count > 0)
                         {
-                            <article class="admin-product-image-card">
-                                <img src="@image.Url" alt="@Model.Product.Title" class="admin-product-image-preview" />
-                                <div class="admin-product-image-actions">
-                                    <a asp-action="DeleteImage" class="admin-btn admin-btn-danger" asp-route-id="@image.Id" aria-label="Delete image">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
+                            <div class="admin-product-images-grid">
+                                @foreach (var image in Model.Product.Images)
+                                {
+                                    <article class="admin-product-image-card">
+                                        <img src="@image.Url" alt="@Model.Product.Title" class="admin-product-image-preview" />
+                                        <div class="admin-product-image-actions">
+                                            <a asp-action="MoveImageToTop" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
+                                               class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, -1)}")"
+                                               aria-label="Move image to top">
+                                                <i class="bi bi-chevron-double-up"></i>
+                                            </a>
 
-                                    <a asp-action="MoveImageDown" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
-                                       class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, 1)}")"
-                                       aria-label="Move image down">
-                                        <i class="bi bi-arrow-down"></i>
-                                    </a>
+                                            <a asp-action="MoveImageUp" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
+                                               class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, -1)}")"
+                                               aria-label="Move image up">
+                                                <i class="bi bi-arrow-up"></i>
+                                            </a>
 
-                                    <a asp-action="MoveImageUp" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
-                                       class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, -1)}")"
-                                       aria-label="Move image up">
-                                        <i class="bi bi-arrow-up"></i>
-                                    </a>
+                                            <a asp-action="MoveImageDown" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
+                                               class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, 1)}")"
+                                               aria-label="Move image down">
+                                                <i class="bi bi-arrow-down"></i>
+                                            </a>
 
-                                    <a asp-action="MoveImageToTop" asp-route-prodId="@Model.Product.Id" asp-route-imageId="@image.Id"
-                                       class="@($"admin-reorder-btn {ViewUtility.GetNavigationEnabledClass(image, Model.Product.Images, i => i.DisplayOrder, -1)}")"
-                                       aria-label="Move image to top">
-                                        <i class="bi bi-chevron-double-up"></i>
-                                    </a>
-                                </div>
-                            </article>
+                                            <a asp-action="DeleteImage" class="admin-btn admin-btn-danger" asp-route-id="@image.Id" aria-label="Delete image">
+                                                <i class="bi bi-trash3"></i>
+                                            </a>
+                                        </div>
+                                    </article>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="admin-product-empty-state">
+                                <h3>No media yet</h3>
+                                <p>Use the add media card above to upload the first product images, then manage their order here.</p>
+                            </div>
                         }
                     </div>
                 </aside>

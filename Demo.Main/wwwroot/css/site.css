@@ -2477,6 +2477,11 @@ body {
   align-items: start;
 }
 
+.admin-product-media-stack {
+  display: grid;
+  gap: 1rem;
+}
+
 .admin-product-form {
   display: grid;
   gap: 1.25rem;
@@ -2512,6 +2517,43 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0.75rem;
+}
+
+.admin-product-media-toolbar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.admin-product-upload-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-product-upload-field label {
+  color: #647182;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-product-empty-state {
+  padding: 1.25rem;
+  border: 1px dashed #cfd7e3;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.admin-product-empty-state h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.admin-product-empty-state p {
+  margin: 0.55rem 0 0;
+  color: #5c6977;
+  line-height: 1.65;
 }
 
 .admin-product-image-actions .admin-btn {
