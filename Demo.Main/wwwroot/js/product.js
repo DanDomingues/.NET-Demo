@@ -10,8 +10,8 @@ function loadDataTable() {
         "columns":[
             { data: 'title' },
             { data: 'isbn' },
-            { data: 'price' },
-            { data: 'discountPrice' },
+            { data: 'price', render: renderCurrency },
+            { data: 'discountPrice', render: renderCurrency },
             { data: 'author' },
             { data: 'category.name' },
             {
