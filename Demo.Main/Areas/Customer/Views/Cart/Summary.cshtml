@@ -8,8 +8,7 @@
     ViewData["HeaderClass"] = "northstar-header";
     ViewData["FooterClass"] = "northstar-footer";
 
-    var arrivalStart = DateTime.Now.AddDays(7).ToShortDateString();
-    var arrivalEnd = DateTime.Now.AddDays(14).ToShortDateString();
+    var itemCount = Model.ProductList.Count();
 }
 
 <form method="post" class="northstar-summary-form">
@@ -20,75 +19,133 @@
 
     <section class="northstar-section northstar-summary-section">
         <div class="northstar-shell-inner">
-            <div class="northstar-cart-header">
+            <div class="northstar-cart-header northstar-summary-header">
                 <div>
                     <p class="northstar-eyebrow">Northstar Supply</p>
                     <h1>Order summary</h1>
-                    <p class="northstar-cart-subtitle">Confirm delivery details and review your order before continuing to payment.</p>
+                    <p class="northstar-cart-subtitle">Review your order and confirm your delivery details before secure payment.</p>
                 </div>
                 <a asp-action="Index" class="northstar-btn northstar-btn-secondary">Back to cart</a>
             </div>
 
             <div class="northstar-summary-layout">
                 <section class="northstar-summary-details">
+                    <div class="northstar-summary-intro-card">
+                        <div class="northstar-summary-section-head northstar-summary-section-head-compact">
+                            <h2>Final review before payment</h2>
+                            <p>Check your shipping details and order contents here. You&apos;ll complete payment securely in the next step.</p>
+                        </div>
+
+                        <div class="northstar-summary-intro-points" aria-label="Checkout steps">
+                            <article class="northstar-summary-intro-point">
+                                <span class="northstar-summary-intro-step">1</span>
+                                <div>
+                                    <h3>Confirm shipping details</h3>
+                                    <p>We&apos;ll use this information for order updates and delivery handling.</p>
+                                </div>
+                            </article>
+                            <article class="northstar-summary-intro-point">
+                                <span class="northstar-summary-intro-step">2</span>
+                                <div>
+                                    <h3>Review your order</h3>
+                                    <p>@itemCount item@(itemCount == 1 ? "" : "s") ready for checkout.</p>
+                                </div>
+                            </article>
+                            <article class="northstar-summary-intro-point">
+                                <span class="northstar-summary-intro-step">3</span>
+                                <div>
+                                    <h3>Continue to payment</h3>
+                                    <p>You&apos;ll be redirected to the secure payment step after this page.</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
                     <div class="northstar-summary-details-card">
                         <div class="northstar-summary-section-head">
-                            <h2>Delivery details</h2>
-                            <p>We'll use this information for checkout, confirmation, and delivery routing.</p>
+                            <h2>Shipping details</h2>
+                            <p>Enter the details we should use for delivery and order updates.</p>
+                            <p class="northstar-summary-required-note">Required fields are marked with <span aria-hidden="true">*</span>.</p>
                         </div>
 
                         <div class="northstar-summary-fields">
-                            <div class="northstar-summary-field-grid">
-                                <div class="northstar-summary-field">
-                                    <label asp-for="OrderHeader.FirstName"></label>
-                                    <input asp-for="OrderHeader.FirstName" class="form-control northstar-input" />
-                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+                            <div class="northstar-summary-field-group">
+                                <div class="northstar-summary-field-group-head">
+                                    <h3>Contact information</h3>
+                                    <p>Used for order confirmation and delivery updates.</p>
                                 </div>
+
+                                <div class="northstar-summary-field-grid">
+                                    <div class="northstar-summary-field">
+                                        <label asp-for="OrderHeader.FirstName"></label>
+                                        <input asp-for="OrderHeader.FirstName" class="form-control northstar-input" autocomplete="given-name" />
+                                        <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="northstar-summary-field">
+                                        <label asp-for="OrderHeader.LastName"></label>
+                                        <input asp-for="OrderHeader.LastName" class="form-control northstar-input" autocomplete="family-name" />
+                                        <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
                                 <div class="northstar-summary-field">
-                                    <label asp-for="OrderHeader.LastName"></label>
-                                    <input asp-for="OrderHeader.LastName" class="form-control northstar-input" />
-                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+                                    <label asp-for="OrderHeader.PhoneNumber"></label>
+                                    <input asp-for="OrderHeader.PhoneNumber" class="form-control northstar-input" autocomplete="tel" inputmode="tel" placeholder="(555) 123-4567" />
+                                    <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
 
-                            <div class="northstar-summary-field">
-                                <label asp-for="OrderHeader.PhoneNumber"></label>
-                                <input asp-for="OrderHeader.PhoneNumber" class="form-control northstar-input" />
-                                <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
-                            </div>
-
-                            <div class="northstar-summary-field">
-                                <label asp-for="OrderHeader.StreetAddress"></label>
-                                <input asp-for="OrderHeader.StreetAddress" class="form-control northstar-input" />
-                                <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-                            </div>
-
-                            <div class="northstar-summary-field-grid northstar-summary-field-grid-tight">
-                                <div class="northstar-summary-field">
-                                    <label asp-for="OrderHeader.City"></label>
-                                    <input asp-for="OrderHeader.City" class="form-control northstar-input" />
-                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                            <div class="northstar-summary-field-group">
+                                <div class="northstar-summary-field-group-head">
+                                    <h3>Delivery address</h3>
+                                    <p>Enter the address where this order should be delivered.</p>
                                 </div>
+
                                 <div class="northstar-summary-field">
-                                    <label asp-for="OrderHeader.State"></label>
-                                    <input asp-for="OrderHeader.State" class="form-control northstar-input" />
-                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                    <label asp-for="OrderHeader.StreetAddress"></label>
+                                    <input asp-for="OrderHeader.StreetAddress" class="form-control northstar-input" autocomplete="street-address" />
+                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
                                 </div>
-                                <div class="northstar-summary-field">
-                                    <label asp-for="OrderHeader.PostalCode"></label>
-                                    <input asp-for="OrderHeader.PostalCode" class="form-control northstar-input" />
-                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+
+                                <div class="northstar-summary-field-grid northstar-summary-field-grid-tight">
+                                    <div class="northstar-summary-field">
+                                        <label asp-for="OrderHeader.City"></label>
+                                        <input asp-for="OrderHeader.City" class="form-control northstar-input" autocomplete="address-level2" />
+                                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                    </div>
+                                    <div class="northstar-summary-field">
+                                        <label asp-for="OrderHeader.State"></label>
+                                        <input asp-for="OrderHeader.State" class="form-control northstar-input" autocomplete="address-level1" />
+                                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                    </div>
+                                    <div class="northstar-summary-field">
+                                        <label asp-for="OrderHeader.PostalCode"></label>
+                                        <input asp-for="OrderHeader.PostalCode" class="form-control northstar-input" autocomplete="postal-code" inputmode="numeric" placeholder="12345" />
+                                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="northstar-summary-next-step-card">
+                        <div class="northstar-summary-section-head northstar-summary-section-head-compact">
+                            <h2>Payment next step</h2>
+                            <p>Select <strong>Continue to payment</strong> when you&apos;re ready. Your order total is confirmed on the right.</p>
+                        </div>
+
+                        <ul class="northstar-summary-note-list">
+                            <li>We&apos;ll use your details to create the order and hand off to secure payment.</li>
+                            <li>You can still go back to the cart if you need to adjust quantities.</li>
+                        </ul>
                     </div>
                 </section>
 
                 <aside class="northstar-summary-sidebar">
                     <div class="northstar-summary-card">
                         <div class="northstar-summary-section-head">
-                            <h2>Order review</h2>
-                            <p>@Model.ProductList.Count() items ready for checkout.</p>
+                            <h2>Order summary</h2>
+                            <p>@itemCount item@(itemCount == 1 ? "" : "s") in your order.</p>
                         </div>
 
                         <div class="northstar-summary-items">
@@ -108,16 +165,12 @@
                         </div>
 
                         <div class="northstar-summary-total">
-                            <span>Total</span>
+                            <span>Total due</span>
                             <strong>@Model.OrderHeader.OrderTotal.FormatAsUSD()</strong>
                         </div>
 
-                        <div class="northstar-summary-arrival">
-                            <span class="northstar-detail-summary-label">Estimated arrival</span>
-                            <p>@arrivalStart - @arrivalEnd</p>
-                        </div>
-
                         <button type="submit" value="Place Order" class="northstar-btn northstar-btn-primary northstar-submit-btn">Continue to payment</button>
+                        <p class="northstar-summary-cta-note">Secure payment is handled in the next step.</p>
                     </div>
                 </aside>
             </div>
