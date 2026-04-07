@@ -4,7 +4,7 @@
 @{
     var isAdminPortal = User.IsInRole(SD.ROLE_USER_ADMIN);
 
-    var title = isAdminPortal ? "Create your account" : "Create your account";
+    var title = isAdminPortal ? "Create user" : "Create your account";
     var buttonLabel = isAdminPortal ? "Create user" : "Create your account";
     var description = isAdminPortal ? 
         "Add a new user and assign the appropriate role and company access." : 
@@ -75,30 +75,30 @@
                     </div>
                 </div>
 
-                <div class="@fieldGridClass">
-                    <div class="@fieldBlockClass">
-                        <label asp-for="Input.City" class="@labelClass">City</label>
-                        <input asp-for="Input.City" class="form-control @inputClass" aria-required="true" />
-                    </div>
-                    <div class="@fieldBlockClass">
-                        <label asp-for="Input.State" class="@labelClass">State</label>
-                        <input asp-for="Input.State" class="form-control @inputClass" aria-required="true" />
-                    </div>
-                </div>
-
-                <div class="@fieldGridClass">
-                    <div class="@fieldBlockClass">
-                        <label asp-for="Input.PostalCode" class="@labelClass">Postal Code</label>
-                        <input asp-for="Input.PostalCode" class="form-control @inputClass" aria-required="true" />
-                    </div>
-                    <div class="@fieldBlockClass">
-                        <label asp-for="Input.PhoneNumber" class="@labelClass">Phone Number</label>
-                        <input asp-for="Input.PhoneNumber" class="form-control @inputClass" aria-required="true" />
-                    </div>
-                </div>
 
                 @if(!Defines.ROLE_SELECTION_LOCK_ACTIVE || User.IsInRole(SD.ROLE_USER_ADMIN))
                 {
+                    <div class="@fieldGridClass">
+                        <div class="@fieldBlockClass">
+                            <label asp-for="Input.City" class="@labelClass">City</label>
+                            <input asp-for="Input.City" class="form-control @inputClass" aria-required="true" />
+                        </div>
+                        <div class="@fieldBlockClass">
+                            <label asp-for="Input.State" class="@labelClass">State</label>
+                            <input asp-for="Input.State" class="form-control @inputClass" aria-required="true" />
+                        </div>
+                    </div>
+
+                    <div class="@fieldGridClass">
+                        <div class="@fieldBlockClass">
+                            <label asp-for="Input.PostalCode" class="@labelClass">Postal Code</label>
+                            <input asp-for="Input.PostalCode" class="form-control @inputClass" aria-required="true" />
+                        </div>
+                        <div class="@fieldBlockClass">
+                            <label asp-for="Input.PhoneNumber" class="@labelClass">Phone Number</label>
+                            <input asp-for="Input.PhoneNumber" class="form-control @inputClass" aria-required="true" />
+                        </div>
+                    </div>
                     <div class="@fieldGridClass">
                         <div class="@fieldBlockClass">
                             <label asp-for="Input.Role" class="@labelClass">Role</label>
