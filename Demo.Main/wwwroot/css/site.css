@@ -591,6 +591,47 @@ body {
   margin: 0;
 }
 
+.northstar-page-closure {
+  padding: 0.75rem 0 3rem;
+}
+
+.northstar-page-closure-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(34, 58, 94, 0.12);
+}
+
+.northstar-page-closure-copy {
+  color: #7a7f87;
+  font-size: 0.88rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.northstar-page-closure-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(34, 58, 94, 0.14);
+  border-radius: 999px;
+  color: #223a5e;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.northstar-page-closure-link:hover,
+.northstar-page-closure-link:focus {
+  color: #172842;
+  background: #ffffff;
+  border-color: rgba(34, 58, 94, 0.28);
+}
+
 @media (max-width: 1199.98px) {
   .northstar-category-grid,
   .northstar-product-grid {
@@ -616,6 +657,10 @@ body {
 
   .northstar-hero-copy h1 {
     max-width: none;
+  }
+
+  .northstar-page-closure-inner {
+    justify-content: space-between;
   }
 }
 
@@ -645,6 +690,21 @@ body {
   .northstar-category-grid,
   .northstar-product-grid {
     grid-template-columns: 1fr;
+  }
+
+  .northstar-page-closure {
+    padding-bottom: 2.5rem;
+  }
+
+  .northstar-page-closure-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .northstar-page-closure-link {
+    justify-content: center;
   }
 
   .northstar-group-heading {
