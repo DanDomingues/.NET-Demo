@@ -1,6 +1,130 @@
-﻿@{
+@{
     ViewData["Title"] = "Privacy Policy";
+    ViewData["BrandName"] = "Northstar Supply";
+    ViewData["BodyClass"] = "northstar-home northstar-privacy-page";
+    ViewData["ShellClass"] = "northstar-shell flex-fill";
+    ViewData["NavClass"] = "northstar-nav";
+    ViewData["HeaderClass"] = "northstar-header";
+    ViewData["FooterClass"] = "northstar-footer";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="northstar-page">
+    <section class="northstar-hero northstar-privacy-hero">
+        <div class="northstar-shell-inner">
+            <div class="northstar-hero-grid">
+                <div class="northstar-hero-copy">
+                    <p class="northstar-eyebrow">Northstar Supply</p>
+                    <h1>Privacy Policy</h1>
+                    <p class="northstar-lead">This page explains the information Northstar Supply stores while running this storefront, including account details, carts, checkout details, and order records.</p>
+                    <div class="northstar-privacy-meta" aria-label="Policy metadata">
+                        <span>Last updated April 6, 2026</span>
+                        <span>Applies to accounts, carts, checkout, and orders</span>
+                    </div>
+                </div>
+
+                <aside class="northstar-hero-panel northstar-privacy-panel" aria-label="Privacy summary">
+                    <p class="northstar-panel-label">Overview</p>
+                    <h2>A straightforward privacy notice for the storefront as it exists today.</h2>
+                    <ul class="northstar-privacy-summary">
+                        <li>The app stores the account and order information needed to sign users in and process purchases.</li>
+                        <li>Card payments are routed through Stripe Checkout rather than handled directly by the app.</li>
+                        <li>The site uses essential authentication and session behavior, not a broad analytics or advertising stack.</li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <section class="northstar-section northstar-privacy-section">
+        <div class="northstar-shell-inner">
+            <div class="northstar-privacy-layout">
+                <aside class="northstar-privacy-nav-card" aria-label="Privacy sections">
+                    <p class="northstar-panel-label">On this page</p>
+                    <nav class="northstar-privacy-nav">
+                        <a href="#information-we-collect">Information We Collect</a>
+                        <a href="#how-we-use-information">How We Use Information</a>
+                        <a href="#checkout-and-payments">Checkout and Payments</a>
+                        <a href="#sharing-and-disclosure">Sharing and Disclosure</a>
+                        <a href="#cookies-and-analytics">Cookies and Session Behavior</a>
+                        <a href="#data-retention">Data Retention</a>
+                        <a href="#security">Security</a>
+                        <a href="#your-rights">Access, Updates, and Questions</a>
+                        <a href="#children">Children's Privacy</a>
+                        <a href="#contact-us">Contact Us</a>
+                    </nav>
+                </aside>
+
+                <div class="northstar-privacy-content">
+                    <article class="northstar-privacy-card" id="information-we-collect">
+                        <p class="northstar-eyebrow">1. Information We Collect</p>
+                        <h2>Information entered through the storefront</h2>
+                        <p>Northstar Supply stores the information needed to create user accounts and place orders. That can include your first and last name, email address, password-based account credentials, phone number, street address, city, state, and postal code.</p>
+                        <p>When an order is placed, the app also stores order details such as purchased items, totals, order status, payment status, shipping details, and related payment references used by the checkout flow. If an account is created as a company or employee account, the account may also be linked to a company record in the system.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="how-we-use-information">
+                        <p class="northstar-eyebrow">2. How We Use Information</p>
+                        <h2>We use this information to run the storefront.</h2>
+                        <ul class="northstar-privacy-list">
+                            <li>Create accounts and let users sign in securely.</li>
+                            <li>Maintain shopping carts and prefill checkout information from the signed-in user profile.</li>
+                            <li>Create, store, and display order records and order history.</li>
+                            <li>Support store administration, including product management, order handling, and user management for authorized admin users.</li>
+                        </ul>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="checkout-and-payments">
+                        <p class="northstar-eyebrow">3. Checkout and Payments</p>
+                        <h2>Card payments are handled through Stripe Checkout.</h2>
+                        <p>For standard customer purchases, the app creates an order record and then redirects checkout through Stripe. The application stores order totals and payment-related references such as Stripe session or payment intent IDs, but the card entry and payment handling itself is performed by Stripe.</p>
+                        <p>Some company-linked accounts may be approved for delayed payment inside the order workflow, which means the app may store the related order and billing status information without immediately collecting card payment at checkout.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="sharing-and-disclosure">
+                        <p class="northstar-eyebrow">4. Sharing and Disclosure</p>
+                        <h2>Information sharing is limited.</h2>
+                        <p>This storefront is not built around selling personal information or sharing it for advertising. The clearest external disclosure in the current app is the payment information needed to complete Stripe-based checkout. Beyond that, information is mainly used inside the application and its underlying infrastructure.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="cookies-and-analytics">
+                        <p class="northstar-eyebrow">5. Cookies and Session Behavior</p>
+                        <h2>The site uses essential cookies and session state.</h2>
+                        <p>The app uses ASP.NET Core authentication and session features to support sign-in and cart behavior. In practice, that means the storefront may place essential cookies or session data needed for account access, cart counts, and checkout flow.</p>
+                        <p>This page does not claim a separate analytics, advertising, or cross-site tracking program. If essential cookies are disabled, parts of the storefront may not work as expected.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="data-retention">
+                        <p class="northstar-eyebrow">6. Data Retention</p>
+                        <h2>Account and order data are stored in the application's database.</h2>
+                        <p>This project keeps account, cart, and order information in its database so the storefront can function and order history can be viewed later. The app does not expose a formal retention schedule on the site, so information may remain stored until it is changed or removed by the site operator.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="security">
+                        <p class="northstar-eyebrow">7. Security</p>
+                        <h2>The storefront uses standard application security features.</h2>
+                        <p>The project uses ASP.NET Core Identity for authentication and role-based access, and it is configured to run over HTTPS. That said, no web application can promise perfect security, so users should still use strong passwords and protect their own devices and accounts.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="your-rights">
+                        <p class="northstar-eyebrow">8. Access, Updates, and Questions</p>
+                        <h2>This app does not provide a formal privacy request workflow.</h2>
+                        <p>Users can manage some account information through the normal account and order experience, but this project does not present a dedicated process for privacy requests, deletion requests, or regulatory submissions. If a question about stored information comes up, it should be directed to the store operator through whatever contact method is provided alongside the storefront.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="children">
+                        <p class="northstar-eyebrow">9. Children's Privacy</p>
+                        <h2>The storefront is intended for a general audience.</h2>
+                        <p>Northstar Supply is an e-commerce demo and is not designed specifically for children. It should be used by adults or by users who have permission to use the site and place orders.</p>
+                    </article>
+
+                    <article class="northstar-privacy-card" id="contact-us">
+                        <p class="northstar-eyebrow">10. Contact Us</p>
+                        <h2>Questions about this policy</h2>
+                        <p>If you have questions about this Privacy Policy, use the contact method that is made available with the storefront or project context. This page is meant to describe the app's current behavior in practical terms rather than act as a full standalone legal program.</p>
+                        <p class="northstar-privacy-note">Because this is a portfolio-style storefront, this notice should be updated if the app's payment flow, analytics setup, communications, or data handling practices change.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -632,6 +632,111 @@ body {
   border-color: rgba(34, 58, 94, 0.28);
 }
 
+.northstar-privacy-hero .northstar-hero-copy h1 {
+  max-width: 12ch;
+}
+
+.northstar-privacy-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.northstar-privacy-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #e7e3dc;
+  border-radius: 999px;
+  background: rgba(248, 247, 243, 0.9);
+  color: #4f5863;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.northstar-privacy-summary {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  color: #5f6670;
+  line-height: 1.75;
+}
+
+.northstar-privacy-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.northstar-privacy-nav-card,
+.northstar-privacy-card {
+  background: #ffffff;
+  border: 1px solid #e7e3dc;
+  border-radius: 24px;
+  box-shadow: 0 14px 30px rgba(27, 29, 31, 0.04);
+}
+
+.northstar-privacy-nav-card {
+  position: sticky;
+  top: 1rem;
+  padding: 1.35rem;
+}
+
+.northstar-privacy-nav {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.northstar-privacy-nav a {
+  color: #223a5e;
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: 0.45rem 0;
+}
+
+.northstar-privacy-nav a:hover,
+.northstar-privacy-nav a:focus {
+  color: #172842;
+}
+
+.northstar-privacy-content {
+  display: grid;
+  gap: 1rem;
+}
+
+.northstar-privacy-card {
+  padding: clamp(1.5rem, 3vw, 2.35rem);
+}
+
+.northstar-privacy-card h2 {
+  margin: 0.6rem 0 0;
+  font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.northstar-privacy-card p {
+  margin: 1rem 0 0;
+  color: #5f6670;
+  line-height: 1.8;
+}
+
+.northstar-privacy-list {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  color: #5f6670;
+  line-height: 1.8;
+}
+
+.northstar-privacy-note {
+  padding-top: 1rem;
+  border-top: 1px solid #ece7df;
+  font-size: 0.95rem;
+}
+
 @media (max-width: 1199.98px) {
   .northstar-category-grid,
   .northstar-product-grid {
@@ -644,6 +749,10 @@ body {
   .northstar-section-heading-wide,
   .northstar-promo-card,
   .northstar-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .northstar-privacy-layout {
     grid-template-columns: 1fr;
   }
 
@@ -661,6 +770,10 @@ body {
 
   .northstar-page-closure-inner {
     justify-content: space-between;
+  }
+
+  .northstar-privacy-nav-card {
+    position: static;
   }
 }
 
@@ -705,6 +818,16 @@ body {
 
   .northstar-page-closure-link {
     justify-content: center;
+  }
+
+  .northstar-privacy-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .northstar-privacy-nav-card,
+  .northstar-privacy-card {
+    border-radius: 20px;
   }
 
   .northstar-group-heading {

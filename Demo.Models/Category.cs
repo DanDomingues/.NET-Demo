@@ -8,7 +8,7 @@ namespace Demo.Models
         [Required, MaxLength(20), DisplayName("Category Name")]
         public string? Name { get; set; } = null!;
         
-        [Range(1, 100), DisplayName("Display Order")]
+        [DisplayName("Display Order")]
         public int DisplayOrder { get; set; }
 
         public string Description
