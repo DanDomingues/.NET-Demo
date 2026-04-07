@@ -131,14 +131,26 @@ namespace Demo.Main.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult Summary(ShoppingCartVM vm)
         {
+            // Load the user separately because the navigation property is not posted back with the form.
+            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(
+                u => u.Id == vm.OrderHeader.ApplicationUserId,
+                track: true);
+
+            //If user requested to set order address as account defaults, set them here
+            if(vm.SetAddressAsDefault)
+            {
+                appUser.PhoneNumber = vm.OrderHeader.PhoneNumber ?? appUser.PhoneNumber;
+                appUser.StreetAddress = vm.OrderHeader.StreetAddress ?? appUser.StreetAddress;
+                appUser.City = vm.OrderHeader.City ?? appUser.City;
+                appUser.State = vm.OrderHeader.State ?? appUser.State;
+                appUser.PostalCode = vm.OrderHeader.PostalCode ?? appUser.PostalCode;
+            }
+
             // Rehydrate related data that is not preserved by form posting.
             vm.ProductList = Repo.GetAll(
                 e => e.ApplicationUser.Id == vm.OrderHeader.ApplicationUserId, 
                 includeProperties: DefaultIncludeProperties);
 
-            // Load the user separately because the navigation property is not posted back with the form.
-            var appUser = unitOfWork.ApplicationUserRepository
-                .GetFirstOrDefault(u => u.Id == vm.OrderHeader.ApplicationUserId);
 
             // Recalculate totals from the current product data.
             vm.OrderHeader.OrderTotal = vm.ProductList.Sum(item => item.TotalCost);
