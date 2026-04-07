@@ -2358,6 +2358,32 @@ body {
   gap: 0.75rem;
 }
 
+.admin-companies-page .modal-dialog {
+  max-width: 720px;
+}
+
+.admin-companies-page .modal-content {
+  border: 1px solid #d9e1eb;
+  border-radius: 24px;
+  box-shadow: 0 24px 56px rgba(16, 24, 40, 0.14);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(34, 58, 94, 0.08), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+}
+
+.admin-companies-page .modal-backdrop.show {
+  opacity: 0.55;
+}
+
+.admin-companies-page .admin-modal-body {
+  gap: 1.1rem;
+}
+
+.admin-modal-validation:empty {
+  display: none;
+}
+
 .admin-users-section {
   padding-top: 1.25rem;
 }
@@ -2405,6 +2431,11 @@ body {
 }
 
 @media (max-width: 767.98px) {
+  .admin-companies-page .modal-dialog {
+    max-width: none;
+    margin: 0.75rem;
+  }
+
   .admin-user-actions {
     min-width: 0;
   }
