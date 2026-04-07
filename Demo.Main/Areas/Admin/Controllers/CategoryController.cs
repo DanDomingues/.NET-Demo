@@ -54,14 +54,9 @@ namespace Demo.Main.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(Category model)
         {
-            if (CheckForDuplicatesByName(model))
+            if (CheckForDuplicatesByName(model) || !ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
+                return Json(new { success = false });
             }
 
             if(model.Id == 0)
