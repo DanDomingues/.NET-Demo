@@ -21,12 +21,36 @@ namespace Demo.Main.Areas.Admin.Controllers
         }
 
         public IActionResult Index() => View();
-        public IActionResult Upsert(int? id) => Modules["Upsert"].GetWithId(id);
+        public IActionResult Upsert(int? id)
+        {
+            var company = Find(id, out var c) ? c : new Company();
+            return PartialView("_UpsertModal", company);
+        }
 
         [HttpPost]
-        public IActionResult Upsert(Company upsert)
+        public IActionResult Upsert(Company model)
         {
-            return Modules["Upsert"].Post(upsert);
+            if (CheckForDuplicatesByName(model) || !ModelState.IsValid)
+            {
+                return Json(new { success = false });
+            }
+
+            UpdateRepo(model, Repo.AddOrUpdate);
+            return Json(new { success = true });
+        }
+
+        public override IActionResult GetAll()
+        {
+            var all = Repo.GetAll();
+
+            foreach (var company in all)
+            {
+                company.EmployeeCount = unitOfWork.ApplicationUserRepository
+                    .GetAll(u => u.CompanyId == company.Id)
+                    .Count() - 1;
+            }
+
+            return base.GetAll();
         }
     }
 }

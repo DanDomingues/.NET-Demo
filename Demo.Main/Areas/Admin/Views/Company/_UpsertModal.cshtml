@@ -1,0 +1,46 @@
+@model Company
+@{
+    var isEdit = Model.Id != 0;
+    var actionLabel = isEdit ? "Update" : "Create";
+
+    ViewData["Title"] = $"{actionLabel} Company";
+    ViewData["BrandName"] = "Northstar Ops";
+    ViewData["BodyClass"] = "admin-ops admin-company-upsert-page";
+    ViewData["ShellClass"] = "admin-shell flex-fill";
+    ViewData["NavClass"] = "admin-nav";
+    ViewData["HeaderClass"] = "admin-header";
+    ViewData["FooterClass"] = "admin-footer";
+}
+
+<div class="modal-header admin-modal-header">
+    <div>
+        <p class="admin-eyebrow mb-2">Catalog Management</p>
+        <h2 class="modal-title fs-5" id="categoryModalLabel">@(isEdit ? "Edit" : "Create") Company</h2>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form id="companyForm" method="post" asp-action="Upsert" asp-controller="Company" asp-area="Admin">
+    <input asp-for="Id" type="hidden" />
+
+    <div class="modal-body admin-modal-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="admin-modal-field">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control admin-input" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        
+        <div class="admin-modal-field">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control admin-input" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="admin-company-form-actions">
+        <button type="submit" class="admin-btn admin-btn-success">@actionLabel company</button>
+        <button type="button" class="admin-btn admin-btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
