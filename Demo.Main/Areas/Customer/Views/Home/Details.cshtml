@@ -9,6 +9,7 @@
     ViewData["FooterClass"] = "northstar-footer";
 
     var images = Model.Product.Images.OrderBy(i => i.DisplayOrder).ToList();
+    var galleryImageCount = Model.Product.ImagesAreValid ? images.Count : 1;
 }
 
 <form method="post" class="northstar-detail-form">
@@ -33,6 +34,11 @@
                                     </div>
                                 }
                             </div>
+                            <div class="northstar-detail-gallery-count" aria-live="polite">
+                                <span data-gallery-current>1</span>
+                                <span aria-hidden="true">/</span>
+                                <span>@galleryImageCount</span>
+                            </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
@@ -47,6 +53,11 @@
                     {
                         <div class="northstar-detail-image-fallback">
                             <img src="@Model.Product.ThumbnailUrl" class="northstar-detail-image" alt="@Model.Product.Title" />
+                            <div class="northstar-detail-gallery-count northstar-detail-gallery-count-static" aria-label="Image count">
+                                <span>1</span>
+                                <span aria-hidden="true">/</span>
+                                <span>1</span>
+                            </div>
                         </div>
                     }
                 </div>
@@ -56,14 +67,20 @@
                         <p class="northstar-eyebrow">Northstar Supply</p>
                         <span class="product-category-badge">@Model.Product.Category.Name</span>
                         <h1>@Model.Product.Title</h1>
-                        <p class="northstar-detail-author">by @Model.Product.Author</p>
+                        @if (!string.IsNullOrWhiteSpace(Model.Product.Author))
+                        {
+                            <p class="northstar-detail-author">@Model.Product.Author</p>
+                        }
 
                         <div class="northstar-detail-price-block">
+                            <p class="northstar-detail-price-label">Price</p>
                             <div class="northstar-detail-price-row">
                                 <span class="northstar-detail-price">@Model.Product.DiscountPrice.FormatAsUSD()</span>
-                                <span class="northstar-detail-price-caption">Discounted price</span>
+                                @if (Model.Product.Price > Model.Product.DiscountPrice)
+                                {
+                                    <span class="northstar-detail-price-compare">@Model.Product.Price.FormatAsUSD()</span>
+                                }
                             </div>
-                            <p class="northstar-detail-full-price">Full price <span>@Model.Product.Price.FormatAsUSD()</span></p>
                         </div>
 
                         <div class="northstar-detail-meta">
@@ -72,9 +89,16 @@
                                 <span class="northstar-detail-meta-value">@Model.Product.Category.Name</span>
                             </div>
                             <div>
-                                <span class="northstar-detail-meta-label">ISBN</span>
+                                <label asp-for="Product.ISBN" class="northstar-detail-meta-label"></label>
                                 <span class="northstar-detail-meta-value">@Model.Product.ISBN</span>
                             </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Product.Author))
+                            {
+                                <div>
+                                    <label asp-for="Product.Author" class="northstar-detail-meta-label"></label>
+                                    <span class="northstar-detail-meta-value">@Model.Product.Author</span>
+                                </div>
+                            }
                         </div>
 
                         <div class="northstar-detail-description">
@@ -85,23 +109,19 @@
                     <aside class="northstar-detail-purchase">
                         <div class="northstar-detail-purchase-card">
                             <div class="northstar-detail-summary">
-                                <p class="northstar-detail-summary-label">Order summary</p>
+                                <p class="northstar-detail-summary-label">Purchase Summary</p>
                                 <div class="northstar-detail-summary-row">
-                                    <span>Discounted price</span>
+                                    <span>Price</span>
                                     <strong>@Model.Product.DiscountPrice.FormatAsUSD()</strong>
-                                </div>
-                                <div class="northstar-detail-summary-row northstar-detail-summary-muted">
-                                    <span>Full price</span>
-                                    <span>@Model.Product.Price.FormatAsUSD()</span>
                                 </div>
                             </div>
 
                             <label asp-for="Quantity" class="northstar-field-label">Quantity</label>
-                            <div class="input-group northstar-quantity-group">
-                                <span class="input-group-text" id="inputGroup-sizing-default">Amount</span>
-                                <input asp-for="Quantity" type="number" value="1" class="form-control text-end"
-                                       aria-label="Quantity"
-                                       aria-describedby="inputGroup-sizing-default" />
+                            <div class="northstar-quantity-group" role="group" aria-label="Quantity selector">
+                                <button type="button" class="northstar-quantity-stepper" data-quantity-step="-1" aria-label="Decrease quantity">-</button>
+                                <input asp-for="Quantity" type="number" value="1" min="1" class="form-control northstar-quantity-input text-center"
+                                       aria-label="Quantity" />
+                                <button type="button" class="northstar-quantity-stepper" data-quantity-step="1" aria-label="Increase quantity">+</button>
                             </div>
 
                             <button type="submit" class="northstar-btn northstar-btn-primary northstar-submit-btn">Add to Cart</button>
@@ -109,15 +129,11 @@
                             <div class="northstar-detail-benefits" aria-label="Store benefits">
                                 <div>
                                     <strong>Secure checkout</strong>
-                                    <span>Uses the existing store checkout flow.</span>
+                                    <span>You'll complete payment securely in the next step.</span>
                                 </div>
                                 <div>
-                                    <strong>Clean ordering</strong>
-                                    <span>Simple quantity selection and cart handling.</span>
-                                </div>
-                                <div>
-                                    <strong>Everyday utility</strong>
-                                    <span>Selected for steady, repeatable use.</span>
+                                    <strong>Simple quantity selection</strong>
+                                    <span>Adjust quantity before adding this item to cart.</span>
                                 </div>
                             </div>
                         </div>
@@ -127,3 +143,54 @@
         </div>
     </section>
 </form>
+
+@section Scripts {
+    <script>
+        (() => {
+            const carouselElement = document.getElementById("carouselExample");
+            if (!carouselElement) {
+                return;
+            }
+
+            const currentCountElement = carouselElement.querySelector("[data-gallery-current]");
+            if (!currentCountElement) {
+                return;
+            }
+
+            const updateCurrentSlide = () => {
+                const items = Array.from(carouselElement.querySelectorAll(".carousel-item"));
+                const activeIndex = items.findIndex((item) => item.classList.contains("active"));
+                currentCountElement.textContent = String((activeIndex >= 0 ? activeIndex : 0) + 1);
+            };
+
+            updateCurrentSlide();
+            carouselElement.addEventListener("slid.bs.carousel", updateCurrentSlide);
+        })();
+
+        (() => {
+            const quantityInput = document.getElementById("Quantity");
+            const stepButtons = document.querySelectorAll("[data-quantity-step]");
+            if (!quantityInput || stepButtons.length === 0) {
+                return;
+            }
+
+            const normalizeValue = (value) => {
+                const parsed = Number.parseInt(value, 10);
+                return Number.isNaN(parsed) || parsed < 1 ? 1 : parsed;
+            };
+
+            quantityInput.addEventListener("change", () => {
+                quantityInput.value = String(normalizeValue(quantityInput.value));
+            });
+
+            stepButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    const step = Number.parseInt(button.getAttribute("data-quantity-step") ?? "0", 10);
+                    quantityInput.value = String(Math.max(1, normalizeValue(quantityInput.value) + step));
+                    quantityInput.dispatchEvent(new Event("change", { bubbles: true }));
+                    quantityInput.focus();
+                });
+            });
+        })();
+    </script>
+}
