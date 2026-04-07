@@ -3,17 +3,20 @@
 @using Demo.Utility
 @{
     var isAdminPortal = User.IsInRole(SD.ROLE_USER_ADMIN);
+
+    var title = isAdminPortal ? "Create your account" : "Create your account";
+    var buttonLabel = isAdminPortal ? "Create user" : "Create your account";
+    var description = isAdminPortal ? 
+        "Add a new user and assign the appropriate role and company access." : 
+        "Set up your Northstar account to shop, track orders, and manage your details.";
+
     var sectionClass = isAdminPortal ? "admin-section admin-auth-section" : "northstar-section northstar-auth-section";
     var shellInnerClass = isAdminPortal ? "admin-shell-inner" : "northstar-shell-inner";
     var authCardClass = isAdminPortal ? "admin-auth-card" : "northstar-auth-card";
     var authIntroClass = isAdminPortal ? "admin-auth-intro" : "northstar-auth-intro";
     var eyebrowClass = isAdminPortal ? "admin-eyebrow" : "northstar-eyebrow";
     var eyebrowText = isAdminPortal ? "User Administration" : "Northstar Supply";
-    var headingText = isAdminPortal ? "Create user account" : "Create your account";
     var subtitleClass = isAdminPortal ? "admin-orders-subtitle" : "northstar-auth-copy";
-    var subtitleText = isAdminPortal
-        ? "Provision a new account with role and company assignment using the existing registration flow."
-        : "Set up your Northstar account to shop, order, and manage your details.";
     var formClass = isAdminPortal ? "admin-auth-form" : "northstar-auth-form northstar-auth-form-wide";
     var fieldGridClass = isAdminPortal ? "admin-field admin-field-half" : "northstar-summary-field-grid";
     var fieldBlockClass = isAdminPortal ? "admin-field-block" : "northstar-summary-field";
@@ -35,10 +38,8 @@
         <div class="@authCardClass">
             <div class="@authIntroClass">
                 <p class="@eyebrowClass">@eyebrowText</p>
-                <h1>@headingText</h1>
-                <p class="@subtitleClass">
-                    @subtitleText
-                </p>
+                <h1>@title</h1>
+                <p class="@subtitleClass">@description</p>
             </div>
 
             <form id="registerForm" class="@formClass" asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -114,7 +115,7 @@
                     </div>
                 }
 
-                <button id="registerSubmit" type="submit" class="@submitButtonClass">Register</button>
+                <button id="registerSubmit" type="submit" class="@submitButtonClass">@buttonLabel</button>
             </form>
         </div>
     </div>
