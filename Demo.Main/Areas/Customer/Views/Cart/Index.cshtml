@@ -1,5 +1,9 @@
 @model ShoppingCartVM
 @{
+    var hasItems = Model.ProductList?.Any() == true;
+    var itemCount = Model.ProductList?.Count() ?? 0;
+    var orderTotal = Model.OrderHeader?.OrderTotal ?? 0;
+
     ViewData["Title"] = "Shopping Cart";
     ViewData["BrandName"] = "Northstar Supply";
     ViewData["BodyClass"] = "northstar-home northstar-cart-page";
@@ -21,18 +25,18 @@
                 <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-secondary">Continue shopping</a>
             </div>
 
-            @if (!Model.ProductList.Any())
-            {
-                <div class="northstar-cart-empty">
-                    <h2>Your cart is empty</h2>
-                    <p>Start with a few practical essentials from the Northstar collection.</p>
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-primary">Start shopping</a>
-                </div>
-            }
-            else
-            {
-                <div class="northstar-cart-layout">
-                    <div class="northstar-cart-items">
+            <div class="northstar-cart-layout">
+                <div class="northstar-cart-items">
+                    @if (!hasItems)
+                    {
+                        <div class="northstar-cart-empty">
+                            <h2>Your cart is empty</h2>
+                            <p>Start with a few practical essentials from the Northstar collection.</p>
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="northstar-btn northstar-btn-primary">Start shopping</a>
+                        </div>
+                    }
+                    else
+                    {
                         @foreach (var item in Model.ProductList)
                         {
                             <article class="northstar-cart-item">
@@ -84,29 +88,39 @@
                                 </div>
                             </article>
                         }
-                    </div>
-
-                    <aside class="northstar-cart-summary">
-                        <div class="northstar-cart-summary-card">
-                            <p class="northstar-detail-summary-label">Order summary</p>
-                            <div class="northstar-cart-summary-row">
-                                <span>Items</span>
-                                <span>@Model.ProductList.Count()</span>
-                            </div>
-                            <div class="northstar-cart-summary-row">
-                                <span>Order total</span>
-                                <strong>@Model.OrderHeader.OrderTotal.FormatAsUSD()</strong>
-                            </div>
-
-                            <div class="northstar-cart-summary-note">
-                                Quantity updates, order summary, and checkout continue to use the existing server-side cart flow.
-                            </div>
-
-                            <a asp-action="Summary" class="northstar-btn northstar-btn-primary northstar-submit-btn">Continue to summary</a>
-                        </div>
-                    </aside>
+                    }
                 </div>
-            }
+
+                <aside class="northstar-cart-summary">
+                    <div class="northstar-cart-summary-card @(hasItems ? string.Empty : "is-empty")">
+                        <p class="northstar-detail-summary-label">Order summary</p>
+                        <div class="northstar-cart-summary-row">
+                            <span>Products</span>
+                            <span>@itemCount</span>
+                        </div>
+                        <div class="northstar-cart-summary-row">
+                            <span>Order total</span>
+                            <strong>@orderTotal.FormatAsUSD()</strong>
+                        </div>
+
+                        <div class="northstar-cart-summary-note">
+                            @if (hasItems)
+                            {
+                                <span>Quantity updates, order summary, and checkout continue to use the existing server-side cart flow.</span>
+                            }
+                            else
+                            {
+                                <span>Add products to unlock checkout and see your order summary fill in automatically.</span>
+                            }
+                        </div>
+
+                        @if (hasItems)
+                        {
+                            <a asp-action="Summary" class="northstar-btn northstar-btn-primary northstar-submit-btn">Continue to summary</a>
+                        }
+                    </div>
+                </aside>
+            </div>
         </div>
     </section>
 </form>

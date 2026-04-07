@@ -45,7 +45,7 @@ namespace Demo.Main.Areas.Customer.Controllers
                 Product = product,
                 ProductId = product.Id,
                 ApplicationUserId = userId,
-                Count = 1
+                Quantity = 1
             });
         }
 
@@ -63,7 +63,7 @@ namespace Demo.Main.Areas.Customer.Controllers
 
             if (existing != null)
             {
-                existing.Count += vm.Count;
+                existing.Count += vm.Quantity;
                 unitOfWork.ShoppingCarts.Update(existing);
                 unitOfWork.Save();
             }
@@ -74,7 +74,7 @@ namespace Demo.Main.Areas.Customer.Controllers
                 {
                     ProductId = vm.ProductId,
                     ApplicationUserId = userId,
-                    Count = vm.Count
+                    Count = vm.Quantity
                 });
                 unitOfWork.Save();
 

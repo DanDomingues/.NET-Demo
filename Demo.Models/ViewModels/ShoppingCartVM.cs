@@ -10,5 +10,6 @@ namespace Demo.Models.ViewModels
     {
         public IEnumerable<ShoppingCartItem> ProductList { get; set; }
         public OrderHeader OrderHeader { get; set; }
+        public bool SetAddressAsDefault { get; set; }
     }
 }
