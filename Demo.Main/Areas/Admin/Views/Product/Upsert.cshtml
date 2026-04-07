@@ -17,16 +17,16 @@
 
 <section class="admin-section admin-product-upsert-section">
     <div class="admin-shell-inner">
-        <div class="admin-order-detail-header">
+        <div class="@(isEdit ? "admin-order-detail-header" : "admin-order-detail-header admin-order-detail-header-single")">
             <div>
                 <p class="admin-eyebrow">Catalog Management</p>
                 <h1>@actionLabel product</h1>
                 <p class="admin-orders-subtitle">Maintain product details alongside storefront media management from a single product dashboard.</p>
             </div>
-            <a asp-controller="Product" asp-action="Index" class="admin-btn admin-btn-secondary">Back to list</a>
+            <a asp-controller="Product" asp-action="Index" class="admin-btn admin-btn-secondary text-nowrap">Back to list</a>
         </div>
 
-        <div class="admin-product-layout">
+        <div class="@(isEdit ? "admin-product-layout" : "admin-product-layout admin-product-layout-single")">
             <div class="admin-panel admin-product-form-panel">
                 <form id="productUpsertForm" method="post" class="admin-product-form" enctype="multipart/form-data">
                     <input asp-for="Product.Id" hidden />
@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="admin-field admin-field-half">
+                        <div class="admin-field admin-field-half admin-product-create-assets-row">
                             <div class="admin-field-block">
                                 <label asp-for="Product.Category"></label>
                                 <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select admin-input">
@@ -84,9 +84,10 @@
                             </div>
                             @if (!isEdit)
                             {
-                                <div class="admin-field-block">
+                                <div class="admin-field-block admin-product-create-media-field">
                                     <label asp-for="Product.Images"></label>
                                     <input type="file" name="files" multiple accept="image/*" class="form-control admin-input" />
+                                    <p class="admin-input-helper mb-0">You can upload images now and manage their order after the product is created.</p>
                                 </div>
                             }
                         </div>
