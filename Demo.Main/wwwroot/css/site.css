@@ -2194,6 +2194,12 @@ body {
   align-items: start;
 }
 
+.admin-order-main,
+.northstar-order-main {
+  display: grid;
+  gap: 1rem;
+}
+
 .admin-order-form-panel,
 .admin-order-summary-card,
 .admin-order-actions-panel {
@@ -2253,6 +2259,103 @@ body {
 .admin-input-readonly {
   background: #f7f9fc;
   color: #647182;
+}
+
+.order-section-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-display-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.order-display-grid-compact {
+  grid-template-columns: 1fr;
+}
+
+.order-display-field {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid #e5eaf0;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.order-display-field-muted {
+  background: #f7f9fc;
+  border-color: #dbe3ec;
+}
+
+.order-display-field-wide {
+  grid-column: 1 / -1;
+}
+
+.order-display-label {
+  color: #647182;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.order-display-field strong {
+  font-size: 0.98rem;
+  color: #1f2c3a;
+  word-break: break-word;
+}
+
+.admin-order-technical-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.order-technical-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+  color: #516173;
+}
+
+.order-technical-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.order-technical-details summary span {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.order-technical-details summary strong {
+  color: #1f2c3a;
+  font-size: 0.95rem;
+}
+
+.order-technical-details summary small {
+  color: #7b8794;
+  font-size: 0.82rem;
+}
+
+.order-technical-details summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  line-height: 1;
+  color: #7b8794;
+}
+
+.order-technical-details[open] summary::after {
+  content: "\2212";
+}
+
+.order-technical-details[open] .order-display-grid {
+  padding: 0 1.25rem 1.25rem;
 }
 
 .admin-order-sidebar {
@@ -2344,7 +2447,8 @@ body {
   .admin-field-third,
   .admin-order-item,
   .admin-order-meta-strip,
-  .northstar-order-meta-strip {
+  .northstar-order-meta-strip,
+  .order-display-grid {
     grid-template-columns: 1fr;
     flex-direction: column;
     align-items: stretch;
