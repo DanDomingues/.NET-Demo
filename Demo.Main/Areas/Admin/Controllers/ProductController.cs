@@ -49,7 +49,11 @@ namespace Demo.Main.Areas.Admin.Controllers
         {
             if(id == null || id == 0)
             {
-                throw new InvalidOperationException("Invalid ID");
+                return View(new ProductVM
+                {
+                    Product = new Product(),
+                    CategoryList = CategoryList
+                });
             }
             
             var product = Repo.GetById(id, includeProperties: "Category,Images");
