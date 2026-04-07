@@ -14,11 +14,11 @@ function loadDataTable()
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/getall' },
         "columns": [
-            { data: 'fullName', width: '20%' },
-            { data: 'email', width: '20%' },
-            { data: 'phoneNumber', width: '15%' },
-            { data: 'company.name', width: '15%' },
-            { data: 'role', width: '15%' },
+            { data: 'fullName' },
+            { data: 'email' },
+            { data: 'phoneNumber', className: 'text-start' },
+            { data: 'company.name' },
+            { data: 'role' },
             {
                 data: { id:'id', locked: 'locked' },
                 "render": function (data) 

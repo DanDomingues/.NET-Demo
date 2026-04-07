@@ -11,7 +11,7 @@ function loadDataTable() {
             { data: 'title' },
             { data: 'isbn' },
             { data: 'price', render: renderCurrency },
-            { data: 'discountPrice', render: renderCurrency },
+            { data: 'discountPrice', render: renderCurrency, className: 'text-center' },
             { data: 'author' },
             { data: 'category.name' },
             {

@@ -14,7 +14,7 @@ function loadDataTable(options) {
         "columns": [
             { data: 'id' },
             { data: 'fullName' },
-            { data: 'phoneNumber' },
+            { data: 'phoneNumber', className: 'text-start' },
             { data: 'applicationUser.email' },
             { data: 'orderDate', render: renderDateTime },
             { data: 'orderStatus' },

@@ -14,7 +14,7 @@ function loadDataTable() {
             { data: 'city' },
             { data: 'state' },
             { data: 'postalCode' },
-            { data: 'phoneNumber' },
+            { data: 'phoneNumber', className: 'text-start' },
             {
                 data: 'id',
                 "render": function (data) 
