@@ -47,7 +47,7 @@ namespace Demo.Main.Areas.Admin.Controllers
             {
                 company.EmployeeCount = unitOfWork.ApplicationUserRepository
                     .GetAll(u => u.CompanyId == company.Id)
-                    .Count() - 1;
+                    .Count();
             }
 
             return base.GetAll();

@@ -16,10 +16,10 @@
                 <h1>Companies</h1>
                 <p class="admin-orders-subtitle">Maintain company accounts, billing addresses, and contact records used across staff and customer management workflows.</p>
             </div>
-            <a asp-controller="Company" asp-action="Upsert" class="admin-btn admin-btn-success">
+            <button class="admin-btn admin-btn-success js-company-modal-trigger" data-id="0" style="cursor: pointer;">
                 <i class="bi bi-plus-lg"></i>
                 <span>Create company</span>
-            </a>
+            </button>
         </div>
 
         <div class="admin-panel admin-companies-table-panel">
@@ -47,6 +47,7 @@
 
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/shared/datatables-common.js" asp-append-version="true"></script>
     <script src="~/js/shared/modal.js" asp-append-version="true"></script>
     <script src="~/js/company.js" asp-append-version="true"></script>
