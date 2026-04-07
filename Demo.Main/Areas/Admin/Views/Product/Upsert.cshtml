@@ -2,7 +2,9 @@
 @model ProductVM
 @{
     var isEdit = Model.Product.Id != 0;
-    var actionLabel = isEdit ? "Update" : "Create";
+    var actionLabel = isEdit ? "Edit" : "Create";
+    var actionLabel2 = isEdit ? "Update" : "Create";
+
 
     ViewData["Title"] = $"{actionLabel} Product";
     ViewData["BrandName"] = "Northstar Ops";
@@ -31,7 +33,7 @@
 
                     <div class="admin-section-head">
                         <h2>Details</h2>
-                        <p>Update the core product record, pricing, and category placement from the primary details workspace.</p>
+                        <p>@actionLabel2 the product&apos;s details, pricing, and category.</p>
                     </div>
 
                     <div class="admin-form-grid">

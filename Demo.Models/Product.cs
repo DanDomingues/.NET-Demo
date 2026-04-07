@@ -20,10 +20,10 @@ namespace Demo.Models
         [Required, MaxLength(30)] 
         public string Title { get; set; }  
 
-        [Required, Display(Name = "Regular price"), Range(1, 1000)]
+        [Required, Display(Name = "Base price"), Range(1, 1000)]
         public double Price { get; set; }
 
-        [Required, Display(Name = "Discount price"), Range(1, 1000)]
+        [Required, Display(Name = "Sale price"), Range(1, 1000)]
         public double DiscountPrice { get; set; }
         
         [Required] public int CategoryId { get; set; }
