@@ -30,6 +30,7 @@ namespace Demo.Models
         [NotMapped]
         public bool Locked { get; set;}
 
+        [Display(Name = "Full Name")]        
         public string FullName => $"{FirstName} {LastName}";
 
         int IModelBase.Id => int.Parse(Id);
