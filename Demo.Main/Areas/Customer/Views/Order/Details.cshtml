@@ -6,18 +6,70 @@
     var isAdminDashboard = User.HasAdminRights();
     var header = Model.Header;
     var hasSessionMetadata = !string.IsNullOrWhiteSpace(header.SessionId) || !string.IsNullOrWhiteSpace(header.PaymentIntentId);
-    var shippingDateText = header.ShippingDate == default ? "Not shipped yet" : header.ShippingDate.ToString("MMM d, yyyy");
-    var orderDateText = header.OrderDate == default ? "Not available" : header.OrderDate.ToString("MMM d, yyyy");
-    var paymentDateText = header.PaymentDate == default ? "Not recorded" : header.PaymentDate.ToString("MMM d, yyyy");
-    var paymentDueDateText = header.PaymentDueDate == default ? "Not available" : header.PaymentDueDate.ToString("MMM d, yyyy");
+    var brandName = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
+    var bodyClass = isAdminDashboard ? "admin-ops admin-order-detail-page" : "northstar-home northstar-order-detail-page";
+    var shellClass = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
+    var navClass = isAdminDashboard ? "admin-nav" : "northstar-nav";
+    var headerClass = isAdminDashboard ? "admin-header" : "northstar-header";
+    var footerClass = isAdminDashboard ? "admin-footer" : "northstar-footer";
+    var sectionClass = isAdminDashboard ? "admin-section admin-order-detail-section" : "northstar-section northstar-order-detail-section";
+    var shellInnerClass = isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner";
+    var pageHeaderClass = isAdminDashboard ? "admin-order-detail-header" : "northstar-cart-header";
+    var eyebrowClass = isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow";
+    var subtitleClass = isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle";
+    var backButtonClass = isAdminDashboard ? "admin-btn admin-btn-secondary" : "northstar-btn northstar-btn-secondary";
+    var metaStripClass = isAdminDashboard ? "admin-order-meta-strip" : "northstar-order-meta-strip";
+    var metaCardClass = isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card";
+    var metaLabelClass = isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label";
+    var layoutClass = isAdminDashboard ? "admin-order-detail-layout" : "northstar-summary-layout";
+    var mainColumnClass = isAdminDashboard ? "admin-order-main" : "northstar-order-main";
+    var detailSectionClass = isAdminDashboard ? "admin-order-form-panel admin-panel" : "northstar-summary-details northstar-summary-card";
+    var sectionHeadClass = isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head";
+    var sidebarClass = isAdminDashboard ? "admin-order-sidebar" : "northstar-summary-sidebar";
+    var itemsCardClass = isAdminDashboard ? "admin-panel admin-order-summary-card" : "northstar-summary-card";
+    var itemsListClass = isAdminDashboard ? "admin-order-items" : "northstar-summary-items";
+    var itemClass = isAdminDashboard ? "admin-order-item" : "northstar-summary-item";
+    var itemPricingClass = isAdminDashboard ? "admin-order-item-pricing" : "northstar-summary-item-pricing";
+    var totalClass = isAdminDashboard ? "admin-order-total" : "northstar-summary-total";
+    var actionsCardClass = isAdminDashboard ? "admin-panel admin-order-actions-panel" : "northstar-summary-card";
+    var actionStackClass = isAdminDashboard ? "admin-action-stack" : "northstar-action-stack";
+    var payButtonClass = isAdminDashboard ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn";
+    var cancelButtonClass = isAdminDashboard ? "admin-btn admin-btn-danger" : "northstar-btn northstar-btn-secondary northstar-order-cancel-btn";
+    var brandEyebrow = isAdminDashboard ? "Order Operations" : "Northstar Supply";
+    var pageTitle = isAdminDashboard ? "Order record" : "Order details";
+    var pageSubtitle = isAdminDashboard
+        ? "Update shipping, fulfillment, and operational fields as needed."
+        : "Review your shipping and contact details for this order.";
+    var customerSectionCopy = isAdminDashboard ? "Primary contact information for this order." : "Contact details associated with this order.";
+    var shippingSectionCopy = isAdminDashboard ? "Shipping address and fulfillment inputs." : "Delivery address and fulfillment information.";
+    var timelineSectionCopy = isAdminDashboard ? "System-generated milestones and status markers." : "Key dates and status updates for this order.";
+    var actionsSectionCopy = isAdminDashboard ? "Order management and status actions." : "Actions currently available for this order.";
+    var paymentTimelineLabel = header.SessionId != null ? "Payment Date" : "Payment Due Date";
+    var orderStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.OrderStatus)}" : $"northstar-status-badge {StatusClass(header.OrderStatus)}";
+    var paymentStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.PaymentStatus)}" : $"northstar-status-badge {StatusClass(header.PaymentStatus)}";
+    var canShowCarrier = header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED);
+    var canEditCarrier = isAdminDashboard && header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING);
+
+    string FormatDateTime(DateTime value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy HH:mm:ss");
+    string FormatDateOnly(DateOnly value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy");
+
+    var shippingDateText = FormatDateTime(header.ShippingDate, "Not shipped yet");
+    var orderDateText = FormatDateTime(header.OrderDate, "Not available");
+    var paymentDateText = FormatDateTime(header.PaymentDate, "Not recorded");
+    var paymentDueDateText = FormatDateOnly(header.PaymentDueDate, "Not available");
+    var paymentTimelineValue = header.SessionId != null ? paymentDateText : paymentDueDateText;
+    var carrierText = string.IsNullOrWhiteSpace(header.Carrier) ? "Not assigned" : header.Carrier;
+    var trackingNumberText = string.IsNullOrWhiteSpace(header.TrackingNumber) ? "Pending" : header.TrackingNumber;
+    var sessionIdText = string.IsNullOrWhiteSpace(header.SessionId) ? "Not available" : header.SessionId;
+    var paymentIntentText = string.IsNullOrWhiteSpace(header.PaymentIntentId) ? "Not available" : header.PaymentIntentId;
 
     ViewData["Title"] = $"Order #{header?.Id}";
-    ViewData["BrandName"] = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
-    ViewData["BodyClass"] = isAdminDashboard ? "admin-ops admin-order-detail-page" : "northstar-home northstar-order-detail-page";
-    ViewData["ShellClass"] = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
-    ViewData["NavClass"] = isAdminDashboard ? "admin-nav" : "northstar-nav";
-    ViewData["HeaderClass"] = isAdminDashboard ? "admin-header" : "northstar-header";
-    ViewData["FooterClass"] = isAdminDashboard ? "admin-footer" : "northstar-footer";
+    ViewData["BrandName"] = brandName;
+    ViewData["BodyClass"] = bodyClass;
+    ViewData["ShellClass"] = shellClass;
+    ViewData["NavClass"] = navClass;
+    ViewData["HeaderClass"] = headerClass;
+    ViewData["FooterClass"] = footerClass;
 
     string StatusClass(string? value) => value?.ToLowerInvariant() switch
     {
@@ -36,46 +88,46 @@
     <input asp-for="Header.Id" hidden />
     <input asp-for="Header.ApplicationUserId" hidden />
 
-    <section class="@(isAdminDashboard ? "admin-section admin-order-detail-section" : "northstar-section northstar-order-detail-section")">
-        <div class="@(isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner")">
-            <div class="@(isAdminDashboard ? "admin-order-detail-header" : "northstar-cart-header")">
+    <section class="@sectionClass">
+        <div class="@shellInnerClass">
+            <div class="@pageHeaderClass">
                 <div>
-                    <p class="@(isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminDashboard ? "Order Operations" : "Northstar Supply")</p>
-                    <h1>@(isAdminDashboard ? "Order record" : "Order details")</h1>
-                    <p class="@(isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle")">
-                        @(isAdminDashboard
-                            ? "Update shipping, fulfillment, and operational fields as needed."
-                            : "Review your shipping and contact details for this order.")
-                    </p>
+                    <p class="@eyebrowClass">@brandEyebrow</p>
+                    <h1>@pageTitle</h1>
+                    <p class="@subtitleClass">@pageSubtitle</p>
                 </div>
-                <a asp-action="Index" asp-route-filter="@filter" class="@(isAdminDashboard ? "admin-btn admin-btn-secondary" : "northstar-btn northstar-btn-secondary")">Back to orders</a>
+                <a asp-action="Index" asp-route-filter="@filter" class="@backButtonClass">Back to orders</a>
             </div>
 
-            <div class="@(isAdminDashboard ? "admin-order-meta-strip" : "northstar-order-meta-strip")">
-                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
-                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order number</span>
+            <div class="@metaStripClass">
+                <div class="@metaCardClass">
+                    <span class="@metaLabelClass">Order number</span>
                     <strong>#@header.Id</strong>
                 </div>
-                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
-                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order status</span>
-                    <span class="@(isAdminDashboard ? $"admin-status-badge {StatusClass(header.OrderStatus)}" : $"northstar-status-badge {StatusClass(header.OrderStatus)}")">@header.OrderStatus</span>
+                <div class="@metaCardClass">
+                    <span class="@metaLabelClass">Order status</span>
+                    <div class="order-summary-status">
+                        <span class="@orderStatusBadgeClass">@header.OrderStatus</span>
+                    </div>
                 </div>
-                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
-                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Payment status</span>
-                    <span class="@(isAdminDashboard ? $"admin-status-badge {StatusClass(header.PaymentStatus)}" : $"northstar-status-badge {StatusClass(header.PaymentStatus)}")">@header.PaymentStatus</span>
+                <div class="@metaCardClass">
+                    <span class="@metaLabelClass">Payment status</span>
+                    <div class="order-summary-status">
+                        <span class="@paymentStatusBadgeClass">@header.PaymentStatus</span>
+                    </div>
                 </div>
-                <div class="@(isAdminDashboard ? "admin-panel admin-order-meta-card" : "northstar-summary-card northstar-order-meta-card")">
-                    <span class="@(isAdminDashboard ? "admin-field-label" : "northstar-detail-summary-label")">Order total</span>
+                <div class="@metaCardClass">
+                    <span class="@metaLabelClass">Order total</span>
                     <strong>@header.OrderTotal.FormatAsUSD()</strong>
                 </div>
             </div>
 
-            <div class="@(isAdminDashboard ? "admin-order-detail-layout" : "northstar-summary-layout")">
-                <div class="@(isAdminDashboard ? "admin-order-main" : "northstar-order-main")">
-                    <section class="@(isAdminDashboard ? "admin-order-form-panel admin-panel" : "northstar-summary-details northstar-summary-card")">
-                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+            <div class="@layoutClass">
+                <div class="@mainColumnClass">
+                    <section class="@detailSectionClass">
+                        <div class="@sectionHeadClass">
                             <h2>Customer</h2>
-                            <p>@(isAdminDashboard ? "Primary contact information for this order." : "Contact details associated with this order.")</p>
+                            <p>@customerSectionCopy</p>
                         </div>
 
                         <div class="order-section-grid">
@@ -98,8 +150,8 @@
                                         <input asp-for="Header.PhoneNumber" class="form-control admin-input" />
                                     </div>
                                     <div class="admin-field-block">
-                                        <label asp-for="Header.ApplicationUser.Email"></label>
-                                        <input asp-for="Header.ApplicationUser.Email" class="form-control admin-input" />
+                                        <label for="Header_ApplicationUser_Email">Email</label>
+                                        <input id="Header_ApplicationUser_Email" value="@header.ApplicationUser.Email" class="form-control admin-input admin-input-readonly" readonly />
                                     </div>
                                 </div>
                             }
@@ -107,15 +159,15 @@
                             {
                                 <div class="order-display-grid">
                                     <div class="order-display-field">
-                                        <span class="order-display-label">First Name</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.FirstName)</span>
                                         <strong>@header.FirstName</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">Last Name</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.LastName)</span>
                                         <strong>@header.LastName</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">Phone</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.PhoneNumber)</span>
                                         <strong>@header.PhoneNumber</strong>
                                     </div>
                                     <div class="order-display-field">
@@ -127,10 +179,10 @@
                         </div>
                     </section>
 
-                    <section class="@(isAdminDashboard ? "admin-order-form-panel admin-panel" : "northstar-summary-details northstar-summary-card")">
-                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                    <section class="@detailSectionClass">
+                        <div class="@sectionHeadClass">
                             <h2>Shipping / Fulfillment</h2>
-                            <p>@(isAdminDashboard ? "Shipping address and fulfillment inputs." : "Delivery address and fulfillment information.")</p>
+                            <p>@shippingSectionCopy</p>
                         </div>
 
                         <div class="order-section-grid">
@@ -157,25 +209,32 @@
                                 </div>
 
                                 <div class="admin-field admin-field-half">
-                                    <div class="admin-field-block">
-                                        <label asp-for="Header.Carrier"></label>
-                                        <select asp-for="Header.Carrier" asp-items="@(new SelectList(Model.Carriers))" class="form-select admin-input">
-                                            <option value="">Select carrier</option>
-                                        </select>
-                                    </div>
+                                    @if (canShowCarrier)
+                                    {
+                                        <div class="admin-field-block">
+                                            <label asp-for="Header.Carrier"></label>
+                                            @if (canEditCarrier)
+                                            {
+                                                <select asp-for="Header.Carrier" asp-items="@(new SelectList(Model.Carriers))" class="form-select admin-input">
+                                                    <option value="">Select carrier</option>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <input asp-for="Header.Carrier" class="form-control admin-input admin-input-readonly" readonly />
+                                            }
+                                        </div>
+                                    }
                                     <div class="admin-field-block">
                                         <label asp-for="Header.TrackingNumber"></label>
-                                        <input asp-for="Header.TrackingNumber" class="form-control admin-input" />
+                                        <input asp-for="Header.TrackingNumber" class="form-control admin-input admin-input-readonly" readonly />
                                     </div>
                                 </div>
 
                                 <div class="admin-field admin-field-half">
                                     <div class="admin-field-block">
                                         <label asp-for="Header.ShippingDate"></label>
-                                        <div class="order-display-field order-display-field-muted">
-                                            <span class="order-display-label">Shipping date</span>
-                                            <strong>@shippingDateText</strong>
-                                        </div>
+                                        <input asp-for="Header.ShippingDate" class="form-control admin-input admin-input-readonly" readonly />
                                     </div>
                                 </div>
                             }
@@ -183,31 +242,34 @@
                             {
                                 <div class="order-display-grid">
                                     <div class="order-display-field order-display-field-wide">
-                                        <span class="order-display-label">Street Address</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.StreetAddress)</span>
                                         <strong>@header.StreetAddress</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">City</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.City)</span>
                                         <strong>@header.City</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">State</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.State)</span>
                                         <strong>@header.State</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">Postal Code</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.PostalCode)</span>
                                         <strong>@header.PostalCode</strong>
                                     </div>
+                                    @if (canShowCarrier)
+                                    {
+                                        <div class="order-display-field">
+                                            <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.Carrier)</span>
+                                            <strong>@carrierText</strong>
+                                        </div>
+                                    }
                                     <div class="order-display-field">
-                                        <span class="order-display-label">Carrier</span>
-                                        <strong>@(string.IsNullOrWhiteSpace(header.Carrier) ? "Not assigned" : header.Carrier)</strong>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.TrackingNumber)</span>
+                                        <strong>@trackingNumberText</strong>
                                     </div>
                                     <div class="order-display-field">
-                                        <span class="order-display-label">Tracking Number</span>
-                                            <strong>@(string.IsNullOrWhiteSpace(header.TrackingNumber) ? "Pending" : header.TrackingNumber)</strong>
-                                    </div>
-                                    <div class="order-display-field">
-                                        <span class="order-display-label">Shipping Date</span>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.ShippingDate)</span>
                                         <strong>@shippingDateText</strong>
                                     </div>
                                 </div>
@@ -215,27 +277,27 @@
                         </div>
                     </section>
 
-                    <section class="@(isAdminDashboard ? "admin-order-form-panel admin-panel" : "northstar-summary-details northstar-summary-card")">
-                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                    <section class="@detailSectionClass">
+                        <div class="@sectionHeadClass">
                             <h2>Order Timeline</h2>
-                            <p>@(isAdminDashboard ? "System-generated milestones and status markers." : "Key dates and status updates for this order.")</p>
+                            <p>@timelineSectionCopy</p>
                         </div>
 
                         <div class="order-display-grid">
                             <div class="order-display-field order-display-field-muted">
-                                <span class="order-display-label">Order Date</span>
+                                <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.OrderDate)</span>
                                 <strong>@orderDateText</strong>
                             </div>
                             <div class="order-display-field order-display-field-muted">
-                                <span class="order-display-label">@(header.SessionId != null ? "Payment Date" : "Payment Due Date")</span>
-                                <strong>@(header.SessionId != null ? paymentDateText : paymentDueDateText)</strong>
+                                <span class="order-display-label">@paymentTimelineLabel</span>
+                                <strong>@paymentTimelineValue</strong>
                             </div>
                             <div class="order-display-field order-display-field-muted">
-                                <span class="order-display-label">Order Status</span>
+                                <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.OrderStatus)</span>
                                 <strong>@header.OrderStatus</strong>
                             </div>
                             <div class="order-display-field order-display-field-muted">
-                                <span class="order-display-label">Payment Status</span>
+                                <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.PaymentStatus)</span>
                                 <strong>@header.PaymentStatus</strong>
                             </div>
                         </div>
@@ -254,12 +316,12 @@
 
                                 <div class="order-display-grid order-display-grid-compact">
                                     <div class="order-display-field order-display-field-muted">
-                                        <span class="order-display-label">Session ID</span>
-                                        <strong>@(string.IsNullOrWhiteSpace(header.SessionId) ? "Not available" : header.SessionId)</strong>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.SessionId)</span>
+                                        <strong>@sessionIdText</strong>
                                     </div>
                                     <div class="order-display-field order-display-field-muted">
-                                        <span class="order-display-label">Payment Intent ID</span>
-                                        <strong>@(string.IsNullOrWhiteSpace(header.PaymentIntentId) ? "Not available" : header.PaymentIntentId)</strong>
+                                        <span class="order-display-label">@Html.DisplayNameFor(m => m.Header.PaymentIntentId)</span>
+                                        <strong>@paymentIntentText</strong>
                                     </div>
                                 </div>
                             </details>
@@ -267,22 +329,22 @@
                     }
                 </div>
 
-                <aside class="@(isAdminDashboard ? "admin-order-sidebar" : "northstar-summary-sidebar")">
-                    <div class="@(isAdminDashboard ? "admin-panel admin-order-summary-card" : "northstar-summary-card")">
-                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                <aside class="@sidebarClass">
+                    <div class="@itemsCardClass">
+                        <div class="@sectionHeadClass">
                             <h2>Order items</h2>
                             <p>@Model.Details.Count() line items.</p>
                         </div>
 
-                        <div class="@(isAdminDashboard ? "admin-order-items" : "northstar-summary-items")">
+                        <div class="@itemsListClass">
                             @foreach (var item in Model.Details)
                             {
-                                <article class="@(isAdminDashboard ? "admin-order-item" : "northstar-summary-item")">
+                                <article class="@itemClass">
                                     <div>
                                         <h3>@item.Product.Title</h3>
                                         <p>Quantity: @item.Count</p>
                                     </div>
-                                    <div class="@(isAdminDashboard ? "admin-order-item-pricing" : "northstar-summary-item-pricing")">
+                                    <div class="@itemPricingClass">
                                         <strong>@item.TotalCost.FormatAsUSD()</strong>
                                         <span>@item.Product.Price.FormatAsUSD() per unit</span>
                                     </div>
@@ -290,22 +352,22 @@
                             }
                         </div>
 
-                        <div class="@(isAdminDashboard ? "admin-order-total" : "northstar-summary-total")">
+                        <div class="@totalClass">
                             <span>Total</span>
                             <strong>@header.OrderTotal.FormatAsUSD()</strong>
                         </div>
                     </div>
 
-                    <div class="@(isAdminDashboard ? "admin-panel admin-order-actions-panel" : "northstar-summary-card")">
-                        <div class="@(isAdminDashboard ? "admin-section-head" : "northstar-summary-section-head")">
+                    <div class="@actionsCardClass">
+                        <div class="@sectionHeadClass">
                             <h2>Actions</h2>
-                            <p>@(isAdminDashboard ? "Order management and status actions." : "Actions currently available for this order.")</p>
+                            <p>@actionsSectionCopy</p>
                         </div>
 
-                        <div class="@(isAdminDashboard ? "admin-action-stack" : "northstar-action-stack")">
+                        <div class="@actionStackClass">
                             @if (header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
                             {
-                                <button asp-action="RequestPayment" class="@(isAdminDashboard ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn")">Pay now</button>
+                                <button asp-action="RequestPayment" class="@payButtonClass">Pay now</button>
                             }
 
                             @if (isAdminDashboard)
@@ -323,7 +385,7 @@
 
                             @if (!header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
                             {
-                                <button asp-action="CancelOrder" class="@(isAdminDashboard ? "admin-btn admin-btn-danger" : "northstar-btn northstar-btn-secondary northstar-order-cancel-btn")">Cancel order</button>
+                                <button asp-action="CancelOrder" class="@cancelButtonClass">Cancel order</button>
                             }
                         </div>
                     </div>
