@@ -8,8 +8,8 @@ namespace Demo.Models.ViewModels
 {
     public class ShoppingCartVM
     {
-        public IEnumerable<ShoppingCartItem> ProductList { get; set; }
-        public OrderHeader OrderHeader { get; set; }
+        public IEnumerable<ShoppingCartItem> ProductList { get; set; } = null!;
+        public OrderHeader OrderHeader { get; set; } = null!;
         public bool SetAddressAsDefault { get; set; }
     }
 }

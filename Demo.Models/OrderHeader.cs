@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class OrderHeader : ModelBase
+    public class OrderHeader : ModelBase, IShippingContainer
     {
         [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; }

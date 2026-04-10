@@ -70,16 +70,9 @@ namespace Demo.Main.Areas.Customer.Controllers
             var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
                
             // Map fields from vm.Header to orderHeader
-            orderHeader.FirstName = vm.Header.FirstName ?? orderHeader.FirstName;
-            orderHeader.LastName = vm.Header.LastName ?? orderHeader.LastName;
-            orderHeader.PhoneNumber = vm.Header.PhoneNumber ?? orderHeader.PhoneNumber;
-            orderHeader.StreetAddress = vm.Header.StreetAddress ?? orderHeader.StreetAddress;
-            orderHeader.City = vm.Header.City ?? orderHeader.City;
-            orderHeader.State = vm.Header.State ?? orderHeader.State;
-            orderHeader.PostalCode = vm.Header.PostalCode ?? orderHeader.PostalCode;           
-            orderHeader.TrackingNumber = vm.Header.TrackingNumber ?? orderHeader.TrackingNumber;
-            orderHeader.Carrier = vm.Header.Carrier ?? orderHeader.Carrier;
-                
+            var asContainer = orderHeader as IShippingContainer;
+            asContainer.FetchDetails(vm.Header);
+                            
             return UpdateRepo(
                 orderHeader, 
                 unitOfWork.OrderHeaderRepository.Update, 

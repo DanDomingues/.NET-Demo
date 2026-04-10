@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Models
 {
-    public class ApplicationUser : IdentityUser, IModelBase
+    public class ApplicationUser : IdentityUser, IModelBase, INamedAddressContainer
     {
         [Required] public string FirstName { get; set; } = null!;
         [Required] public string LastName { get; set; } = null!;

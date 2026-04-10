@@ -109,11 +109,8 @@ namespace Demo.Main.Areas.Customer.Controllers
             //If user requested to set order address as account defaults, set them here
             if(vm.SetAddressAsDefault)
             {
-                appUser.PhoneNumber = vm.OrderHeader.PhoneNumber ?? appUser.PhoneNumber;
-                appUser.StreetAddress = vm.OrderHeader.StreetAddress ?? appUser.StreetAddress;
-                appUser.City = vm.OrderHeader.City ?? appUser.City;
-                appUser.State = vm.OrderHeader.State ?? appUser.State;
-                appUser.PostalCode = vm.OrderHeader.PostalCode ?? appUser.PostalCode;
+                var container = appUser as IAddressContainer;
+                container.FetchDetails(vm.OrderHeader);
                 unitOfWork.Save();
             }
 
@@ -194,19 +191,13 @@ namespace Demo.Main.Areas.Customer.Controllers
                 ApplicationUserId = userId,
                 OrderTotal = cartItems.Sum(e => e.TotalCost),
 
-                // Pre-fill checkout fields from the current user profile.
-                FirstName = appUser.FirstName ?? string.Empty,
-                LastName = appUser.LastName ?? string.Empty,
-                PhoneNumber = appUser.PhoneNumber ?? string.Empty,
-                StreetAddress = appUser.StreetAddress ?? string.Empty,
-                City = appUser.City ?? string.Empty,
-                State = appUser.State ?? string.Empty,
-                PostalCode = appUser.PostalCode ?? string.Empty,
-
                 //Add default init values for order and payment status
                 OrderStatus = SD.ORDER_STATUS_PENDING,
                 PaymentStatus = SD.PAYMENT_STATUS_PENDING,
             };
+
+            var asContainer = header as INamedAddressContainer;
+            asContainer.FetchDetails(appUser);
 
             foreach (var item in cartItems)
             {
