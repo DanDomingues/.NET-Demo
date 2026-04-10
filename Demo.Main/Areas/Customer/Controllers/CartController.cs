@@ -59,39 +59,6 @@ namespace Demo.Main.Areas.Customer.Controllers
             return View(id);
         }
 
-        private void AssignPaymentValues(int id, string paymentIntentId)
-        {
-            //As this will already be tracked by the Post method, we avoid doing it here concurrently
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, track: false);
-
-            orderHeader.PaymentDate = DateTime.Now;
-            orderHeader.PaymentIntentId = paymentIntentId;
-            orderHeader.PaymentStatus = SD.PAYMENT_STATUS_APPROVED;
-            orderHeader.OrderStatus = SD.ORDER_STATUS_APPROVED;
-            unitOfWork.OrderHeaderRepository.Update(orderHeader);
-            
-            unitOfWork.Save();
-        }
-
-        private void MoveCartItemsToOrder(string userId, int orderHeaderId)
-        {
-            //Fetches cart items based on userId
-            var cartItems = Repo.GetAll(
-                e => e.ApplicationUserId.Equals(userId), 
-                includeProperties: DefaultIncludeProperties);
-
-            //Converts into Order Items
-            var orderItems = cartItems.Select(item => new OrderItemDetails(item)
-            {
-                OrderHeaderId = orderHeaderId
-            });
-
-            //Order items are added, cart is emptied
-            unitOfWork.OrderItemDetailsRepository.AddRange([.. orderItems]);
-            Repo.RemoveRange([.. cartItems]);
-            HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
-        }
-
         public IActionResult OrderFailure(int id)
         {
             unitOfWork.OrderHeaderRepository.RemoveById(id);
@@ -211,5 +178,40 @@ namespace Demo.Main.Areas.Customer.Controllers
                 OrderHeader = header
             };
         }
+    
+        
+        private void AssignPaymentValues(int id, string paymentIntentId)
+        {
+            //As this will already be tracked by the Post method, we avoid doing it here concurrently
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, track: false);
+
+            orderHeader.PaymentDate = DateTime.Now;
+            orderHeader.PaymentIntentId = paymentIntentId;
+            orderHeader.PaymentStatus = SD.PAYMENT_STATUS_APPROVED;
+            orderHeader.OrderStatus = SD.ORDER_STATUS_APPROVED;
+            unitOfWork.OrderHeaderRepository.Update(orderHeader);
+            
+            unitOfWork.Save();
+        }
+
+        private void MoveCartItemsToOrder(string userId, int orderHeaderId)
+        {
+            //Fetches cart items based on userId
+            var cartItems = Repo.GetAll(
+                e => e.ApplicationUserId.Equals(userId), 
+                includeProperties: DefaultIncludeProperties);
+
+            //Converts into Order Items
+            var orderItems = cartItems.Select(item => new OrderItemDetails(item)
+            {
+                OrderHeaderId = orderHeaderId
+            });
+
+            //Order items are added, cart is emptied
+            unitOfWork.OrderItemDetailsRepository.AddRange([.. orderItems]);
+            Repo.RemoveRange([.. cartItems]);
+            HttpContext.Session.SetInt32(SD.CART_SESSION, 0);
+        }
+
     }
 }
