@@ -25,11 +25,14 @@ namespace Demo.Models
 
         public double TotalCost => Count * Price;
 
-        public OrderItemDetails(ShoppingCartItem cartItem)
+        public static OrderItemDetails BuildFrom(ShoppingCartItem cartItem)
         {
-            Count = cartItem.Count;
-            Price = cartItem.Product.Price;
-            ProductId = cartItem.Product.Id;
+            return new OrderItemDetails()
+            {
+                Count = cartItem.Count,
+                Price = cartItem.Product.Price,
+                ProductId = cartItem.Product.Id
+            };
         }
     }
 }

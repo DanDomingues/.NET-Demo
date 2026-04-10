@@ -202,9 +202,11 @@ namespace Demo.Main.Areas.Customer.Controllers
                 includeProperties: DefaultIncludeProperties);
 
             //Converts into Order Items
-            var orderItems = cartItems.Select(item => new OrderItemDetails(item)
+            var orderItems = cartItems.Select(item =>
             {
-                OrderHeaderId = orderHeaderId
+                var orderItem = OrderItemDetails.BuildFrom(item);
+                orderItem.OrderHeaderId = orderHeaderId;
+                return orderItem;
             });
 
             //Order items are added, cart is emptied

@@ -20,8 +20,8 @@ namespace Demo.Models
 
     public interface INamedAddressContainer : IAddressContainer
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public void FetchDetails(INamedAddressContainer container)
         {
