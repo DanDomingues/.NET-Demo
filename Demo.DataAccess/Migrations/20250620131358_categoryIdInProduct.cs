@@ -5,7 +5,7 @@
 namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
-    public partial class idk5 : Migration
+    public partial class categoryIdInProduct : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

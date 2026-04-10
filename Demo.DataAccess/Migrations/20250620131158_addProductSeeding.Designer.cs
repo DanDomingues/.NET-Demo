@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.Main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250620131247_idk-3")]
-    partial class idk3
+    [Migration("20250620131158_addProductSeeding")]
+    partial class addProductSeeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,9 +100,6 @@ namespace Demo.Main.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("TotallyNotAnID")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Product");
@@ -117,8 +114,7 @@ namespace Demo.Main.Migrations
                             Price = 90.0,
                             Price100 = 80.0,
                             Price50 = 85.0,
-                            Title = "Fortune of Time",
-                            TotallyNotAnID = 3
+                            Title = "Fortune of Time"
                         });
                 });
 #pragma warning restore 612, 618

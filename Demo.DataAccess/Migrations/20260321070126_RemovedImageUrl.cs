@@ -5,7 +5,7 @@
 namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
-    public partial class TestMigrationA : Migration
+    public partial class RemovedImageUrl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

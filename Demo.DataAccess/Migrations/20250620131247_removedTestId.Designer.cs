@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.Main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250620131644_letssee")]
-    partial class letssee
+    [Migration("20250620131247_removedTestId")]
+    partial class removedTestId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,9 +78,6 @@ namespace Demo.Main.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -108,8 +105,6 @@ namespace Demo.Main.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Product");
 
                     b.HasData(
@@ -117,26 +112,14 @@ namespace Demo.Main.Migrations
                         {
                             Id = 2,
                             Author = "Billy Spark",
-                            CategoryId = 3,
                             Description = "Lorem ipsum",
                             ISBN = "SWD999901",
                             Price = 90.0,
                             Price100 = 80.0,
                             Price50 = 85.0,
                             Title = "Fortune of Time",
-                            TotallyNotAnID = 666
+                            TotallyNotAnID = 3
                         });
-                });
-
-            modelBuilder.Entity("Demo.Models.Product", b =>
-                {
-                    b.HasOne("Demo.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

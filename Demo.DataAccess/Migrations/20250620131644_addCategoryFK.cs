@@ -5,7 +5,7 @@
 namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
-    public partial class letssee : Migration
+    public partial class addCategoryFK : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

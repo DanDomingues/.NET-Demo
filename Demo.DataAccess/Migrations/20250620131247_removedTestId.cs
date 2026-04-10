@@ -5,7 +5,7 @@
 namespace Demo.Main.Migrations
 {
     /// <inheritdoc />
-    public partial class idk3 : Migration
+    public partial class removedTestId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

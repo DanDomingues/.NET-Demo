@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demo.Main.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260321070126_TestMigrationA")]
-    partial class TestMigrationA
+    [Migration("20260321070126_RemovedImageUrl")]
+    partial class RemovedImageUrl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
