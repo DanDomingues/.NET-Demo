@@ -2,10 +2,10 @@
 @model OrderVM
 
 @{
+    var header = Model.Header ?? throw new Exception("No header found");
     var filter = Context.Request.Query["filter"].ToString();
-    var isAdminDashboard = User.HasAdminRights();
-    var header = Model.Header;
     var hasSessionMetadata = !string.IsNullOrWhiteSpace(header.SessionId) || !string.IsNullOrWhiteSpace(header.PaymentIntentId);
+    var isAdminDashboard = User.HasAdminRights() && filter == "all";
     var brandName = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
     var bodyClass = isAdminDashboard ? "admin-ops admin-order-detail-page" : "northstar-home northstar-order-detail-page";
     var shellClass = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
