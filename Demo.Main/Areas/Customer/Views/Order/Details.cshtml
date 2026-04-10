@@ -6,7 +6,22 @@
     var filter = Context.Request.Query["filter"].ToString();
     var hasSessionMetadata = !string.IsNullOrWhiteSpace(header.SessionId) || !string.IsNullOrWhiteSpace(header.PaymentIntentId);
     var isAdminDashboard = User.HasAdminRights() && filter == "all";
+
+    //LABELS
     var brandName = isAdminDashboard ? "Northstar Ops" : "Northstar Supply";
+    var brandEyebrow = isAdminDashboard ? "Order Operations" : "Northstar Supply";
+    var pageTitle = isAdminDashboard ? "Order record" : "Order details";
+    var pageSubtitle = isAdminDashboard
+        ? "Update shipping, fulfillment, and operational fields as needed."
+        : "Review your shipping information, items, and order status.";
+    var customerSectionCopy = isAdminDashboard ? "Primary contact information for this order." : "Contact details associated with this order.";
+    var shippingSectionCopy = isAdminDashboard ? "Shipping address and fulfillment inputs." : "Delivery address and tracking information for this order.";
+    var timelineSectionCopy = isAdminDashboard ? "System-generated milestones and status markers." : "Important dates and status updates for this order.";
+    var actionsSectionCopy = isAdminDashboard ? "Order management and status actions." : "Actions currently available for this order.";
+    var lineItemsLabel = isAdminDashboard ? $"{Model.Details.Count()} line items" : "Items included in this order";
+    var paymentTimelineLabel = header.SessionId != null ? "Payment Date" : "Payment Due Date";
+
+    //CLASSES
     var bodyClass = isAdminDashboard ? "admin-ops admin-order-detail-page" : "northstar-home northstar-order-detail-page";
     var shellClass = isAdminDashboard ? "admin-shell flex-fill" : "northstar-shell flex-fill";
     var navClass = isAdminDashboard ? "admin-nav" : "northstar-nav";
@@ -35,24 +50,19 @@
     var actionStackClass = isAdminDashboard ? "admin-action-stack" : "northstar-action-stack";
     var payButtonClass = isAdminDashboard ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn";
     var cancelButtonClass = isAdminDashboard ? "admin-btn admin-btn-danger" : "northstar-btn northstar-btn-secondary northstar-order-cancel-btn";
-    var brandEyebrow = isAdminDashboard ? "Order Operations" : "Northstar Supply";
-    var pageTitle = isAdminDashboard ? "Order record" : "Order details";
-    var pageSubtitle = isAdminDashboard
-        ? "Update shipping, fulfillment, and operational fields as needed."
-        : "Review your shipping and contact details for this order.";
-    var customerSectionCopy = isAdminDashboard ? "Primary contact information for this order." : "Contact details associated with this order.";
-    var shippingSectionCopy = isAdminDashboard ? "Shipping address and fulfillment inputs." : "Delivery address and fulfillment information.";
-    var timelineSectionCopy = isAdminDashboard ? "System-generated milestones and status markers." : "Key dates and status updates for this order.";
-    var actionsSectionCopy = isAdminDashboard ? "Order management and status actions." : "Actions currently available for this order.";
-    var paymentTimelineLabel = header.SessionId != null ? "Payment Date" : "Payment Due Date";
     var orderStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.OrderStatus)}" : $"northstar-status-badge {StatusClass(header.OrderStatus)}";
     var paymentStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.PaymentStatus)}" : $"northstar-status-badge {StatusClass(header.PaymentStatus)}";
+    
+    //LOGIC
     var canShowCarrier = header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED);
     var canEditCarrier = isAdminDashboard && header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING);
+    var canPerformPayment = header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED);
+    var canRequestCancel = !header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_CANCELLED);
 
     string FormatDateTime(DateTime value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy HH:mm:ss");
     string FormatDateOnly(DateOnly value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy");
 
+    //MODEL DRIVEN
     var shippingDateText = FormatDateTime(header.ShippingDate, "Not shipped yet");
     var orderDateText = FormatDateTime(header.OrderDate, "Not available");
     var paymentDateText = FormatDateTime(header.PaymentDate, "Not recorded");
@@ -63,6 +73,7 @@
     var sessionIdText = string.IsNullOrWhiteSpace(header.SessionId) ? "Not available" : header.SessionId;
     var paymentIntentText = string.IsNullOrWhiteSpace(header.PaymentIntentId) ? "Not available" : header.PaymentIntentId;
 
+    //VIEW DATA
     ViewData["Title"] = $"Order #{header?.Id}";
     ViewData["BrandName"] = brandName;
     ViewData["BodyClass"] = bodyClass;
@@ -333,7 +344,7 @@
                     <div class="@itemsCardClass">
                         <div class="@sectionHeadClass">
                             <h2>Order items</h2>
-                            <p>@Model.Details.Count() line items.</p>
+                            <p>@lineItemsLabel</p>
                         </div>
 
                         <div class="@itemsListClass">
@@ -356,22 +367,31 @@
                             <span>Total</span>
                             <strong>@header.OrderTotal.FormatAsUSD()</strong>
                         </div>
+
+                        @if (!isAdminDashboard)
+                        {
+                            <div class="northstar-order-summary-actions @actionStackClass">
+                                @if (canPerformPayment)
+                                {
+                                    <button asp-action="RequestPayment" class="@payButtonClass">Pay now</button>
+                                }
+                                @if (canRequestCancel)
+                                {
+                                    <button asp-action="CancelOrder" class="@cancelButtonClass">Cancel order</button>
+                                }
+                            </div>
+                        }
                     </div>
 
-                    <div class="@actionsCardClass">
-                        <div class="@sectionHeadClass">
-                            <h2>Actions</h2>
-                            <p>@actionsSectionCopy</p>
-                        </div>
+                    @if (isAdminDashboard)
+                    {
+                        <div class="@actionsCardClass">
+                            <div class="@sectionHeadClass">
+                                <h2>Actions</h2>
+                                <p>@actionsSectionCopy</p>
+                            </div>
 
-                        <div class="@actionStackClass">
-                            @if (header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED))
-                            {
-                                <button asp-action="RequestPayment" class="@payButtonClass">Pay now</button>
-                            }
-
-                            @if (isAdminDashboard)
-                            {
+                            <div class="@actionStackClass">
                                 <button asp-action="UpdateDetails" class="admin-btn admin-btn-warning">Save changes</button>
                                 @if (header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
                                 {
@@ -381,14 +401,13 @@
                                 {
                                     <button asp-action="ShipOrder" onclick="return validateInput()" class="admin-btn admin-btn-success">Ship order</button>
                                 }
-                            }
-
-                            @if (!header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_CANCELLED))
-                            {
-                                <button asp-action="CancelOrder" class="@cancelButtonClass">Cancel order</button>
-                            }
+                                @if (canRequestCancel)
+                                {
+                                    <button asp-action="CancelOrder" class="@cancelButtonClass">Cancel order</button>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                 </aside>
             </div>
         </div>

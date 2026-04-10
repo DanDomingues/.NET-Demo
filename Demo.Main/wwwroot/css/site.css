@@ -2425,6 +2425,16 @@ body {
   font-size: 1.35rem;
 }
 
+.northstar-order-detail-page .northstar-summary-card {
+  position: static;
+}
+
+.northstar-order-summary-actions {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #ece7df;
+}
+
 .northstar-orders-section,
 .northstar-order-detail-section {
   padding-top: 1rem;
