@@ -1,5 +1,6 @@
 @model ShoppingCartVM
 @{
+    var productList = Model.ProductList ?? Array.Empty<ShoppingCartItem>();
     var hasItems = Model.ProductList?.Any() == true;
     var itemCount = Model.ProductList?.Count() ?? 0;
     var orderTotal = Model.OrderHeader?.OrderTotal ?? 0;
@@ -37,7 +38,7 @@
                     }
                     else
                     {
-                        @foreach (var item in Model.ProductList)
+                        @foreach (var item in productList)
                         {
                             <article class="northstar-cart-item">
                                 <div class="northstar-cart-item-media">

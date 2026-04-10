@@ -67,7 +67,7 @@ namespace Demo.Main.Areas.Customer.Controllers
         [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
         {
-            var orderHeader = Repo.GetFirstOrDefault(order => order.Id.Equals(vm.Header.Id), track: false);
+            var orderHeader = Repo.GetFirst(order => order.Id.Equals(vm.Header.Id), track: false);
                
             // Map fields from vm.Header to orderHeader
             var asContainer = orderHeader as IShippingContainer;
@@ -127,7 +127,7 @@ namespace Demo.Main.Areas.Customer.Controllers
         {
             var header = Repo.GetById(vm.Header.Id);
 
-            if(header.PaymentStatus.Equals(SD.PAYMENT_STATUS_APPROVED))
+            if(header.PaymentStatus?.Equals(SD.PAYMENT_STATUS_APPROVED) == true)
             {
                 var service = new RefundService();
                 service.Create(new RefundCreateOptions

@@ -2,7 +2,9 @@
 @model OrderVM
 
 @{
-    var header = Model.Header ?? throw new Exception("No header found");
+    OrderHeader header = Model.Header ?? throw new Exception("No header found");
+    var orderStatus = header.OrderStatus ?? string.Empty;
+    var paymentStatus = header.PaymentStatus ?? string.Empty;
     var filter = Context.Request.Query["filter"].ToString();
     var hasSessionMetadata = !string.IsNullOrWhiteSpace(header.SessionId) || !string.IsNullOrWhiteSpace(header.PaymentIntentId);
     var isAdminDashboard = User.HasAdminRights() && filter == "all";
@@ -49,15 +51,25 @@
     var actionsCardClass = isAdminDashboard ? "admin-panel admin-order-actions-panel" : "northstar-summary-card";
     var actionStackClass = isAdminDashboard ? "admin-action-stack" : "northstar-action-stack";
     var payButtonClass = isAdminDashboard ? "admin-btn admin-btn-success" : "northstar-btn northstar-btn-primary northstar-submit-btn";
-    var cancelButtonClass = isAdminDashboard ? "admin-btn admin-btn-danger" : "northstar-btn northstar-btn-secondary northstar-order-cancel-btn";
-    var orderStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.OrderStatus)}" : $"northstar-status-badge {StatusClass(header.OrderStatus)}";
-    var paymentStatusBadgeClass = isAdminDashboard ? $"admin-status-badge {StatusClass(header.PaymentStatus)}" : $"northstar-status-badge {StatusClass(header.PaymentStatus)}";
+    var cancelButtonClass = isAdminDashboard ? 
+        "admin-btn admin-btn-danger" : 
+        "northstar-btn northstar-btn-secondary northstar-order-cancel-btn";
+    var orderStatusBadgeClass = isAdminDashboard ? 
+        $"admin-status-badge {StatusClass(orderStatus)}" : 
+        $"northstar-status-badge {StatusClass(orderStatus)}";
+    var paymentStatusBadgeClass = isAdminDashboard ? 
+        $"admin-status-badge {StatusClass(header.PaymentStatus)}" : 
+        $"northstar-status-badge {StatusClass(header.PaymentStatus)}";
     
     //LOGIC
-    var canShowCarrier = header.OrderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED);
-    var canEditCarrier = isAdminDashboard && header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING);
-    var canPerformPayment = header.PaymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && header.OrderStatus.Equals(SD.ORDER_STATUS_SHIPPED);
-    var canRequestCancel = !header.OrderStatus.EqualsAny(SD.PAYMENT_STATUS_REFUNDED, SD.ORDER_STATUS_SHIPPED, SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_CANCELLED);
+    var canShowCarrier = orderStatus.EqualsAny(SD.ORDER_STATUS_PROCESSING, SD.ORDER_STATUS_SHIPPED);
+    var canEditCarrier = isAdminDashboard && orderStatus.Equals(SD.ORDER_STATUS_PROCESSING);
+    var canPerformPayment = paymentStatus.Equals(SD.PAYMENT_STATUS_DELAYED) && orderStatus.Equals(SD.ORDER_STATUS_SHIPPED);
+    var canRequestCancel = !orderStatus.EqualsAny(
+        SD.PAYMENT_STATUS_REFUNDED, 
+        SD.ORDER_STATUS_SHIPPED, 
+        SD.ORDER_STATUS_PROCESSING, 
+        SD.ORDER_STATUS_CANCELLED);
 
     string FormatDateTime(DateTime value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy HH:mm:ss");
     string FormatDateOnly(DateOnly value, string fallback) => value == default ? fallback : value.ToString("dd/MM/yyyy");
@@ -118,7 +130,7 @@
                 <div class="@metaCardClass">
                     <span class="@metaLabelClass">Order status</span>
                     <div class="order-summary-status">
-                        <span class="@orderStatusBadgeClass">@header.OrderStatus</span>
+                        <span class="@orderStatusBadgeClass">@orderStatus</span>
                     </div>
                 </div>
                 <div class="@metaCardClass">
@@ -393,11 +405,11 @@
 
                             <div class="@actionStackClass">
                                 <button asp-action="UpdateDetails" class="admin-btn admin-btn-warning">Save changes</button>
-                                @if (header.OrderStatus.Equals(SD.ORDER_STATUS_APPROVED))
+                                @if (orderStatus.Equals(SD.ORDER_STATUS_APPROVED))
                                 {
                                     <button asp-action="StartProcess" class="admin-btn admin-btn-success">Start processing</button>
                                 }
-                                @if (header.OrderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
+                                @if (orderStatus.Equals(SD.ORDER_STATUS_PROCESSING))
                                 {
                                     <button asp-action="ShipOrder" onclick="return validateInput()" class="admin-btn admin-btn-success">Ship order</button>
                                 }

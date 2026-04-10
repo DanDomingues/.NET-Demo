@@ -69,7 +69,7 @@ namespace Demo.Main.Areas.Customer.Controllers
         public IActionResult Summary(ShoppingCartVM vm)
         {
             // Load the user separately because the navigation property is not posted back with the form.
-            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(
+            var appUser = unitOfWork.ApplicationUserRepository.GetFirst(
                 u => u.Id == vm.OrderHeader.ApplicationUserId,
                 track: true);
                 
@@ -148,7 +148,7 @@ namespace Demo.Main.Areas.Customer.Controllers
                 return new();
             }
 
-            var appUser = unitOfWork.ApplicationUserRepository.GetFirstOrDefault(u => u.Id == userId);
+            var appUser = unitOfWork.ApplicationUserRepository.GetFirst(u => u.Id == userId);
             var cartItems = Repo.GetAll(
                 e => e.ApplicationUser.Id == userId, 
                 includeProperties: DefaultIncludeProperties);
@@ -168,7 +168,7 @@ namespace Demo.Main.Areas.Customer.Controllers
 
             foreach (var item in cartItems)
             {
-                var image = unitOfWork.ProductImagesRepository.GetFirstOrDefault(i => i.ProductId.Equals(item.Product.Id));
+                var image = unitOfWork.ProductImagesRepository.GetFirst(i => i.ProductId.Equals(item.Product.Id));
                 item.Product.Images = [image];
             }
 

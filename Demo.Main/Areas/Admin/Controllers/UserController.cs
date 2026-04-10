@@ -31,6 +31,11 @@ namespace Demo.Main.Areas.Admin.Controllers
             var user = Repo
                 .GetFirstOrDefault(u => u.Id == id);
 
+            if(user == null)
+            {
+                throw new Exception("User not found");
+            }
+
             user.Role = um
                 .GetRolesAsync(user)
                 .GetAwaiter()
@@ -56,7 +61,7 @@ namespace Demo.Main.Areas.Admin.Controllers
         public IActionResult ManageRole(ManageRoleVM vm)
         {   
             // Load the persisted user so role and company changes are applied to the tracked entity.
-            var userFromDb = Repo.GetFirstOrDefault(u => u.Id.Equals(vm.User.Id));
+            var userFromDb = Repo.GetFirst(u => u.Id.Equals(vm.User.Id));
 
             // Resolve the current role before replacing it.
             var prevRoleName = um.GetRolesAsync(userFromDb).GetAwaiter().GetResult().FirstOrDefault() ?? string.Empty;

@@ -70,14 +70,19 @@ namespace Demo.DataAccess.Repository
             return [.. query.Where(filter)];
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = false, string? includeProperties = null)
+        public T GetFirst(Expression<Func<T, bool>> filter, bool track = false, string? includeProperties = null)
         {
-            return GetAll(filter, track, includeProperties).FirstOrDefault();
+            return GetAll(filter, track, includeProperties)?.FirstOrDefault() ?? throw new Exception("No records found");
+        }
+
+        public T? GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = false, string? includeProperties = null)
+        {
+            return GetAll(filter, track, includeProperties)?.FirstOrDefault();
         }
 
         public T GetById(int? id, bool tracked = false, string? includeProperties = null)
         {
-            return GetFirstOrDefault(e => e.Id == id, tracked, includeProperties);
+            return GetFirstOrDefault(e => e.Id == id, tracked, includeProperties) ?? throw new Exception("Id not found");
         }
 
         private static IQueryable<T> GetAllWithProperties(IQueryable<T> query, string? includeProperties = null)

@@ -11,7 +11,8 @@ namespace Demo.DataAccess.IRepository
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, bool track = true, string? includeProperties = null);
-        T GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = true, string? includeProperties = null);
+        T? GetFirstOrDefault(Expression<Func<T, bool>> filter, bool track = true, string? includeProperties = null);
+        T GetFirst(Expression<Func<T, bool>> filter, bool track = true, string? includeProperties = null);
         T GetById(int? id, bool track = true, string? includeProperties = null);
         void Add(T entity);
         void AddRange(T[] entities);

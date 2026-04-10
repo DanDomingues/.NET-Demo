@@ -5,11 +5,11 @@ namespace Demo.Models
 {
     public class ProductImage : ModelBase, IOrderableModel
     {
-        [Required] public string Url { get; set; }
+        [Required] public string Url { get; set; } = null!;
         public int DisplayOrder { get; set; } = 0;
 
         [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
 
         public int ProductId { get; set; }
     }
