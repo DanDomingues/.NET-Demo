@@ -20,15 +20,30 @@ function loadDataTable(options) {
             { data: 'orderStatus' },
             { data: 'paymentStatus' },
             { data: 'orderTotal', render: renderCurrency },
-            { data: 'id', render: function (data) { return renderButtons(data, options.filter) } },
+            { 
+                data: 'id', 
+                width: '8%', 
+                className: 'text-end', 
+                render: function (data) 
+                { 
+                    return renderButtons(data, options.filter) 
+                } 
+            },
         ]
     });
 }
 
-function renderButtons(id, filter) {
+function renderButtons(id, filter) 
+{
+    //TODO: Validate this as an icon and remove below lines (and css) when done
+    //var buttonClass = isAdmin ? 'admin-table-action' : 'northstar-table-action';
     var isAdmin = document.body.classList.contains('admin-ops');
-    var buttonClass = isAdmin ? 'admin-table-action' : 'northstar-table-action';
+    var iconClass = isAdmin ? 'bi-pencil-square' : 'bi-eye'
+    var label = isAdmin ? 'Edit Order' : 'View Order';
+
     return `<div class="m-75 btn-group" role="group">
-                <a href="/customer/order/details?id=${id}&filter=${filter}" class="${buttonClass}"><i class="bi bi-feather"></i></a>
+                <a href="/customer/order/details?id=${id}&filter=${filter}" class="northstar-table-action" aria-label="${label}">
+                    <i class="bi ${iconClass}"></i>
+                </a>
             </div>`;
 }
