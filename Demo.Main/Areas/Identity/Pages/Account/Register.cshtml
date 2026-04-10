@@ -78,6 +78,7 @@
 
                 @if(!Defines.ROLE_SELECTION_LOCK_ACTIVE || User.IsInRole(SD.ROLE_USER_ADMIN))
                 {
+                    @*
                     <div class="@fieldGridClass">
                         <div class="@fieldBlockClass">
                             <label asp-for="Input.City" class="@labelClass">City</label>
@@ -88,24 +89,25 @@
                             <input asp-for="Input.State" class="form-control @inputClass" aria-required="true" />
                         </div>
                     </div>
+                    <div class="@fieldBlockClass">
+                        <label asp-for="Input.PostalCode" class="@labelClass">Postal Code</label>
+                        <input asp-for="Input.PostalCode" class="form-control @inputClass" aria-required="true" />
+                    </div>
+                    *@
 
                     <div class="@fieldGridClass">
-                        <div class="@fieldBlockClass">
-                            <label asp-for="Input.PostalCode" class="@labelClass">Postal Code</label>
-                            <input asp-for="Input.PostalCode" class="form-control @inputClass" aria-required="true" />
-                        </div>
                         <div class="@fieldBlockClass">
                             <label asp-for="Input.PhoneNumber" class="@labelClass">Phone Number</label>
                             <input asp-for="Input.PhoneNumber" class="form-control @inputClass" aria-required="true" />
                         </div>
-                    </div>
-                    <div class="@fieldGridClass">
                         <div class="@fieldBlockClass">
                             <label asp-for="Input.Role" class="@labelClass">Role</label>
                             <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select @inputClass">
                                 <option disabled selected>-Select Role-</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="@fieldGridClass">
                         <div class="@fieldBlockClass" id="CompanyIdInput" style="display:none">
                             <label asp-for="Input.CompanyId" class="@labelClass">Company</label>
                             <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select @inputClass">
