@@ -46,7 +46,9 @@ namespace Demo.DataAccess
             return new StatusCodeResult(303);
         }
 
-        private static SessionCreateOptions BuildStripeSessionOptions(StripeProcessDto dto, string domain = "https://localhost:7106")
+        private static SessionCreateOptions BuildStripeSessionOptions(
+            StripeProcessDto dto, 
+            string domain = "https://localhost:7106")
         {
             return new SessionCreateOptions
             {
@@ -70,6 +72,20 @@ namespace Demo.DataAccess
                 })],
                 Mode = "payment",
             };
+        }
+
+        public static bool ValidatePayment(string sessionId, Action<string> onValidated)
+        {
+            var service = new SessionService();
+            var session = service.Get(sessionId);
+            
+            if(session?.PaymentStatus?.ToLower() != "paid")
+            {
+                return false;
+            }
+
+            onValidated(session.PaymentIntentId);
+            return true;
         }
     }
 }

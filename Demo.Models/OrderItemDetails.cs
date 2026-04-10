@@ -18,11 +18,18 @@ namespace Demo.Models
         [Required] public int ProductId { get; set; }
 
         [ForeignKey("OrderHeaderId"), ValidateNever]
-        public OrderHeader OrderHeader { get; set; }
+        public OrderHeader OrderHeader { get; set; } = null!;
         
         [ForeignKey("ProductId"), ValidateNever]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
 
         public double TotalCost => Count * Price;
+
+        public OrderItemDetails(ShoppingCartItem cartItem)
+        {
+            Count = cartItem.Count;
+            Price = cartItem.Product.Price;
+            ProductId = cartItem.Product.Id;
+        }
     }
 }

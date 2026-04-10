@@ -18,6 +18,7 @@ namespace Demo.DataAccess.IRepository
         void Update(T entity);
         void AddOrUpdate(T entity);
         void Remove(T entity);
+        void RemoveById(int entity);
         void RemoveRange(T[] entities);
     }
 }

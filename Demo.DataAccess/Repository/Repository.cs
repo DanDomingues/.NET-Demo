@@ -53,6 +53,11 @@ namespace Demo.DataAccess.Repository
             dbSet.RemoveRange(entities);
         }
 
+        public void RemoveById(int id)
+        {
+            Remove(GetById(id));
+        }
+
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, bool track = false, string? includeProperties = null)
         {
             var query = Repository<T>.GetAllWithProperties(dbSet, includeProperties);

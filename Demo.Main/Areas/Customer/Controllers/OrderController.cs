@@ -63,7 +63,6 @@ namespace Demo.Main.Areas.Customer.Controllers
             return View(id);
         }
 
-        //BUTTON ACTIONS
 
         [Authorize(Roles = $"{SD.ROLE_USER_ADMIN},{SD.ROLE_USER_EMPLOYEE}")]
         public IActionResult UpdateDetails(OrderVM vm)
