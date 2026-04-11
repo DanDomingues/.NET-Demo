@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Northstar.Utility;
 using Northstar.DataAccess;
 
-namespace Demo
+namespace Northstar.Web.Views.Shared.Components.Cart
 {
     public class CartViewComponent(IUnitOfWork unitOfWork) : ViewComponent
     {

@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C#: Demo Debug",
+            "name": "C#: Northstar.Web Debug",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Northstar.Web/Northstar.csproj"
+            "projectPath": "${workspaceFolder}/Northstar.Web/Northstar.Web.csproj"
         }
 
     ]

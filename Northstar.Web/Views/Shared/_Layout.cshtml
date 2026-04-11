@@ -6,7 +6,7 @@
     var navClass = ViewData["NavClass"] as string ?? string.Empty;
     var headerClass = ViewData["HeaderClass"] as string ?? string.Empty;
     var footerClass = ViewData["FooterClass"] as string ?? string.Empty;
-    var brandName = ViewData["BrandName"] as string ?? ".NET Demo";
+    var brandName = ViewData["BrandName"] as string ?? "Northstar Supply";
 }
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - .NET Demo</title>
+    <title>@ViewData["Title"] - @brandName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Northstar.styles.css" asp-append-version="true" />
