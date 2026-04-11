@@ -1,14 +1,12 @@
 # Northstar Supply
 
-Northstar Supply is a production-style ASP.NET MVC commerce demo built to showcase the kinds of application patterns, business workflows, and delivery standards I use in recent .NET work that cannot be shared publicly because of NDA coverage. The application combines a customer storefront, authenticated checkout flow, order lifecycle management, and an admin back office in a single public-facing repository designed to represent maintainable, real-world business application structure rather than a tutorial-only sample.
+Northstar Supply is a production-style ASP.NET Core MVC commerce demo built to showcase the kinds of application patterns and workflows used in recent .NET work that cannot be shared publicly because of NDA coverage. The application combines a customer storefront, authenticated checkout flow, order lifecycle management, and an admin back office in a single public-facing repository designed to represent maintainable, real-world business application structure rather than a tutorial-only sample.
 
 This repository focuses on the engineering value behind a polished commerce application: separated customer and admin concerns, database-backed catalog and order workflows, role-aware access control, seeded demo content, and payment integration through Stripe test mode.
 
 ## Preview
 
-![Northstar Supply storefront hero](docs/screenshots/northstar-home-hero.png)
-
-_Replace with a finalized lead screenshot once the portfolio image set is exported._
+![Northstar Supply storefront hero](docs/screenshots/01-home-hero.png)
 
 ## Key Features
 
@@ -40,7 +38,7 @@ Northstar Supply is organized as a multi-project solution with a conventional MV
 - `Northstar.Web` hosts the ASP.NET Core MVC application, Razor views, area-based controllers, static assets, and Identity UI.
 - `Northstar.DataAccess` contains the EF Core `DbContext`, migrations, seeding, repository implementations, unit-of-work coordination, and Stripe checkout helpers.
 - `Northstar.Models` defines the domain entities and view models used across storefront, cart, order, and admin workflows.
-- `Northstar.Utility` holds shared constants, role/status definitions, controller helpers, and the sample email sender used by Identity.
+- `Northstar.Utility` holds shared constants, role/status definitions, controller helpers, and the email sender stub used by Identity.
 
 From an application architecture perspective, the repository separates customer-facing and admin-facing concerns through ASP.NET Core Areas (`Customer`, `Admin`, and `Identity`). Persistence is handled with EF Core against SQL Server, while authentication and authorization are handled with ASP.NET Core Identity and role checks across storefront, order, and admin paths. The application seeds catalog content directly through the `DbContext` model configuration, then creates roles and an initial admin account during startup initialization.
 
@@ -50,31 +48,37 @@ Much of my recent .NET work is under NDA, so I built this public demo to showcas
 
 ## Screenshots
 
-### Storefront Home
-
-![Storefront home](docs/screenshots/storefront-home.png)
-
 ### Product Details
 
-![Product details](docs/screenshots/product-details.png)
+![Product details](docs/screenshots/06-product-details.png)
 
 ### Shopping Cart
 
-![Shopping cart](docs/screenshots/shopping-cart.png)
+![Shopping cart](docs/screenshots/08-cart-populated.png)
 
-### Order History
+### Order Summary
 
-![Order history](docs/screenshots/order-history.png)
+![Order summary](docs/screenshots/09-order-summary.png)
+
+### Customer Order Details
+
+![Customer order details](docs/screenshots/12-order-details-customer.png)
 
 ### Admin Product Management
 
-![Admin product management](docs/screenshots/admin-products.png)
+![Admin product management](docs/screenshots/13-admin-products.png)
 
-### Admin Create or Edit Flow
+### Product Upsert
 
-![Admin upsert flow](docs/screenshots/admin-upsert.png)
+![Product upsert](docs/screenshots/15-product-upsert-edit-media.png)
 
-_All screenshot paths above are placeholders until the final portfolio image set is committed._
+### Admin Orders
+
+![Admin orders](docs/screenshots/16-admin-orders.png)
+
+### Admin Order Details
+
+![Admin order details](docs/screenshots/17-admin-order-details.png)
 
 ## Running Locally
 
@@ -92,7 +96,7 @@ _All screenshot paths above are placeholders until the final portfolio image set
 5. Apply migrations:
 
 ```powershell
-dotnet ef database update --project Northstar.DataAccess/Northstar.DataAccess.csproj
+dotnet ef database update --project Northstar.DataAccess/Northstar.DataAccess.csproj --startup-project Northstar.Web/Northstar.Web.csproj
 ```
 
 6. Run the web app:
@@ -103,14 +107,14 @@ dotnet run --project Northstar.Web/Northstar.Web.csproj
 
 The app applies pending migrations on startup and runs database initialization that creates roles and a default admin account if they do not already exist.
 
-## Local Notes
+## Demo Notes
 
 - The catalog, categories, companies, product images, roles, and an initial admin user are seeded for local demo use.
 - Stripe is wired for test-mode checkout and should be exercised with test credentials only.
-- Identity email sending is stubbed with a no-op `IEmailSender` implementation, so email-dependent flows are not configured for real delivery in this Northstar.
+- Identity email sending is stubbed with a no-op `IEmailSender` implementation, so email-dependent flows are not configured for real delivery in this demo.
 
 ## Future Improvements
 
 - Add automated test coverage around storefront, checkout, and admin workflows
 - Expand catalog filtering and search capabilities
-- Publish a hosted demo environment and finalized screenshot set
+- Publish a hosted demo environment
