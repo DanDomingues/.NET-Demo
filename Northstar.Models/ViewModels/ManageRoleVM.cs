@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Demo.Models.ViewModels
+namespace Northstar.Models.ViewModels
 {
     public class ManageRoleVM
     {

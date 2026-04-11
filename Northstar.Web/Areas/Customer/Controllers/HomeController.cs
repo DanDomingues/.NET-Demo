@@ -1,13 +1,13 @@
-﻿using Demo.DataAccess;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.Utility;
-using Demo.DataAccess.IRepository;
+﻿using Northstar.DataAccess;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.Utility;
+using Northstar.DataAccess.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Demo.Main.Areas.Customer.Controllers
+namespace Northstar.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class HomeController(IUnitOfWork unitOfWork) : Controller, IUnitOfWorkProvider

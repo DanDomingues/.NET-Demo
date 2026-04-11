@@ -1,8 +1,8 @@
-using Demo.Models;
-using Demo.Utility;
-using Demo.DataAccess.IRepository;
+using Northstar.Models;
+using Northstar.Utility;
+using Northstar.DataAccess.IRepository;
 
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public class DataUtility
     {

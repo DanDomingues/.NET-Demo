@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Demo.Models
+namespace Northstar.Models
 {
     public class Category : ModelBase, INamedModel, IOrderableModel
     {

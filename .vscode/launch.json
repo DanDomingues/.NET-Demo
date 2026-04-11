@@ -8,7 +8,7 @@
             "name": "C#: Demo Debug",
             "type": "dotnet",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Demo.Main/Demo.csproj"
+            "projectPath": "${workspaceFolder}/Northstar.Web/Northstar.csproj"
         }
 
     ]

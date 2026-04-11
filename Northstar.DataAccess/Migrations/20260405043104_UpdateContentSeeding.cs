@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Demo.Main.Migrations
+namespace Northstar.Web.Migrations
 {
     /// <inheritdoc />
     public partial class UpdateContentSeeding : Migration

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public struct StripeProcessDto
     {

@@ -1,8 +1,8 @@
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo.Main.Controllers.Modules
+namespace Northstar.Web.Controllers.Modules
 {
     public abstract class RepositoryControllerModule<TModel, TRepo>
         where TModel : class, IModelBase, new()

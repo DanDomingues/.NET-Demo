@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Demo.Main</RootNamespace>
+    <RootNamespace>Northstar.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,9 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demo.DataAccess\Demo.DataAccess.csproj" />
-    <ProjectReference Include="..\Demo.Models\Demo.Models.csproj" />
-    <ProjectReference Include="..\Demo.Utility\Demo.Utility.csproj" />
+    <ProjectReference Include="..\Northstar.DataAccess\Northstar.DataAccess.csproj" />
+    <ProjectReference Include="..\Northstar.Models\Northstar.Models.csproj" />
+    <ProjectReference Include="..\Northstar.Utility\Northstar.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

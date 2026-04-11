@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     // Implementation required by ASP.NET Core Identity.
     // Email delivery is intentionally disabled for this sample application.

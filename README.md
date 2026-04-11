@@ -37,10 +37,10 @@ _Replace with a finalized lead screenshot once the portfolio image set is export
 
 Northstar Supply is organized as a multi-project solution with a conventional MVC web front end and separate data, model, and utility layers:
 
-- `Demo.Main` hosts the ASP.NET Core MVC application, Razor views, area-based controllers, static assets, and Identity UI.
-- `Demo.DataAccess` contains the EF Core `DbContext`, migrations, seeding, repository implementations, unit-of-work coordination, and Stripe checkout helpers.
-- `Demo.Models` defines the domain entities and view models used across storefront, cart, order, and admin workflows.
-- `Demo.Utility` holds shared constants, role/status definitions, controller helpers, and the sample email sender used by Identity.
+- `Northstar.Web` hosts the ASP.NET Core MVC application, Razor views, area-based controllers, static assets, and Identity UI.
+- `Northstar.DataAccess` contains the EF Core `DbContext`, migrations, seeding, repository implementations, unit-of-work coordination, and Stripe checkout helpers.
+- `Northstar.Models` defines the domain entities and view models used across storefront, cart, order, and admin workflows.
+- `Northstar.Utility` holds shared constants, role/status definitions, controller helpers, and the sample email sender used by Identity.
 
 From an application architecture perspective, the repository separates customer-facing and admin-facing concerns through ASP.NET Core Areas (`Customer`, `Admin`, and `Identity`). Persistence is handled with EF Core against SQL Server, while authentication and authorization are handled with ASP.NET Core Identity and role checks across storefront, order, and admin paths. The application seeds catalog content directly through the `DbContext` model configuration, then creates roles and an initial admin account during startup initialization.
 
@@ -86,19 +86,19 @@ _All screenshot paths above are placeholders until the final portfolio image set
 ### Setup
 
 1. Clone the repository.
-2. Open the solution at `Demo.Main/Demo.sln`.
-3. Configure a valid SQL Server connection string in `Demo.Main/appsettings.json` under `ConnectionStrings:DefaultConnection`, or provide it through the `ConnectionStrings__DefaultConnection` environment variable.
-4. Configure Stripe test keys under the `Stripe` section in `Demo.Main/appsettings.json`. For a cleaner local setup, move these into user secrets or environment variables.
+2. Open the solution at `Northstar.Web/Northstar.sln`.
+3. Configure a valid SQL Server connection string in `Northstar.Web/appsettings.json` under `ConnectionStrings:DefaultConnection`, or provide it through the `ConnectionStrings__DefaultConnection` environment variable.
+4. Configure Stripe test keys under the `Stripe` section in `Northstar.Web/appsettings.json`. For a cleaner local setup, move these into user secrets or environment variables.
 5. Apply migrations:
 
 ```powershell
-dotnet ef database update --project Demo.DataAccess --startup-project Demo.Main
+dotnet ef database update --project Northstar.DataAccess --startup-project Northstar.Web
 ```
 
 6. Run the web app:
 
 ```powershell
-dotnet run --project Demo.Main
+dotnet run --project Northstar.Web
 ```
 
 The app applies pending migrations on startup and runs database initialization that creates roles and a default admin account if they do not already exist.
@@ -107,7 +107,7 @@ The app applies pending migrations on startup and runs database initialization t
 
 - The catalog, categories, companies, product images, roles, and an initial admin user are seeded for local demo use.
 - Stripe is wired for test-mode checkout and should be exercised with test credentials only.
-- Identity email sending is stubbed with a no-op `IEmailSender` implementation, so email-dependent flows are not configured for real delivery in this demo.
+- Identity email sending is stubbed with a no-op `IEmailSender` implementation, so email-dependent flows are not configured for real delivery in this Northstar.
 
 ## Future Improvements
 

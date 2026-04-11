@@ -1,12 +1,12 @@
-using Demo.DataAccess.Repository;
-using Demo.DataAccess.IRepository;
+using Northstar.DataAccess.Repository;
+using Northstar.DataAccess.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Demo.Models;
+using Northstar.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Demo.Utility;
+using Northstar.Utility;
 using Stripe;
-using Demo.DataAccess;
+using Northstar.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 

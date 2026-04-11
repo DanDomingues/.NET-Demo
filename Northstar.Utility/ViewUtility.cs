@@ -1,4 +1,4 @@
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     public static class ViewUtility
     {

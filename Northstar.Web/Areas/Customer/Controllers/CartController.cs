@@ -1,15 +1,15 @@
-﻿using Demo.DataAccess.IRepository;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.DataAccess;
-using Demo.Utility;
+﻿using Northstar.DataAccess.IRepository;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.DataAccess;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
-using Demo.Main.Controllers;
+using Northstar.Web.Controllers;
 
-namespace Demo.Main.Areas.Customer.Controllers
+namespace Northstar.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class CartController(IUnitOfWork unitOfWork) : RepositoryBoundController<ShoppingCartItem, IShoppingCartItemRepository>(unitOfWork), IUnitOfWorkProvider

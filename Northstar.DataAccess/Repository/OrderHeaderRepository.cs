@@ -1,6 +1,6 @@
-﻿using Demo.Utility;
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+﻿using Northstar.Utility;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.Repository
+namespace Northstar.DataAccess.Repository
 {
     public class OrderHeaderRepository(DbSet<OrderHeader> set) : Repository<OrderHeader>(set), IOrderHeaderRepository
     {

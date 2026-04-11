@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Models
+namespace Northstar.Models
 {
     public class OrderHeader : ModelBase, IShippingContainer
     {

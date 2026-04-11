@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     public static class GenericUtility
     {

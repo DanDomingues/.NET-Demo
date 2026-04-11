@@ -1,10 +1,10 @@
 using System.Security.Claims;
-using Demo.DataAccess.IRepository;
+using Northstar.DataAccess.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Demo.Utility;
+using Northstar.Utility;
 
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public static class SessionUtility
     {

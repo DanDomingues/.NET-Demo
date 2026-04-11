@@ -1,4 +1,4 @@
-namespace Demo.Models.ViewModels
+namespace Northstar.Models.ViewModels
 {
     public class CategoryViewModel
     {

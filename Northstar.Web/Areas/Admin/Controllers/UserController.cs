@@ -1,15 +1,15 @@
-using Demo.DataAccess;
-using Demo.DataAccess.IRepository;
-using Demo.Main.Controllers;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.Utility;
+using Northstar.DataAccess;
+using Northstar.DataAccess.IRepository;
+using Northstar.Web.Controllers;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Demo.Main.Areas.Admin.Controllers
+namespace Northstar.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UserController(

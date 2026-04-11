@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Demo.DataAccess;
+using Northstar.DataAccess;
 
-namespace Demo.DataAccess.IRepository
+namespace Northstar.DataAccess.IRepository
 {
     public interface IUnitOfWork
     {

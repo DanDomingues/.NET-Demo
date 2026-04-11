@@ -1,7 +1,7 @@
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 
-namespace Demo.Main.Controllers.Modules
+namespace Northstar.Web.Controllers.Modules
 {
     public class RepoControllerEditModule<TModel, TRepo> : RepositoryControllerModule<TModel, TRepo>
         where TModel : class, IModelBase, new()

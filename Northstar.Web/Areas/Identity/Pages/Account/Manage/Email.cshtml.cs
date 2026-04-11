@@ -7,14 +7,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Demo.Models;
+using Northstar.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace Demo.Main.Areas.Identity.Pages.Account.Manage
+namespace Northstar.Web.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {

@@ -1,11 +1,11 @@
-﻿using Demo.DataAccess.IRepository;
+﻿using Northstar.DataAccess.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.Repository
+namespace Northstar.DataAccess.Repository
 {
     public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork
     {

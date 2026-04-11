@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     public static class RoleUtility
     {

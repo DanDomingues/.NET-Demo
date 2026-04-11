@@ -1,8 +1,8 @@
-using Demo.Models;
+using Northstar.Models;
 using Microsoft.EntityFrameworkCore;
-using Demo.DataAccess.IRepository;
+using Northstar.DataAccess.IRepository;
 
-namespace Demo.DataAccess.Repository
+namespace Northstar.DataAccess.Repository
 {
     public class ProductImageRepository(DbSet<ProductImage> dbSet) : Repository<ProductImage>(dbSet), IProductImageRepository
     {

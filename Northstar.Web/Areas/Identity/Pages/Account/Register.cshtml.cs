@@ -10,8 +10,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,9 +22,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Demo.Utility;
+using Northstar.Utility;
 
-namespace Demo.Main.Areas.Identity.Pages.Account
+namespace Northstar.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {

@@ -1,17 +1,17 @@
-﻿using Demo.DataAccess;
-using Demo.DataAccess.IRepository;
-using Demo.Main.Controllers;
-using Demo.Main.Controllers.Modules;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.Utility;
+﻿using Northstar.DataAccess;
+using Northstar.DataAccess.IRepository;
+using Northstar.Web.Controllers;
+using Northstar.Web.Controllers.Modules;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
-namespace Demo.Main.Areas.Admin.Controllers
+namespace Northstar.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = SD.ROLE_USER_ADMIN)]

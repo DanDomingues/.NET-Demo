@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     public static class SD
     {

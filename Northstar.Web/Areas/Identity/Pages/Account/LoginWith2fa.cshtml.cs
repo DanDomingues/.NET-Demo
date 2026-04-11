@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Demo.Models;
+using Northstar.Models;
 
-namespace Demo.Main.Areas.Identity.Pages.Account
+namespace Northstar.Web.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {

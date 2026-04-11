@@ -1,14 +1,14 @@
-﻿using Demo.DataAccess.Repository;
-using Demo.DataAccess.IRepository;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.Utility;
+﻿using Northstar.DataAccess.Repository;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using Demo.Main.Controllers.Modules;
+using Northstar.Web.Controllers.Modules;
 
-namespace Demo.Main.Controllers
+namespace Northstar.Web.Controllers
 {
     public abstract class RepositoryBoundController<TModel, TRepo> : Controller, IRepoControllerModuleContainer<TModel, TRepo>
         where TModel : class, IModelBase, new()

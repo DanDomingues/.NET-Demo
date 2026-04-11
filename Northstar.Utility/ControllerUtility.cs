@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Demo.Utility
+namespace Northstar.Utility
 {
     public static class ControllerUtility
     {

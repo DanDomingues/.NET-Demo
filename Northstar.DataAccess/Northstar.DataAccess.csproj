@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demo.Models\Demo.Models.csproj" />
-    <ProjectReference Include="..\Demo.Utility\Demo.Utility.csproj" />
+    <ProjectReference Include="..\Northstar.Models\Northstar.Models.csproj" />
+    <ProjectReference Include="..\Northstar.Utility\Northstar.Utility.csproj" />
   </ItemGroup>
 
 </Project>

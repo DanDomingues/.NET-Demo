@@ -1,8 +1,8 @@
-﻿using Demo.Models;
+﻿using Northstar.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
     {

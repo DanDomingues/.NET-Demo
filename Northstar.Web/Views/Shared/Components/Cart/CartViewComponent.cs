@@ -1,7 +1,7 @@
-using Demo.DataAccess.IRepository;
+using Northstar.DataAccess.IRepository;
 using Microsoft.AspNetCore.Mvc;
-using Demo.Utility;
-using Demo.DataAccess;
+using Northstar.Utility;
+using Northstar.DataAccess;
 
 namespace Demo
 {

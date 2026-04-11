@@ -4,13 +4,13 @@
 
 using System;
 using System.Threading.Tasks;
-using Demo.Models;
+using Northstar.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.Main.Areas.Identity.Pages.Account.Manage
+namespace Northstar.Web.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {

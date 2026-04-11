@@ -1,16 +1,16 @@
-﻿using Demo.DataAccess.Repository;
-using Demo.DataAccess.IRepository;
-using Demo.Models;
-using Demo.Models.ViewModels;
-using Demo.DataAccess;
-using Demo.Utility;
+﻿using Northstar.DataAccess.Repository;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
+using Northstar.Models.ViewModels;
+using Northstar.DataAccess;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
-using Demo.Main.Controllers;
+using Northstar.Web.Controllers;
 
-namespace Demo.Main.Areas.Customer.Controllers
+namespace Northstar.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class OrderController(IUnitOfWork unitOfWork) : RepositoryBoundController<OrderHeader, IOrderHeaderRepository>(unitOfWork)

@@ -1,6 +1,6 @@
-using Demo.Models;
+using Northstar.Models;
 
-namespace Demo.DataAccess.IRepository
+namespace Northstar.DataAccess.IRepository
 {
     public interface IProductImageRepository : IRepository<ProductImage>
     {

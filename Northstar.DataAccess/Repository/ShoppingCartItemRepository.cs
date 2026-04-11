@@ -1,8 +1,8 @@
 ﻿
-using Demo.DataAccess.IRepository;
-using Demo.Models;
+using Northstar.DataAccess.IRepository;
+using Northstar.Models;
 using Microsoft.EntityFrameworkCore;
-namespace Demo.DataAccess.Repository
+namespace Northstar.DataAccess.Repository
 {
     public class ShoppingCartItemRepository(DbSet<ShoppingCartItem> set) : Repository<ShoppingCartItem>(set), IShoppingCartItemRepository
     {

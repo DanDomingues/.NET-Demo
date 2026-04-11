@@ -1,6 +1,6 @@
-using Demo.Models;
+using Northstar.Models;
 
-namespace Demo.Models
+namespace Northstar.Models
 {
     public interface IProductOrderItem
     {

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Demo.Models.ViewModels
+namespace Northstar.Models.ViewModels
 {
     public class FormFieldModel
     {

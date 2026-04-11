@@ -1,4 +1,4 @@
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public interface IDbInitializer
     {

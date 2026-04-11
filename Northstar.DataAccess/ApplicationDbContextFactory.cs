@@ -2,7 +2,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Demo.DataAccess;
+namespace Northstar.DataAccess;
 
 // Enables EF Core design-time commands when the startup project differs from the DbContext project.
 public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
@@ -44,7 +44,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         }
 
         throw new InvalidOperationException(
-            "Could not find ConnectionStrings:DefaultConnection. Set the ConnectionStrings__DefaultConnection environment variable or ensure Demo.Main/appsettings.json exists.");
+            "Could not find ConnectionStrings:DefaultConnection. Set the ConnectionStrings__DefaultConnection environment variable or ensure Northstar.Web/appsettings.json exists.");
     }
 
     private static IEnumerable<string> GetCandidateAppSettingsPaths()
@@ -52,8 +52,8 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         var currentDirectory = Directory.GetCurrentDirectory();
 
         yield return Path.Combine(currentDirectory, "appsettings.json");
-        yield return Path.Combine(currentDirectory, "Demo.Main", "appsettings.json");
-        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "Demo.Main", "appsettings.json"));
-        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", "Demo.Main", "appsettings.json"));
+        yield return Path.Combine(currentDirectory, "Northstar.Web", "appsettings.json");
+        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "Northstar.Web", "appsettings.json"));
+        yield return Path.GetFullPath(Path.Combine(currentDirectory, "..", "..", "Northstar.Web", "appsettings.json"));
     }
 }

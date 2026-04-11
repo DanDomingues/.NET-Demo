@@ -1,4 +1,4 @@
-namespace Demo.Models
+namespace Northstar.Models
 {
     public interface IOrderableModel
     {

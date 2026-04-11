@@ -1,10 +1,10 @@
 
-using Demo.Models;
-using Demo.Utility;
+using Northstar.Models;
+using Northstar.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Demo.DataAccess
+namespace Northstar.DataAccess
 {
     public class DbInitializer(
         UserManager<IdentityUser> um, 

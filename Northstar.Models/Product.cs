@@ -1,4 +1,4 @@
-﻿using Demo.Models.ViewModels;
+﻿using Northstar.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Models
+namespace Northstar.Models
 {
     public class Product : NamedModel
     {

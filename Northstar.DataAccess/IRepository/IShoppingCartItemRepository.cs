@@ -1,11 +1,11 @@
-﻿using Demo.Models;
+﻿using Northstar.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.DataAccess.IRepository
+namespace Northstar.DataAccess.IRepository
 {
     public interface IShoppingCartItemRepository : IRepository<ShoppingCartItem>
     {
