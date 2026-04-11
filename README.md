@@ -92,18 +92,18 @@ _All screenshot paths above are placeholders until the final portfolio image set
 5. Apply migrations:
 
 ```powershell
-dotnet ef database update --project Northstar.DataAccess --startup-project Northstar.Web
+dotnet ef database update --project Northstar.DataAccess/Northstar.DataAccess.csproj
 ```
 
 6. Run the web app:
 
 ```powershell
-dotnet run --project Northstar.Web
+dotnet run --project Northstar.Web/Northstar.Web.csproj
 ```
 
 The app applies pending migrations on startup and runs database initialization that creates roles and a default admin account if they do not already exist.
 
-## Demo Notes
+## Local Notes
 
 - The catalog, categories, companies, product images, roles, and an initial admin user are seeded for local demo use.
 - Stripe is wired for test-mode checkout and should be exercised with test credentials only.
