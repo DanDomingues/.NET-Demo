@@ -36,22 +36,24 @@ namespace Northstar.Web.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id);
+            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, track: false);
             var paymentSuccessful = true;
-            orderHeader.OrderDate = DateTime.Now;
 
             //If payment is not delayed, it is validated and fields are attributed
             if(orderHeader.OrderStatus != SD.PAYMENT_STATUS_DELAYED)
             {
                 paymentSuccessful = StripeUtility.ValidatePayment(
                     orderHeader.SessionId ?? string.Empty, 
-                    paymentIntentId => AssignPaymentValues(id, paymentIntentId));
+                    paymentIntentId => AssignPaymentValues(orderHeader, paymentIntentId));
             }
 
             if(!paymentSuccessful)
             {
                 return View(id);
             }    
+
+            orderHeader.OrderDate = DateTime.Now;
+            unitOfWork.OrderHeaderRepository.Update(orderHeader);
             
             MoveCartItemsToOrder(orderHeader.ApplicationUserId, orderHeader.Id);
             unitOfWork.Save();
@@ -102,6 +104,7 @@ namespace Northstar.Web.Areas.Customer.Controllers
 
             return StripeUtility.PromptStripePayment(unitOfWork, Response, new StripeProcessDto
             {
+                headerId = vm.OrderHeader.Id,
                 items = productList,
                 area = "Customer",
                 page = "Cart",
@@ -178,20 +181,13 @@ namespace Northstar.Web.Areas.Customer.Controllers
                 OrderHeader = header
             };
         }
-    
-        
-        private void AssignPaymentValues(int id, string paymentIntentId)
+      
+        private void AssignPaymentValues(OrderHeader orderHeader, string paymentIntentId)
         {
-            //As this will already be tracked by the Post method, we avoid doing it here concurrently
-            var orderHeader = unitOfWork.OrderHeaderRepository.GetById(id, track: false);
-
             orderHeader.PaymentDate = DateTime.Now;
             orderHeader.PaymentIntentId = paymentIntentId;
             orderHeader.PaymentStatus = SD.PAYMENT_STATUS_APPROVED;
             orderHeader.OrderStatus = SD.ORDER_STATUS_APPROVED;
-            unitOfWork.OrderHeaderRepository.Update(orderHeader);
-            
-            unitOfWork.Save();
         }
 
         private void MoveCartItemsToOrder(string userId, int orderHeaderId)
