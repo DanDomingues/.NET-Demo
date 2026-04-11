@@ -107,8 +107,8 @@ namespace Demo.Main.Controllers
         {
             return CheckForDuplicates(
                 model,
-                e => (e as INamedModel).Name == model.Name,
-                m => (m as INamedModel).Name,
+                e => ((INamedModel)e).Name == model.Name,
+                m => ((INamedModel)m)?.Name ?? string.Empty,
                 "Name",
                 feedbackName: feedbackName,
                 addModelError: addModelError,

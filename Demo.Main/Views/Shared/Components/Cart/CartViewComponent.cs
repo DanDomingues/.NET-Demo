@@ -7,7 +7,7 @@ namespace Demo
 {
     public class CartViewComponent(IUnitOfWork unitOfWork) : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult Invoke()
         {
             if(User.TryGetId(out var id))
             {

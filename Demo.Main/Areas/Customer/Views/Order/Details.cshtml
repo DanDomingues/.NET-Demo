@@ -2,7 +2,8 @@
 @model OrderVM
 
 @{
-    OrderHeader header = Model.Header ?? throw new Exception("No header found");
+    //var header = Model.Header;
+    var header = Model.Header;  
     var orderStatus = header.OrderStatus ?? string.Empty;
     var paymentStatus = header.PaymentStatus ?? string.Empty;
     var filter = Context.Request.Query["filter"].ToString();
@@ -125,7 +126,7 @@
             <div class="@metaStripClass">
                 <div class="@metaCardClass">
                     <span class="@metaLabelClass">Order number</span>
-                    <strong>#@header.Id</strong>
+                    <strong>#@header!.Id</strong>
                 </div>
                 <div class="@metaCardClass">
                     <span class="@metaLabelClass">Order status</span>
