@@ -21,7 +21,7 @@
     var shippingSectionCopy = isAdminDashboard ? "Shipping address and fulfillment inputs." : "Delivery address and tracking information for this order.";
     var timelineSectionCopy = isAdminDashboard ? "System-generated milestones and status markers." : "Important dates and status updates for this order.";
     var actionsSectionCopy = isAdminDashboard ? "Order management and status actions." : "Actions currently available for this order.";
-    var lineItemsLabel = isAdminDashboard ? $"{Model.Details.Count()} line items" : "Items included in this order";
+    var lineItemsLabel = isAdminDashboard ? $"{Model.Details.Count()} line items" : "Items included in this order.";
     var paymentTimelineLabel = header.SessionId != null ? "Payment Date" : "Payment Due Date";
 
     //CLASSES
@@ -205,7 +205,7 @@
 
                     <section class="@detailSectionClass">
                         <div class="@sectionHeadClass">
-                            <h2>Shipping / Fulfillment</h2>
+                            <h2>Shipping details</h2>
                             <p>@shippingSectionCopy</p>
                         </div>
 
