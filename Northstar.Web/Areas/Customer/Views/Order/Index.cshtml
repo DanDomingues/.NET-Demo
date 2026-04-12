@@ -3,6 +3,22 @@
     var filter = Context.Request.Query["filter"].ToString();
     var isAdminDashboard = filter == "all" && User.HasAdminRights();
     var defaultClass = string.Empty;
+    var sectionClass = isAdminDashboard ? "admin-section admin-orders-section" : "northstar-section northstar-orders-section";
+    var shellInnerClass = isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner";
+    var ordersHeaderClass = isAdminDashboard ? "admin-orders-header" : "northstar-cart-header";
+    var eyebrowClass = isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow";
+    var eyebrowText = isAdminDashboard ? "Operations Dashboard" : "Northstar Supply";
+    var pageHeading = isAdminDashboard ? "Order operations" : "Order history";
+    var subtitleClass = isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle";
+    var subtitleText = isAdminDashboard
+        ? "Monitor order states, payment progress, and fulfillment from a denser internal dashboard view."
+        : "Track your order history and review current order statuses in one place.";
+    var filterPanelClass = isAdminDashboard ? "admin-panel admin-orders-filter-panel" : "northstar-summary-card northstar-orders-filter-panel";
+    var filterHeaderClass = isAdminDashboard ? "admin-orders-filter-header" : "northstar-orders-filter-header";
+    var filterDescription = isAdminDashboard ? "Filter the live order table by operational state." : "Narrow your order history by current status.";
+    var filterChipsClass = isAdminDashboard ? "admin-filter-chips" : "northstar-filter-chips";
+    var filterChipClassPrefix = isAdminDashboard ? "admin-filter-chip" : "northstar-filter-chip";
+    var tablePanelClass = isAdminDashboard ? "admin-panel admin-table-panel" : "northstar-summary-card northstar-orders-table-panel";
     var classes = new Dictionary<string, (string, string)>
     {
         { "paymentpending", (defaultClass, "Payment Pending") },
@@ -31,29 +47,25 @@
     ViewData["FooterClass"] = isAdminDashboard ? "admin-footer" : "northstar-footer";
 }
 
-<section class="@(isAdminDashboard ? "admin-section admin-orders-section" : "northstar-section northstar-orders-section")">
-    <div class="@(isAdminDashboard ? "admin-shell-inner" : "northstar-shell-inner")">
-        <div class="@(isAdminDashboard ? "admin-orders-header" : "northstar-cart-header")">
+<section class="@sectionClass">
+    <div class="@shellInnerClass">
+        <div class="@ordersHeaderClass">
             <div>
-                <p class="@(isAdminDashboard ? "admin-eyebrow" : "northstar-eyebrow")">@(isAdminDashboard ? "Operations Dashboard" : "Northstar Supply")</p>
-                <h1>@(isAdminDashboard ? "Order operations" : "Order history")</h1>
-                <p class="@(isAdminDashboard ? "admin-orders-subtitle" : "northstar-cart-subtitle")">
-                    @(isAdminDashboard
-                        ? "Monitor order states, payment progress, and fulfillment from a denser internal dashboard view."
-                        : "Track your order history and review current order statuses in one place.")
-                </p>
+                <p class="@eyebrowClass">@eyebrowText</p>
+                <h1>@pageHeading</h1>
+                <p class="@subtitleClass">@subtitleText</p>
             </div>
         </div>
 
-        <div class="@(isAdminDashboard ? "admin-panel admin-orders-filter-panel" : "northstar-summary-card northstar-orders-filter-panel")">
-            <div class="@(isAdminDashboard ? "admin-orders-filter-header" : "northstar-orders-filter-header")">
+        <div class="@filterPanelClass">
+            <div class="@filterHeaderClass">
                 <h2>Status filters</h2>
-                <p>@(isAdminDashboard ? "Filter the live order table by operational state." : "Narrow your order history by current status.")</p>
+                <p>@filterDescription</p>
             </div>
-            <div class="@(isAdminDashboard ? "admin-filter-chips" : "northstar-filter-chips")">
+            <div class="@filterChipsClass">
                 @foreach (var item in classes)
                 {
-                    <a class="@(isAdminDashboard ? $"admin-filter-chip {classes[item.Key].Item1}" : $"northstar-filter-chip {classes[item.Key].Item1}")"
+                    <a class="@($"{filterChipClassPrefix} {classes[item.Key].Item1}")"
                        asp-controller="Order"
                        asp-action="Index"
                        asp-route-status="@item.Key"
@@ -64,14 +76,17 @@
             </div>
         </div>
 
-        <div class="@(isAdminDashboard ? "admin-panel admin-table-panel" : "northstar-summary-card northstar-orders-table-panel")">
+        <div class="@tablePanelClass">
             <table id="tblData" class="table table-hover align-middle" style="width:100%">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Email</th>
+                        @if(isAdminDashboard)
+                        {
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                        }
                         <th>Order Date</th>
                         <th>Order Status</th>
                         <th>Payment Status</th>
