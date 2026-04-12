@@ -174,15 +174,16 @@ namespace Northstar.Web.Areas.Customer.Controllers
 
             if(!all.Any())
             {
-                return Json(data: Array.Empty<OrderHeader>());
+                return Json(new { data = Array.Empty<OrderHeader>() });
             }
 
             Func<OrderHeader, bool> statusFilter = status switch
             {
                 "paymentpending" => header => header.PaymentStatus == SD.PAYMENT_STATUS_PENDING,
                 "inprocess" => header => header.OrderStatus == SD.ORDER_STATUS_PROCESSING,
-                "completed" => header => header.OrderStatus == SD.PAYMENT_STATUS_APPROVED,
                 "approved" => header => header.OrderStatus == SD.ORDER_STATUS_APPROVED,
+                "shipped" => header => header.OrderStatus == SD.ORDER_STATUS_SHIPPED,
+                "delivered" => header => header.OrderStatus == SD.ORDER_STATUS_SHIPPED,
                 _ => header => !string.IsNullOrEmpty(header.OrderStatus),
             };
 

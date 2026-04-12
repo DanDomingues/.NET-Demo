@@ -17,6 +17,7 @@ namespace Northstar.Utility
         public const string ORDER_STATUS_APPROVED = "Approved";
         public const string ORDER_STATUS_PROCESSING = "Processing";
         public const string ORDER_STATUS_SHIPPED = "Shipped";
+        public const string ORDER_STATUS_DELIVERED = "Delivered";
         public const string ORDER_STATUS_CANCELLED = "Cancelled";
 
         public const string PAYMENT_STATUS_PENDING = "Pending";
