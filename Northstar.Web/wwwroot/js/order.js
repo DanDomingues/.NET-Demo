@@ -5,17 +5,17 @@ $(document).ready(function ()
     var url = new URLSearchParams(window.location.search);
     var userFilter = url.get("filter");
     var statusFilter = url.get("status") ?? "all";
-    var isAdmin = statusFilter === "all";
+    var isAdmin = (userFilter === "all");
 
-    loadDataTable({ status: statusFilter, filter: userFilter }, isAdmin);
+    loadDataTable({ status: statusFilter, filter: userFilter, isAdmin: isAdmin });
 });
 
-function loadDataTable(options, isAdmin) {
+function loadDataTable(options) {
     var columns = [
-        { data: 'id' }
+        { data: 'id', className: 'text-start'}
     ]
 
-    if(isAdmin)
+    if(options.isAdmin)
     {
         columns.push(
             { data: 'fullName' },
@@ -34,7 +34,7 @@ function loadDataTable(options, isAdmin) {
             className: 'text-end', 
             render: function (data) 
             { 
-                return renderButtons(data, options.filter) 
+                return renderButtons(data, options.filter, options.isAdmin) 
             } 
         }
     )
@@ -45,37 +45,12 @@ function loadDataTable(options, isAdmin) {
     });
 }
 
-function loadCustomerDataTable(options) {
-    dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/customer/order/getallby?status=' + options.status + '&filter=' + options.filter },
-        "columns": [
-            { data: 'id' },
-            { data: 'orderDate', render: renderDateTime },
-            { data: 'orderStatus' },
-            { data: 'paymentStatus' },
-            { data: 'orderTotal', render: renderCurrency },
-            { 
-                data: 'id', 
-                width: '8%', 
-                className: 'text-end', 
-                render: function (data) 
-                { 
-                    return renderButtons(data, options.filter) 
-                } 
-            },
-        ]
-    });
-}
-
-function renderButtons(id, filter) 
+function renderButtons(id, filter, isAdmin) 
 {
-    var isAdmin = document.body.classList.contains('admin-ops');
-    var iconClass = isAdmin ? 'bi-pencil-square' : 'bi-eye'
-    var label = isAdmin ? 'Edit Order' : 'View Order';
-
+    var label = isAdmin ? 'Edit details' : 'View details';
     return `<div class="m-75 btn-group" role="group">
                 <a href="/customer/order/details?id=${id}&filter=${filter}" class="northstar-table-action" aria-label="${label}">
-                    <i class="bi ${iconClass}"></i>
+                    <span>${label}</span>
                 </a>
             </div>`;
 }

@@ -15,7 +15,9 @@
         : "Track your order history and review current order statuses in one place.";
     var filterPanelClass = isAdminDashboard ? "admin-panel admin-orders-filter-panel" : "northstar-summary-card northstar-orders-filter-panel";
     var filterHeaderClass = isAdminDashboard ? "admin-orders-filter-header" : "northstar-orders-filter-header";
-    var filterDescription = isAdminDashboard ? "Filter the live order table by operational state." : "Narrow your order history by current status.";
+    var filterDescription = isAdminDashboard ? 
+        "Filter the live order table by operational state." : 
+        "Use filters to quickly find the orders you need.";
     var filterChipsClass = isAdminDashboard ? "admin-filter-chips" : "northstar-filter-chips";
     var filterChipClassPrefix = isAdminDashboard ? "admin-filter-chip" : "northstar-filter-chip";
     var tablePanelClass = isAdminDashboard ? "admin-panel admin-table-panel" : "northstar-summary-card northstar-orders-table-panel";
@@ -59,7 +61,7 @@
 
         <div class="@filterPanelClass">
             <div class="@filterHeaderClass">
-                <h2>Status filters</h2>
+                <h2>Filter by status</h2>
                 <p>@filterDescription</p>
             </div>
             <div class="@filterChipsClass">
@@ -80,7 +82,7 @@
             <table id="tblData" class="table table-hover align-middle" style="width:100%">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Order #</th>
                         @if(isAdminDashboard)
                         {
                             <th>Name</th>
