@@ -25,6 +25,7 @@ a.navbar-brand
 
 html {
   font-size: 14px;
+  --northstar-button-radius: 14px;
 }
 
 @media (min-width: 768px) {
@@ -262,7 +263,7 @@ body {
   justify-content: center;
   min-height: 48px;
   padding: 0.8rem 1.35rem;
-  border-radius: 999px;
+  border-radius: var(--northstar-button-radius);
   border: 1px solid transparent;
   font-weight: 600;
   text-decoration: none;
@@ -1957,7 +1958,7 @@ body {
   min-height: 42px;
   padding: 0.7rem 1rem;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: var(--northstar-button-radius);
   font-weight: 600;
   text-decoration: none;
   transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
@@ -2039,7 +2040,7 @@ body {
   align-items: center;
   min-height: 38px;
   padding: 0.55rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--northstar-button-radius);
   text-decoration: none;
   font-weight: 600;
 }
@@ -2112,7 +2113,7 @@ body {
   gap: 0.45rem;
   min-height: 38px;
   padding: 0.55rem 0.8rem;
-  border-radius: 10px;
+  border-radius: var(--northstar-button-radius);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -2566,11 +2567,15 @@ body {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: var(--northstar-button-radius);
   background: #f6f8fb;
   border: 1px solid #dbe2ea;
   color: #223a5e;
   text-decoration: none;
+}
+
+.btn:not(.btn-close):not(.northstar-quantity-stepper):not(.northstar-cart-quantity-btn) {
+  border-radius: var(--northstar-button-radius);
 }
 
 .admin-reorder-btn.disabled,
